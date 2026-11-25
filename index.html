@@ -183,6 +183,59 @@ nav.tabs button{font-size:11.5px}
 .vrow{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line)}.vrow:first-child{border-top:0}
 .vrow>div{flex:1}.vrow b{display:block;font-weight:800}.vrow span{color:var(--mute);font-size:14.5px;font-weight:600}
 .vrow .boxes{flex:none}
+
+/* ---- compact layout v0.2.5 ---- */
+header{padding:calc(var(--safe-t) + 6px) 14px 8px;gap:8px}
+header h1{font-size:20px}
+header .hbtn{width:36px;height:36px;margin:-4px 0 -4px -6px}
+.filter{padding:5px 11px;font-size:13px;min-height:32px}
+main{padding:10px 14px calc(70px + var(--safe-b))}
+nav.tabs{padding:3px 6px max(4px,calc(var(--safe-b) - 14px))}
+nav.tabs button{min-height:44px;padding:3px 0;font-size:11px}
+nav.tabs button svg{width:22px;height:22px}
+.seg{padding:3px;margin-bottom:8px;border-radius:12px}
+.seg button{min-height:34px;padding:6px 4px;font-size:14px;border-radius:9px}
+.deckinfo{font-size:13px;margin:0 4px 6px;min-height:26px}
+.qbtn{width:26px;height:26px;font-size:14px}
+.face{padding:14px 16px;border-top-width:8px;border-radius:22px}
+.big{font-size:clamp(32px,10vw,46px)}
+.say{width:40px;height:40px}.say svg{width:20px;height:20px}
+.say.sm{width:32px;height:32px}.say.sm svg{width:16px;height:16px}
+.tapnote{font-size:13px}
+.face.back .backtitle{font-size:24px!important}
+.face.back .tr{font-size:16px!important}
+.note{font-size:12.5px;padding:4px 8px;margin-top:6px}
+table.conj{font-size:16px;margin-top:6px}
+table.conj td{height:var(--row,36px);padding:0 4px}
+table.conj td:first-child{font-size:13px}
+.legend{font-size:11.5px;margin-top:4px}
+.btn{min-height:48px;padding:10px 14px;font-size:16px;border-radius:14px}
+.btns{margin-top:10px;gap:8px}
+.panel{padding:16px;border-radius:20px}
+.prompt .inf{font-size:clamp(28px,8.5vw,38px)}
+.person{font-size:17px;padding:4px 14px;margin-top:8px}
+.ans{font-size:20px;padding:10px 14px;margin-top:12px}
+.opts{gap:8px;margin-top:12px}
+.opt{min-height:46px;padding:10px 12px;font-size:17px;border-radius:14px}
+.opts.sent .opt{font-size:16px}
+.fb{margin-top:10px;padding:9px 12px}
+.fb strong{font-size:18px}
+.pl{font-size:19px}.es{font-size:20px;margin-top:10px}
+.hint{font-size:14px;margin-top:6px}
+.tbl{gap:5px;margin-top:10px}.tbl input{padding:7px 10px;font-size:17px}
+.hello{padding:4px 4px 12px}.hello .hi{font-size:40px}.hello .muted{font-size:17px}
+.tile{padding:14px 16px;border-radius:20px}.tile b{font-size:25px}.tile .art{width:96px;height:72px}
+.stick{bottom:calc(58px + max(4px,calc(var(--safe-b) - 14px)))}
+.toast{top:calc(var(--safe-t) + 54px)}
+@media (max-height:740px){
+ .opt{min-height:40px;padding:7px 10px;font-size:15.5px}.opts{gap:6px;margin-top:8px}.opts.sent .opt{font-size:15px}
+ .prompt .inf{font-size:clamp(24px,7.5vw,32px)}.panel{padding:12px 14px}.fb{padding:7px 10px;margin-top:8px}
+ .btn{min-height:44px}.pl{font-size:17px}.es{font-size:18px}.person{font-size:15px;margin-top:6px}
+ .tbl input{padding:5px 10px;font-size:16px}.tbl{gap:3px}.tbl label{font-size:13.5px}
+ table.conj{font-size:15px}.face.back .backtitle{font-size:21px!important}.legend{display:none}
+ .say{width:36px;height:36px}
+ .face.back .tapnote{display:none}
+}
 @media (prefers-reduced-motion:reduce){.card,.toast{transition:none}}
 </style>
 </head>
@@ -211,7 +264,7 @@ const T = {
   inst:['Otwórz ten adres w Safari.','Dotknij „Udostępnij” (kwadrat ze strzałką).','Wybierz „Do ekranu początkowego”.','Gotowe — Conjugo działa jak aplikacja, także offline.'],
   voiceTip:'Lepszy głos: Ustawienia iPhone’a → Dostępność → Treść mówiona → Głosy → Hiszpański → pobierz głos „Ulepszony”.',
   noVoice:'Brak hiszpańskiego głosu w tym urządzeniu',done:'Zamknij',noItems:'Wybierz przynajmniej jedną grupę czasowników.',legend:'końcówka · nieregularność',hay:'forma bezosobowa',
-  about:'Dane: Arriba Joven 1 (podsumowanie gramatyczne, słowniczek, lekcje 2–5), słowniczek kursu ¡Hola! ¿Cómo estás? (lekcje 01–05), agatauczy.pl, preply.com, berlitz.com. Czas teraźniejszy · v0.2.4'},
+  about:'Dane: Arriba Joven 1 (podsumowanie gramatyczne, słowniczek, lekcje 2–5), słowniczek kursu ¡Hola! ¿Cómo estás? (lekcje 01–05), agatauczy.pl, preply.com, berlitz.com. Czas teraźniejszy · v0.2.5'},
  en:{cards:'Cards',drill:'Conjugate',phr:'Phrases',more:'More',all:'All',verbs:'verbs',tap:'Tap to flip',tapBack:'Tap to flip back',know:'Got it',notyet:'Not yet',
   dirEs:'ES → EN',dirTr:'EN → ES',box:'Level',mVerbs:'Verbs',mVerbsS:'present tense conjugation',mVocab:'Vocabulary',mVocabS:'Arriba Joven 1 + ¡Hola! ¿Cómo estás? course',mSet:'Settings & progress',homeQ:'What shall we practise today?',vcards:'Cards',vquiz:'Quiz',vtype:'Type',vlist:'List',pickTopics:'Choose topics',pickS:'Pick one or more topics and start learning.',learn:'Start',selAll:'Select all',clear:'Clear',noTopics:'Pick at least one topic',chooseTr:'Choose the translation',typeES:'Write it in Spanish',search:'Search the selected topics…',loading:'Loading vocabulary…',loadErr:'Could not load the vocabulary. Check your connection and refresh.',noType:'The selected topics only have longer phrases — practise them in Cards or Quiz.',art:'Almost! Remember the article:',vprog:'Vocabulary',vprogS:'Entries at “Known” or “Mastered”',seen:'Practised',knownL:'Known',today:'Today',cardsW:'cards',again:'back to start — it will come back more often',lvInfo:'How levels work',type:'Type',choose:'Choose',table:'Table',check:'Check',next:'Next',
   ok:'Correct!',almost:'Almost! Watch the accent:',accentWrong:'Missing accent:',wrong:'Correct answer:',pron:'Remember the pronoun:',
@@ -222,7 +275,7 @@ const T = {
   inst:['Open this address in Safari.','Tap “Share” (square with an arrow).','Choose “Add to Home Screen”.','Done — Conjugo runs like an app, offline too.'],
   voiceTip:'Better voice: iPhone Settings → Accessibility → Spoken Content → Voices → Spanish → download an “Enhanced” voice.',
   noVoice:'No Spanish voice on this device',done:'Close',noItems:'Pick at least one verb group.',legend:'ending · irregular part',hay:'impersonal form',
-  about:'Sources: Arriba Joven 1 (grammar summary, glossary, units 2–5), ¡Hola! ¿Cómo estás? course glossary (lessons 01–05), agatauczy.pl, preply.com, berlitz.com. Present tense · v0.2.4'}
+  about:'Sources: Arriba Joven 1 (grammar summary, glossary, units 2–5), ¡Hola! ¿Cómo estás? course glossary (lessons 01–05), agatauczy.pl, preply.com, berlitz.com. Present tense · v0.2.5'}
 };
 // ---------- storage
 const KEY='conjugo.v1';
@@ -321,7 +374,7 @@ function renderCards(){
   ?`<div class="row"><span class="spacer"></span>${sayBtn(v.id==='haber'?'haber, hay':v.id)}</div><div class="mid"><div class="big">${esc(v.id)}</div></div><div class="tapnote">${t('tap')}</div>`
   :`<div class="row" style="min-height:44px"></div><div class="mid"><div class="big" style="font-size:clamp(30px,9vw,42px)">${esc(tr(v))}</div></div><div class="tapnote">${t('tap')}</div>`;
  const back=`<div class="row">${gChip(v)}<span class="spacer"></span>${sayBtn(v.id)}</div>
-  <div style="text-align:center;margin-top:6px"><div style="font-size:28px;font-weight:900;line-height:1.1">${esc(v.id)}</div><div class="tr" style="font-size:19px">${esc(tr(v))}</div>${v['n'+S.lang]?`<div class="note">${esc(v['n'+S.lang])}</div>`:''}</div>${conjTable(v)}<div class="tapnote" style="margin-top:10px">${t('tapBack')}</div>`;
+  <div style="text-align:center;margin-top:6px"><div class="backtitle" style="font-size:28px;font-weight:900;line-height:1.1">${esc(v.id)}</div><div class="tr" style="font-size:19px">${esc(tr(v))}</div>${v['n'+S.lang]?`<div class="note">${esc(v['n'+S.lang])}</div>`:''}</div>${conjTable(v)}<div class="tapnote" style="margin-top:10px">${t('tapBack')}</div>`;
  view.innerHTML=`<div class="seg">${['es','tr'].map(d=>`<button aria-pressed="${S.dir===d}" data-dir="${d}">${t(d==='es'?'dirEs':'dirTr')}</button>`).join('')}</div>
  <div class="deckinfo"><span>${known} / ${vs.length} ✓</span>${lvl}</div>
  <div class="flip"><div class="card ${st.flip?'on':''}" id="card" style="--c:${GROUP_C[v.g]}"><div class="face front">${front}</div><div class="face back">${back}</div></div></div>
@@ -334,6 +387,9 @@ function fitCard(){
  const top=c.getBoundingClientRect().top+window.scrollY;
  const h=Math.max(260,Math.floor(window.innerHeight-top-bh-navH-12));
  c.style.height=h+'px';
+ const back=c.querySelector('.face.back'),tb=back&&back.querySelector('table.conj');
+ if(tb){c.style.setProperty('--row','36px');const over=back.scrollHeight-back.clientHeight;const rows=tb.rows.length;
+  if(over>0)c.style.setProperty('--row',Math.max(24,Math.floor(36-over/rows))+'px')}
  document.querySelector('main').style.paddingBottom=(navH+8)+'px';
 }
 addEventListener('resize',()=>fitCard());
