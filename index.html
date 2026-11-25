@@ -34,7 +34,8 @@ button,input,select{font:inherit;color:inherit}
 button{cursor:pointer;border:0;background:none}
 .app{max-width:560px;margin:0 auto;min-height:100%;display:flex;flex-direction:column}
 header{background:var(--pri);color:#fff;padding:calc(var(--safe-t) + 12px) 18px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:5}
-header h1{margin:0;font-size:22px;font-weight:900;letter-spacing:-.01em;flex:1}
+header h1{margin:0;font-size:22px;font-weight:900;letter-spacing:-.01em;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+header .filter{flex:none;white-space:nowrap}
 header h1 span{color:var(--pink)}
 .filter{background:rgba(255,255,255,.16);border-radius:999px;padding:8px 14px;font-size:14px;font-weight:800;color:#fff;min-height:36px;display:flex;align-items:center;gap:6px}
 main{flex:1;padding:16px 16px calc(96px + var(--safe-b))}
@@ -62,9 +63,7 @@ nav.tabs button[aria-current=page]{color:var(--pri-t)}
 .btn.ghost{background:var(--soft);color:var(--ink)}
 .btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
 /* flashcard */
-.deckinfo{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center;font-size:13.5px;font-weight:800;color:var(--mute);margin:0 0 10px}
-.deckinfo span{background:var(--soft);padding:4px 10px;border-radius:999px;white-space:nowrap}
-.deckinfo b{color:var(--ink)}
+.deckinfo{display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:700;color:var(--mute);margin:0 4px 10px;min-height:28px}
 .qbtn{width:28px;height:28px;border-radius:50%;background:var(--soft);font-weight:900;color:var(--pri-t);font-size:15px}
 .lvl{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800;color:var(--mute)}
 .toast{position:fixed;left:50%;top:calc(var(--safe-t) + 70px);transform:translate(-50%,-12px);opacity:0;pointer-events:none;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-weight:800;font-size:15px;transition:opacity .2s,transform .2s;z-index:20;white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:8px}
@@ -212,7 +211,7 @@ const T = {
   inst:['Otwórz ten adres w Safari.','Dotknij „Udostępnij” (kwadrat ze strzałką).','Wybierz „Do ekranu początkowego”.','Gotowe — Conjugo działa jak aplikacja, także offline.'],
   voiceTip:'Lepszy głos: Ustawienia iPhone’a → Dostępność → Treść mówiona → Głosy → Hiszpański → pobierz głos „Ulepszony”.',
   noVoice:'Brak hiszpańskiego głosu w tym urządzeniu',done:'Zamknij',noItems:'Wybierz przynajmniej jedną grupę czasowników.',legend:'końcówka · nieregularność',hay:'forma bezosobowa',
-  about:'Dane: Arriba Joven 1 (podsumowanie gramatyczne, słowniczek, lekcje 2–5), słowniczek kursu ¡Hola! ¿Cómo estás? (lekcje 01–05), agatauczy.pl, preply.com, berlitz.com. Czas teraźniejszy · v0.2'},
+  about:'Dane: Arriba Joven 1 (podsumowanie gramatyczne, słowniczek, lekcje 2–5), słowniczek kursu ¡Hola! ¿Cómo estás? (lekcje 01–05), agatauczy.pl, preply.com, berlitz.com. Czas teraźniejszy · v0.2.1'},
  en:{cards:'Cards',drill:'Conjugate',phr:'Phrases',more:'More',all:'All',verbs:'verbs',tap:'Tap to flip',tapBack:'Tap to flip back',know:'Got it',notyet:'Not yet',
   dirEs:'ES → EN',dirTr:'EN → ES',box:'Level',mVerbs:'Verbs',mVerbsS:'present tense conjugation',mVocab:'Vocabulary',mVocabS:'Arriba Joven 1 + ¡Hola! ¿Cómo estás? course',mSet:'Settings & progress',homeQ:'What shall we practise today?',vcards:'Cards',vquiz:'Quiz',vtype:'Type',vlist:'List',pickTopics:'Choose topics',pickS:'Pick one or more topics and start learning.',learn:'Start',selAll:'Select all',clear:'Clear',noTopics:'Pick at least one topic',chooseTr:'Choose the translation',typeES:'Write it in Spanish',search:'Search the selected topics…',loading:'Loading vocabulary…',loadErr:'Could not load the vocabulary. Check your connection and refresh.',noType:'The selected topics only have longer phrases — practise them in Cards or Quiz.',art:'Almost! Remember the article:',vprog:'Vocabulary',vprogS:'Entries at “Known” or “Mastered”',seen:'Practised',knownL:'Known',today:'Today',cardsW:'cards',again:'back to start — it will come back more often',lvInfo:'How levels work',type:'Type',choose:'Choose',table:'Table',check:'Check',next:'Next',
   ok:'Correct!',almost:'Almost! Watch the accent:',accentWrong:'Missing accent:',wrong:'Correct answer:',pron:'Remember the pronoun:',
@@ -223,7 +222,7 @@ const T = {
   inst:['Open this address in Safari.','Tap “Share” (square with an arrow).','Choose “Add to Home Screen”.','Done — Conjugo runs like an app, offline too.'],
   voiceTip:'Better voice: iPhone Settings → Accessibility → Spoken Content → Voices → Spanish → download an “Enhanced” voice.',
   noVoice:'No Spanish voice on this device',done:'Close',noItems:'Pick at least one verb group.',legend:'ending · irregular part',hay:'impersonal form',
-  about:'Sources: Arriba Joven 1 (grammar summary, glossary, units 2–5), ¡Hola! ¿Cómo estás? course glossary (lessons 01–05), agatauczy.pl, preply.com, berlitz.com. Present tense · v0.2'}
+  about:'Sources: Arriba Joven 1 (grammar summary, glossary, units 2–5), ¡Hola! ¿Cómo estás? course glossary (lessons 01–05), agatauczy.pl, preply.com, berlitz.com. Present tense · v0.2.1'}
 };
 // ---------- storage
 const KEY='conjugo.v1';
@@ -318,15 +317,25 @@ function renderCards(){
  const vs=verbs();const known=vs.filter(x=>(S.box[x.id]||1)>=4).length;const seen=vs.filter(x=>S.box[x.id]).length;const b=S.box[v.id]||1;const td=today();
  const lvl=`<span class="lvl">${esc(lvName(b))} ${dots(b)}<button class="qbtn" data-info="1" aria-label="${t('lvInfo')}">?</button></span>`;
  const front=S.dir==='es'
-  ?`<div class="row">${lvl}<span class="spacer"></span>${sayBtn(v.id==='haber'?'haber, hay':v.id)}</div><div class="mid"><div class="big">${esc(v.id)}</div></div><div class="tapnote">${t('tap')}</div>`
-  :`<div class="row" style="min-height:44px">${lvl}</div><div class="mid"><div class="big" style="font-size:clamp(30px,9vw,42px)">${esc(tr(v))}</div></div><div class="tapnote">${t('tap')}</div>`;
+  ?`<div class="row"><span class="spacer"></span>${sayBtn(v.id==='haber'?'haber, hay':v.id)}</div><div class="mid"><div class="big">${esc(v.id)}</div></div><div class="tapnote">${t('tap')}</div>`
+  :`<div class="row" style="min-height:44px"></div><div class="mid"><div class="big" style="font-size:clamp(30px,9vw,42px)">${esc(tr(v))}</div></div><div class="tapnote">${t('tap')}</div>`;
  const back=`<div class="row">${gChip(v)}<span class="spacer"></span>${sayBtn(v.id)}</div>
   <div style="text-align:center;margin-top:6px"><div style="font-size:28px;font-weight:900;line-height:1.1">${esc(v.id)}</div><div class="tr" style="font-size:19px">${esc(tr(v))}</div>${v['n'+S.lang]?`<div class="note">${esc(v['n'+S.lang])}</div>`:''}</div>${conjTable(v)}<div class="tapnote" style="margin-top:10px">${t('tapBack')}</div>`;
  view.innerHTML=`<div class="seg">${['es','tr'].map(d=>`<button aria-pressed="${S.dir===d}" data-dir="${d}">${t(d==='es'?'dirEs':'dirTr')}</button>`).join('')}</div>
- <div class="deckinfo"><span>${t('today')}: <b>${td.n}</b> ${cardsW(td.n)} · <b>${td.ok}</b> ✓</span><span>${t('seen')}: <b>${seen}</b></span><span>${t('knownL')}: <b>${known}</b>/${vs.length}</span></div>
+ <div class="deckinfo"><span>${known} / ${vs.length} ✓</span>${lvl}</div>
  <div class="flip"><div class="card ${st.flip?'on':''}" id="card" style="--c:${GROUP_C[v.g]}"><div class="face front">${front}</div><div class="face back">${back}</div></div></div>
- <div class="btns"><button class="btn ghost" data-k="0">${t('notyet')}</button><button class="btn primary" data-k="1">${t('know')}</button></div>`;
+ <div class="btns"><button class="btn ghost" data-k="0">${t('notyet')}</button><button class="btn primary" data-k="1">${t('know')}</button></div>`;fitCard();
 }
+function fitCard(){
+ const c=document.getElementById('card');if(!c)return;
+ const nav=document.querySelector('nav.tabs');const navH=nav&&nav.style.display!=='none'?nav.offsetHeight:0;
+ const btns=c.closest('.flip').nextElementSibling;const bh=btns?btns.offsetHeight+14:0;
+ const top=c.getBoundingClientRect().top+window.scrollY;
+ const h=Math.max(260,Math.floor(window.innerHeight-top-bh-navH-12));
+ c.style.height=h+'px';
+ document.querySelector('main').style.paddingBottom=(navH+8)+'px';
+}
+addEventListener('resize',()=>fitCard());
 function cardsClick(e){
  const d=e.target.closest('[data-dir]');if(d){S.dir=d.dataset.dir;save();st.flip=false;return renderCards()}
  const k=e.target.closest('[data-k]');
@@ -354,21 +363,18 @@ function nextDrill(){
 }
 function renderDrill(){
  const {v,p}=st;if(!v)return nextDrill();
- const head=`<div class="seg">${['type','choose','table'].map(m=>`<button aria-pressed="${S.dMode===m}" data-mode="${m}">${t(m)}</button>`).join('')}</div>
- <div class="score"><span>${t('streak')}: ${S.streak}</span><span>${S.ok}/${S.n} ${t('right')}</span></div>`;
+ const head=`<div class="seg">${['type','choose','table'].map(m=>`<button aria-pressed="${S.dMode===m}" data-mode="${m}">${t(m)}</button>`).join('')}</div>`;
  const pr=`<div class="row" style="min-height:44px"><span id="chip">${st.done?gChip(v):''}</span><span class="spacer"></span>${sayBtn(v.id)}</div>
  <div class="prompt"><div class="inf">${esc(v.id)}</div><div class="muted" style="font-weight:700">${esc(tr(v))}</div>${S.dMode!=='table'?`<div class="person">${PERS[p]}</div>`:''}</div>`;
  let body='';
  if(S.dMode==='type'){
   body=`<input class="ans" id="ans" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="go" placeholder="…">
-  <div class="accents">${['á','é','í','ó','ú','ñ'].map(c=>`<button data-acc="${c}">${c}</button>`).join('')}</div>
   <div id="fb"></div><button class="btn primary" id="go" style="margin-top:14px">${t('check')}</button>`;
  }else if(S.dMode==='choose'){
   body=`<div class="opts">${st.opts.map(o=>`<button class="opt" data-opt="${esc(o)}">${esc(o)}</button>`).join('')}</div><div id="fb"></div>
   <button class="btn primary" id="go" style="margin-top:14px;${st.done?'':'visibility:hidden'}">${t('next')}</button>`;
  }else{
   body=`<div class="tbl">${persons().map(q=>`<label>${PERS[q]}<input data-q="${q}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></label>`).join('')}</div>
-  <div class="accents">${['á','é','í','ó','ú','ñ'].map(c=>`<button data-acc="${c}">${c}</button>`).join('')}</div>
   <div id="fb"></div><button class="btn primary" id="go" style="margin-top:14px">${t('check')}</button>`;
  }
  view.innerHTML=head+`<div class="panel">${pr}${body}</div>`;
@@ -422,8 +428,7 @@ function nextPhrase(){
 }
 function renderPhrase(){
  const {ph}=st;if(!ph)return nextPhrase();const v=V[ph.v];
- const head=`<div class="seg">${['gap','sent'].map(m=>`<button aria-pressed="${S.pMode===m}" data-pmode="${m}">${t(m+'Mode')}</button>`).join('')}</div>
- <div class="score"><span>${t('streak')}: ${S.streak}</span><span>${S.ok}/${S.n} ${t('right')}</span></div>`;
+ const head=`<div class="seg">${['gap','sent'].map(m=>`<button aria-pressed="${S.pMode===m}" data-pmode="${m}">${t(m+'Mode')}</button>`).join('')}</div>`;
  let body;
  if(S.pMode==='gap'){
   const gapW=Math.max(4,ph.b-ph.a);
@@ -431,7 +436,6 @@ function renderPhrase(){
   <div class="es" id="esline">${esc(ph.es.slice(0,ph.a))}<span class="gap">${'&nbsp;'.repeat(gapW)}</span>${esc(ph.es.slice(ph.b))}</div>
   <div class="hint">(${esc(ph.h?'haber':v.id)}) · ${t('hintP')}: ${ph.h?t('hay'):PERS[ph.p]}</div>
   <input class="ans" id="ans" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="go" placeholder="…">
-  <div class="accents">${['á','é','í','ó','ú','ñ'].map(c=>`<button data-acc="${c}">${c}</button>`).join('')}</div>
   <div id="fb"></div><button class="btn primary" id="go" style="margin-top:14px">${t('check')}</button>`;
  }else{
   body=`<div class="pl">${esc(ph[S.lang])}</div><div class="hint">${t('chooseSent')}</div>
@@ -476,7 +480,7 @@ function renderMore(){
  <div class="set"><small>${t('voiceTip')}</small></div></div>
  ${S.mod==='verbs'?`<h2>${t('groups')}</h2><div class="panel">${groupsHtml()}</div>`:''}
  <h2>${t('progress')}</h2><div class="panel"><b>${t('mVerbs')}</b><br><small class="muted">${t('progS')}</small><div class="prog" style="margin-top:10px">${prog}</div>
- ${VOC?`<div style="margin-top:18px"><b>${t('vprog')}</b><br><small class="muted">${t('vprogS')}</small><div class="prog" style="margin-top:10px">${VOC.sections.map(sc=>sc.groups.map(g=>{const its=g.topics.flatMap(x=>x.items);const k=its.filter(it=>vbx(it)>=4).length;return`<div><span>${esc(sc.id==='arriba'?g[S.lang].split(':')[0]:sc[S.lang].split('·')[0])}</span><span class="bar" style="--c:var(--blue)"><i style="width:${Math.round(100*k/its.length)}%"></i></span><em>${k}/${its.length}</em></div>`}).join('')).join('')}</div></div>`:''}
+ ${VOC?`<div style="margin-top:18px"><b>${t('vprog')}</b><br><small class="muted">${t('vprogS')}</small><div class="prog" style="margin-top:10px">${VOC.sections.map(sc=>sc.groups.map(g=>{const its=g.topics.flatMap(x=>x.items);const k=its.filter(it=>vbx(it)>=4).length;return`<div><span>${esc(g[S.lang])}</span><span class="bar" style="--c:var(--blue)"><i style="width:${Math.round(100*k/its.length)}%"></i></span><em>${k}/${its.length}</em></div>`}).join('')).join('')}</div></div>`:''}
  <button class="btn ghost" id="reset" style="margin-top:16px">${t('reset')}</button></div>
  <h2>${t('install')}</h2><div class="panel"><ol class="howto">${t('inst').map(s=>`<li>${esc(s)}</li>`).join('')}</ol></div>
  <p class="muted" style="font-size:13px;text-align:center;margin-top:20px">${t('about')}</p>`;
@@ -498,13 +502,14 @@ function renderHeader(){
  const fb=document.getElementById('filterBtn'),hb=document.getElementById('homeBtn'),h1=document.getElementById('title');
  hb.style.display=S.mod==='home'?'none':'';
  h1.innerHTML=S.mod==='home'?'Conjug<span>o</span>':esc(S.mod==='verbs'?t('mVerbs'):S.mod==='vocab'?t('mVocab'):t('settings'));
- if(S.mod==='verbs'){fb.style.display='';const n=verbs().length;fb.innerHTML=`${FIL}${S.groups.length===DATA.groups.length?t('all'):S.groups.length+'/'+DATA.groups.length} · ${n} ${t('verbs')}`}
+ if(S.mod==='verbs'){fb.style.display='';const n=verbs().length;fb.innerHTML=`${FIL}${S.groups.length===DATA.groups.length?'':S.groups.length+'/'+DATA.groups.length+' · '}${n} ${t('verbs')}`}
  else if(S.mod==='vocab'&&VOC){fb.style.display='';fb.innerHTML=`${FIL}${S.vt.length} ${plural(S.vt.length,'topic')} · ${vPool().length}`}
  else fb.style.display='none';
 }
 const renderFilter=renderHeader;
 function render(reset){
  document.documentElement.lang=S.lang;if(reset)st={};
+ document.querySelector('main').style.paddingBottom='';
  renderHeader();renderTabs();
  if(S.mod==='home')renderHome();
  else if(S.mod==='set')renderMore();
@@ -525,6 +530,7 @@ function loadVocab(cb){
  if(VOC){cb&&cb();return}
  fetch('vocab.json').then(r=>{if(!r.ok)throw 0;return r.json()}).then(d=>{VOC=d;
   VOC.sections.forEach(s=>s.groups.forEach(g=>g.topics.forEach(tp=>{tp.sec=s.id;VT[tp.id]=tp;VTLIST.push(tp);tp.items.forEach((it,i)=>{it.id=tp.id+':'+i;it.t=tp.id;VALL.push(it)})})));
+  S.vt=S.vt.filter(id=>VT[id]);
   cb&&cb()}).catch(()=>{vocErr=true;cb&&cb()});
 }
 function vPool(){
@@ -548,7 +554,7 @@ function renderHome(){
   <button class="tile" data-mod="verbs" style="--c:var(--pri)"><svg class="art" viewBox="0 0 120 90" aria-hidden="true"><rect x="18" y="14" width="62" height="70" rx="10" fill="#DC8EB6" transform="rotate(-8 49 49)"/><rect x="34" y="8" width="62" height="70" rx="10" fill="#fff"/><text x="65" y="40" text-anchor="middle" font-size="17" font-weight="900" fill="#8E0945" font-family="Nunito,sans-serif">hablo</text><text x="65" y="60" text-anchor="middle" font-size="13" font-weight="800" fill="#E16733" font-family="Nunito,sans-serif">-as -a</text></svg>
    <b>${t('mVerbs')}</b><small>${DATA.verbs.length} ${plural(DATA.verbs.length,'verb')} · ${t('mVerbsS')}</small><span class="tbar"><i style="width:${Math.round(100*vk/DATA.verbs.length)}%"></i></span><em>${t('knownL')}: ${vk}/${DATA.verbs.length}</em></button>
   <button class="tile" data-mod="vocab" style="--c:#4d66c2"><svg class="art" viewBox="0 0 120 90" aria-hidden="true"><circle cx="40" cy="46" r="30" fill="#98AFF5"/><circle cx="82" cy="40" r="24" fill="#DC8EB6"/><circle cx="70" cy="66" r="16" fill="#E16733"/><text x="40" y="52" text-anchor="middle" font-size="16" font-weight="900" fill="#14245e" font-family="Nunito,sans-serif">la casa</text></svg>
-   <b>${t('mVocab')}</b><small>${VOC?`${wn} ${plural(wn,'item')} · ${nt} ${plural(nt,'topic')}`:t('loading')} · ${t('mVocabS')}</small><span class="tbar"><i style="width:${wn?Math.round(100*wk/wn):0}%"></i></span><em>${t('knownL')}: ${wk}/${wn||'…'}</em></button>
+   <b>${t('mVocab')}</b><small>${VOC?`${wn} ${plural(wn,'item')} · ${nt} ${plural(nt,'topic')}`:t('loading')}</small><span class="tbar"><i style="width:${wn?Math.round(100*wk/wn):0}%"></i></span><em>${t('knownL')}: ${wk}/${wn||'…'}</em></button>
  </div>
  <div class="homefoot"><span class="pill">${t('today')}: <b>${td.n}</b> ${cardsW(td.n)} · <b>${td.ok}</b> ✓</span><button class="pill linkbtn" data-mod="set">${t('mSet')}</button></div>`;
  if(!VOC&&!vocErr)loadVocab(()=>{if(S.mod==='home')renderHome()});
@@ -558,7 +564,7 @@ function renderTopics(){
  const sel=new Set(S.vt);const n=vPool().length;
  const prog=tp=>{const k=tp.items.filter(it=>vbx(it)>=4).length;return Math.round(100*k/tp.items.length)};
  view.innerHTML=`<div class="pickhead"><div><b>${t('pickTopics')}</b><small class="muted">${t('pickS')}</small></div></div>`+
- VOC.sections.map(s=>`<h2>${esc(s[S.lang])}</h2>`+s.groups.map((g,gi)=>{const ids=g.topics.map(x=>x.id);const all=ids.every(id=>sel.has(id));
+ VOC.sections.map(s=>(s[S.lang]?`<h2>${esc(s[S.lang])}</h2>`:'')+s.groups.map((g,gi)=>{const ids=g.topics.map(x=>x.id);const all=ids.every(id=>sel.has(id));
   return`<div class="grp"><div class="grphead"><b>${esc(g[S.lang])}</b><button class="mini-btn" data-gall="${esc(ids.join(','))}" data-on="${all?0:1}">${all?t('clear'):t('selAll')}</button></div>
   ${g.topics.map(tp=>`<button class="topic" data-topic="${esc(tp.id)}" aria-pressed="${sel.has(tp.id)}"><span class="ck"></span><span class="tt"><b>${esc(tp[S.lang])}</b><small>${tp.es?esc(tp.es)+' · ':''}${tp.items.length} ${plural(tp.items.length,'item')}</small></span><span class="mini"><i style="width:${prog(tp)}%"></i></span></button>`).join('')}</div>`}).join('')).join('')+
  `<div class="stick"><button class="btn primary" id="startV" ${n?'':'disabled'}>${n?`${t('learn')} · ${n} ${plural(n,'item')}`:t('noTopics')}</button></div>`;
@@ -576,13 +582,13 @@ function renderVCards(){
  const fr=S.dir==='es'?it.es:vtr(it),bk=S.dir==='es'?vtr(it):it.es;
  const note=S.lang==='pl'&&it.n?`<div class="note">${esc(it.n)}</div>`:'';
  view.innerHTML=`<div class="seg">${['es','tr'].map(d=>`<button aria-pressed="${S.dir===d}" data-dir="${d}">${t(d==='es'?'dirEs':'dirTr')}</button>`).join('')}</div>
- <div class="deckinfo"><span>${t('today')}: <b>${td.n}</b> ${cardsW(td.n)} · <b>${td.ok}</b> ✓</span><span>${t('seen')}: <b>${seen}</b></span><span>${t('knownL')}: <b>${known}</b>/${p.length}</span></div>
+ <div class="deckinfo"><span>${known} / ${p.length} ✓</span>${lvl}</div>
  <div class="flip"><div class="card ${st.flip?'on':''}" id="card" style="--c:var(--blue)">
-  <div class="face front"><div class="row">${lvl}<span class="spacer"></span>${S.dir==='es'?sayBtn(vsay(it)):''}</div><div class="mid"><div class="big" style="font-size:${bigSize(fr)}">${esc(fr)}</div></div><div class="tapnote">${t('tap')}</div></div>
+  <div class="face front"><div class="row" style="min-height:44px"><span class="spacer"></span>${S.dir==='es'?sayBtn(vsay(it)):''}</div><div class="mid"><div class="big" style="font-size:${bigSize(fr)}">${esc(fr)}</div></div><div class="tapnote">${t('tap')}</div></div>
   <div class="face back"><div class="row"><span class="chip" style="--c:var(--blue)"><i></i>${esc(tp[S.lang])}</span><span class="spacer"></span>${sayBtn(vsay(it))}</div>
    <div class="mid"><div class="muted" style="font-weight:800;font-size:18px">${esc(fr)}</div><div class="big" style="font-size:${bigSize(bk)||'clamp(30px,9vw,44px)'}">${esc(bk)}</div>${note}</div><div class="tapnote">${t('tapBack')}</div></div>
  </div></div>
- <div class="btns"><button class="btn ghost" data-vk="0">${t('notyet')}</button><button class="btn primary" data-vk="1">${t('know')}</button></div>`;
+ <div class="btns"><button class="btn ghost" data-vk="0">${t('notyet')}</button><button class="btn primary" data-vk="1">${t('know')}</button></div>`;fitCard();
 }
 function vcardsClick(e){
  const d=e.target.closest('[data-dir]');if(d){S.dir=d.dataset.dir;save();st.flip=false;return renderVCards()}
@@ -607,7 +613,6 @@ function renderVQuiz(){
  const {it}=st;if(!it)return nextVQuiz();const tp=VT[it.t];
  const q=S.dir==='es'?it.es:vtr(it);
  view.innerHTML=`<div class="seg">${['es','tr'].map(d=>`<button aria-pressed="${S.dir===d}" data-dir="${d}">${t(d==='es'?'dirEs':'dirTr')}</button>`).join('')}</div>
- <div class="score"><span>${t('streak')}: ${S.streak}</span><span>${S.ok}/${S.n} ${t('right')}</span></div>
  <div class="panel"><div class="row" style="min-height:44px"><span class="chip" style="--c:var(--blue)"><i></i>${esc(tp[S.lang])}</span><span class="spacer"></span>${sayBtn(vsay(it))}</div>
  <div class="prompt"><div class="inf" style="font-size:${bigSize(q)||''}">${esc(q)}</div><div class="hint">${t('chooseTr')}</div></div>
  <div class="opts sent">${st.opts.map(o=>`<button class="opt" data-vopt="${esc(o)}">${esc(o)}</button>`).join('')}</div><div id="fb"></div>
@@ -639,11 +644,10 @@ function nextVType(){
 }
 function renderVType(){
  const {it}=st;if(!it)return nextVType();const tp=VT[it.t];
- view.innerHTML=`<div class="score"><span>${t('streak')}: ${S.streak}</span><span>${S.ok}/${S.n} ${t('right')}</span></div>
+ view.innerHTML=`
  <div class="panel"><div class="row" style="min-height:44px"><span class="chip" style="--c:var(--blue)"><i></i>${esc(tp[S.lang])}</span></div>
  <div class="prompt"><div class="inf" style="font-size:${bigSize(vtr(it))||'clamp(26px,8vw,36px)'}">${esc(vtr(it))}</div><div class="hint">${t('typeES')}</div></div>
  <input class="ans" id="ans" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="go" placeholder="…">
- <div class="accents">${['á','é','í','ó','ú','ñ'].map(c=>`<button data-acc="${c}">${c}</button>`).join('')}</div>
  <div id="fb"></div><button class="btn primary" id="go" style="margin-top:14px">${t('check')}</button></div>`;
 }
 function checkVType(){
