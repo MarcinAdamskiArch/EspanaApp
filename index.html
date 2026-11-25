@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Conjugo · hiszpańskie czasowniki</title>
+<meta name="theme-color" content="#8E0945">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Conjugo">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* VOICE: friendly language-school app, bold and clear, never childish
+   IDEA: a deck of Spanish verb cards from the textbook's colour-coded tables
+   PICTURE: the card itself — big infinitive, flip to the 6-person table
+   COLOUR and TYPE: burgundy #8E0945 field, pink/periwinkle/orange accents, white cards; Nunito rounded
+   LAYOUT: app shell — top bar, one task in the middle, thumb-reach buttons, tab bar */
+:root{color-scheme:light;
+ --pri:#8E0945;--pri-d:#6d0634;--pri-t:#8E0945;--acc:#E16733;--pink:#DC8EB6;--blue:#98AFF5;
+ --bg:#fcf5f8;--card:#ffffff;--ink:#2b0f1d;--mute:#84606f;--line:#f1dde7;--soft:#f9e7f0;
+ --ok:#5a78e0;--okbg:#e9eeff;--warn:#E16733;--warnbg:#fdebe0;--bad:#8E0945;--badbg:#fbe3ee;
+ --safe-b:env(safe-area-inset-bottom,0px);--safe-t:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){color-scheme:dark;--bg:#1c0b14;--card:#2b1420;--ink:#fbeef4;--mute:#c6a3b4;--line:#46202f;--soft:#3a1a2a;--pri:#a3104f;--pri-t:#DC8EB6;--okbg:#1e2748;--warnbg:#3d2216;--bad:#DC8EB6;--badbg:#3f1427}}
+:root[data-theme=dark]{color-scheme:dark;--bg:#1c0b14;--card:#2b1420;--ink:#fbeef4;--mute:#c6a3b4;--line:#46202f;--soft:#3a1a2a;--pri:#a3104f;--pri-t:#DC8EB6;--okbg:#1e2748;--warnbg:#3d2216;--bad:#DC8EB6;--badbg:#3f1427}
+*{box-sizing:border-box;min-width:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:500 17px/1.45 Nunito,ui-rounded,system-ui,-apple-system,sans-serif;overflow-x:clip;-webkit-text-size-adjust:100%}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+.app{max-width:560px;margin:0 auto;min-height:100%;display:flex;flex-direction:column}
+header{background:var(--pri);color:#fff;padding:calc(var(--safe-t) + 12px) 18px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:5}
+header h1{margin:0;font-size:22px;font-weight:900;letter-spacing:-.01em;flex:1}
+header h1 span{color:var(--pink)}
+.filter{background:rgba(255,255,255,.16);border-radius:999px;padding:8px 14px;font-size:14px;font-weight:800;color:#fff;min-height:36px;display:flex;align-items:center;gap:6px}
+main{flex:1;padding:16px 16px calc(96px + var(--safe-b))}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--card);border-top:1px solid var(--line);padding:6px 8px calc(6px + var(--safe-b));display:flex;justify-content:center}
+nav.tabs div{width:100%;max-width:560px}
+nav.tabs button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;font-size:12px;font-weight:800;color:var(--mute);min-height:52px}
+nav.tabs button svg{width:26px;height:26px}
+nav.tabs button[aria-current=page]{color:var(--pri-t)}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--soft);border-radius:14px;padding:4px;gap:4px;margin-bottom:14px}
+.seg button{border-radius:10px;padding:9px 6px;font-weight:800;font-size:15px;color:var(--mute);min-height:40px}
+.seg button[aria-pressed=true]{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:800;padding:4px 10px;border-radius:999px;background:var(--soft);color:var(--ink)}
+.chip i{width:9px;height:9px;border-radius:50%;background:var(--c,#999);display:inline-block}
+.panel{background:var(--card);border-radius:22px;padding:20px;box-shadow:0 1px 0 var(--line),0 10px 30px -18px rgba(120,30,20,.35)}
+.muted{color:var(--mute)}
+.row{display:flex;align-items:center;gap:10px}
+.spacer{flex:1}
+.say{width:44px;height:44px;border-radius:50%;background:var(--soft);display:inline-grid;place-items:center;color:var(--pri-t);flex:none}
+.say.sm{width:36px;height:36px}.say.sm svg{width:18px;height:18px}
+.say svg{width:22px;height:22px}
+.say:active{transform:scale(.94)}
+.btn{border-radius:16px;padding:14px 18px;font-weight:900;font-size:17px;min-height:54px;width:100%}
+.btn.primary{background:var(--pri);color:#fff}
+.btn.primary:active{background:var(--pri-d)}
+.btn.ghost{background:var(--soft);color:var(--ink)}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+/* flashcard */
+.deckinfo{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center;font-size:13.5px;font-weight:800;color:var(--mute);margin:0 0 10px}
+.deckinfo span{background:var(--soft);padding:4px 10px;border-radius:999px;white-space:nowrap}
+.deckinfo b{color:var(--ink)}
+.qbtn{width:28px;height:28px;border-radius:50%;background:var(--soft);font-weight:900;color:var(--pri-t);font-size:15px}
+.lvl{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800;color:var(--mute)}
+.toast{position:fixed;left:50%;top:calc(var(--safe-t) + 70px);transform:translate(-50%,-12px);opacity:0;pointer-events:none;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-weight:800;font-size:15px;transition:opacity .2s,transform .2s;z-index:20;white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:8px}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.toast .boxes b{background:rgba(127,127,127,.45)}.toast .boxes b.f{background:var(--acc)}
+.info p{margin:8px 0}.info ul{margin:8px 0;padding-left:20px}.info li{margin:4px 0}
+.flip{perspective:1400px}
+.card{position:relative;height:480px;height:clamp(440px,calc(100dvh - 310px),560px);transition:transform .5s cubic-bezier(.2,.8,.2,1);transform-style:preserve-3d}
+.card.on{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:26px;background:var(--card);padding:20px;display:flex;flex-direction:column;box-shadow:0 1px 0 var(--line),0 18px 40px -22px rgba(110,6,52,.45);border-top:10px solid var(--pink);cursor:pointer}
+.card.on .face.front,.card:not(.on) .face.back{pointer-events:none}
+.face.back{transform:rotateY(180deg);overflow:auto;border-top-color:var(--c)}
+.big{font-size:clamp(40px,12vw,56px);font-weight:900;line-height:1.05;letter-spacing:-.02em;text-align:center;overflow-wrap:anywhere}
+.mid{flex:1;display:grid;place-items:center;align-content:center;gap:10px;text-align:center}
+.tapnote{text-align:center;font-size:14px;color:var(--mute);font-weight:700}
+.tr{font-size:22px;font-weight:800;text-align:center}
+.note{font-size:14px;background:var(--warnbg);border-radius:10px;padding:6px 10px;margin:8px auto 0;width:fit-content;font-weight:700}
+table.conj{width:100%;border-collapse:collapse;margin-top:12px;font-size:17px}
+table.conj td{padding:2px 4px;border-top:1px solid var(--line);height:38px}
+table.conj{margin-top:8px}
+table.conj td:first-child{color:var(--mute);font-size:14px;font-weight:700;width:46%}
+table.conj td:nth-child(2){font-weight:800;text-align:right}
+table.conj td:nth-child(3){width:44px;text-align:right}
+.end{color:var(--acc)}
+mark{background:none;color:var(--pri-t);text-decoration:underline 3px var(--pink);text-underline-offset:3px}
+.legend{font-size:12.5px;color:var(--mute);margin-top:8px;text-align:center}
+.boxes{display:flex;gap:4px;justify-content:center}
+.boxes b{width:18px;height:6px;border-radius:3px;background:var(--line)}
+.boxes b.f{background:var(--acc)}
+/* drill */
+.prompt{text-align:center}
+.prompt .inf{font-size:clamp(34px,10vw,44px);font-weight:900;line-height:1.1}
+.person{display:inline-block;margin-top:12px;background:var(--blue);color:#14245e;font-weight:900;font-size:20px;padding:6px 16px;border-radius:12px}
+.ans{width:100%;font-size:22px;font-weight:800;padding:14px 16px;border-radius:16px;border:2px solid var(--line);background:var(--bg);margin-top:16px;text-align:center;outline:none}
+.ans:focus{border-color:var(--pri-t)}
+.ans.ok{border-color:var(--ok);background:var(--okbg)}.ans.bad{border-color:var(--bad);background:var(--badbg)}.ans.warn{border-color:var(--warn);background:var(--warnbg)}
+.accents{display:flex;gap:6px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+.accents button{width:44px;height:44px;border-radius:12px;background:var(--soft);font-weight:900;font-size:19px}
+.fb{margin-top:14px;border-radius:16px;padding:12px 14px;font-weight:700;display:flex;align-items:center;gap:10px}
+.fb.ok{background:var(--okbg)}.fb.bad{background:var(--badbg)}.fb.warn{background:var(--warnbg)}
+.fb strong{font-size:20px;font-weight:900}
+.fb .sym{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:900;color:#fff;flex:none;background:var(--ok)}.fb.bad .sym{background:var(--bad)}.fb.warn .sym{background:var(--warn)}
+.opts{display:grid;gap:10px;margin-top:16px}
+.opt{border-radius:16px;padding:14px;font-weight:800;font-size:19px;background:var(--soft);min-height:56px;text-align:center;border:2px solid transparent}
+.opt.ok{background:var(--okbg);border-color:var(--ok)}.opt.bad{background:var(--badbg);border-color:var(--bad)}
+.opts.sent .opt{font-size:17px;text-align:left;font-weight:700}
+.tbl{display:grid;gap:6px;margin-top:14px}
+.tbl label{display:grid;grid-template-columns:42% 1fr;align-items:center;gap:8px;font-weight:700;color:var(--mute);font-size:15px}
+.tbl input{font-size:18px;font-weight:800;padding:8px 12px;border-radius:12px;border:2px solid var(--line);background:var(--bg);outline:none;width:100%}
+.tbl input:focus{border-color:var(--pri-t)}
+.tbl input.ok{border-color:var(--ok);background:var(--okbg)}.tbl input.bad{border-color:var(--bad);background:var(--badbg)}.tbl input.warn{border-color:var(--warn);background:var(--warnbg)}
+.tbl small{grid-column:2;color:var(--bad);font-weight:800;margin-top:-4px}
+.score{display:flex;gap:8px;justify-content:center;margin-bottom:12px;font-size:14px;font-weight:800;color:var(--mute)}
+.score span{background:var(--soft);padding:4px 10px;border-radius:999px}
+/* phrases */
+.pl{font-size:21px;font-weight:800;text-align:center;line-height:1.3}
+.es{font-size:22px;font-weight:800;text-align:center;line-height:1.35;margin-top:14px}
+.gap{display:inline-block;min-width:90px;border-bottom:3px solid var(--pri-t);color:var(--pri-t)}
+.hint{text-align:center;margin-top:8px;font-size:15px;font-weight:700;color:var(--mute)}
+/* settings */
+h2{font-size:20px;font-weight:900;margin:22px 4px 10px}
+h2:first-child{margin-top:4px}
+.set{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.set:first-child{border-top:0}
+.set>div{flex:1}.set b{display:block;font-weight:800}.set small{color:var(--mute);font-size:14px}
+.sw{appearance:none;width:52px;height:32px;border-radius:999px;background:var(--line);position:relative;flex:none;cursor:pointer;transition:background .2s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s}
+.sw:checked{background:var(--pri)}.sw:checked::after{transform:translateX(20px)}
+select,input[type=range]{width:100%}
+select{padding:10px;border-radius:12px;border:2px solid var(--line);background:var(--bg);font-size:16px}
+.groups{display:flex;flex-wrap:wrap;gap:8px}
+.groups button{display:inline-flex;align-items:center;gap:6px;padding:9px 12px;border-radius:999px;font-weight:800;font-size:14px;background:var(--soft);border:2px solid transparent;min-height:40px;color:var(--mute)}
+.groups button i{width:10px;height:10px;border-radius:50%;background:var(--c)}
+.groups button[aria-pressed=true]{background:var(--card);border-color:var(--c);color:var(--ink)}
+.prog{display:grid;gap:8px}
+.prog div{display:grid;grid-template-columns:1fr 90px 44px;align-items:center;gap:10px;font-size:14px;font-weight:700}
+.bar{height:10px;border-radius:5px;background:var(--line);overflow:hidden}.bar i{display:block;height:100%;background:var(--c)}
+.prog em{font-style:normal;text-align:right;color:var(--mute)}
+ol.howto{margin:0;padding-left:22px}ol.howto li{margin:4px 0}
+.sheet{position:fixed;inset:0;z-index:10;background:rgba(20,8,6,.45);display:none;align-items:flex-end;justify-content:center}
+.sheet.open{display:flex}
+.sheet>div{background:var(--card);width:100%;max-width:560px;border-radius:24px 24px 0 0;padding:18px 18px calc(18px + var(--safe-b));max-height:85vh;overflow:auto}
+.empty{text-align:center;padding:40px 10px;color:var(--mute);font-weight:700}
+header .hbtn{width:40px;height:40px;margin:-6px 0 -6px -8px;border-radius:12px;color:#fff;display:grid;place-items:center}
+header .hbtn svg{width:24px;height:24px}
+body.notabs main{padding-bottom:calc(30px + var(--safe-b))}
+nav.tabs div{display:grid}
+nav.tabs button{font-size:11.5px}
+.hello{padding:10px 6px 18px}.hello .hi{font-size:46px;font-weight:900;line-height:1;color:var(--pri-t);letter-spacing:-.02em}.hello .muted{font-size:19px;font-weight:700;margin-top:6px}
+.tiles{display:grid;gap:14px}
+.tile{display:grid;grid-template-columns:1fr 110px;grid-template-areas:"b art" "s art" "bar bar" "em em";text-align:left;background:var(--card);border-radius:24px;padding:18px 18px 16px;box-shadow:0 1px 0 var(--line),0 14px 34px -22px rgba(110,6,52,.5);border-left:8px solid var(--c);gap:4px 10px;align-items:start}
+.tile b{grid-area:b;font-size:28px;font-weight:900;line-height:1.1}
+.tile small{grid-area:s;color:var(--mute);font-weight:700;font-size:14.5px}
+.tile .art{grid-area:art;width:110px;height:84px}
+.tile .tbar{grid-area:bar;height:8px;border-radius:4px;background:var(--line);overflow:hidden;margin-top:10px}.tile .tbar i{display:block;height:100%;background:var(--acc)}
+.tile em{grid-area:em;font-style:normal;font-size:13px;font-weight:800;color:var(--mute)}
+.tile:active{transform:scale(.99)}
+.homefoot{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:18px}
+.pill{background:var(--soft);padding:8px 14px;border-radius:999px;font-size:14px;font-weight:800;color:var(--mute)}.pill b{color:var(--ink)}
+.linkbtn{color:var(--pri-t);min-height:40px}
+.pickhead{margin:4px 4px 6px}.pickhead b{font-size:20px;font-weight:900;display:block}
+.grp{background:var(--card);border-radius:20px;padding:6px 6px 8px;margin-bottom:12px;box-shadow:0 1px 0 var(--line)}
+.grphead{display:flex;align-items:center;gap:10px;padding:10px 10px 6px}.grphead b{flex:1;font-size:15px;font-weight:900}
+.mini-btn{font-size:13px;font-weight:800;color:var(--pri-t);padding:6px 10px;border-radius:999px;background:var(--soft);min-height:32px}
+.topic{display:grid;grid-template-columns:30px 1fr 54px;align-items:center;gap:10px;width:100%;text-align:left;padding:10px;border-radius:14px;min-height:54px}
+.topic+.topic{border-top:1px solid var(--line)}
+.topic .ck{width:26px;height:26px;border-radius:8px;border:2px solid var(--line);display:grid;place-items:center}
+.topic[aria-pressed=true] .ck{background:var(--pri);border-color:var(--pri)}
+.topic[aria-pressed=true] .ck::after{content:"";width:12px;height:7px;border:3px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.topic .tt b{display:block;font-weight:800;font-size:16px;line-height:1.25}.topic .tt small{color:var(--mute);font-size:13px;font-weight:700}
+.topic .mini{height:6px;border-radius:3px;background:var(--line);overflow:hidden}.topic .mini i{display:block;height:100%;background:var(--acc)}
+.stick{position:sticky;bottom:calc(78px + var(--safe-b));padding-top:8px;z-index:3}
+.btn:disabled{background:var(--line);color:var(--mute)}
+.search{width:100%;font-size:16px;padding:12px 14px;border-radius:14px;border:2px solid var(--line);background:var(--card);margin-bottom:6px;outline:none}
+.search:focus{border-color:var(--pri-t)}
+.vlist{padding:4px 14px}
+.vrow{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line)}.vrow:first-child{border-top:0}
+.vrow>div{flex:1}.vrow b{display:block;font-weight:800}.vrow span{color:var(--mute);font-size:14.5px;font-weight:600}
+.vrow .boxes{flex:none}
+@media (prefers-reduced-motion:reduce){.card,.toast{transition:none}}
+</style>
+</head>
+<body>
+<div class="app">
+<header><button class="hbtn" id="homeBtn" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><h1 id="title">Conjug<span>o</span></h1><button class="filter" id="filterBtn"></button></header>
+<main id="view"></main>
+</div>
+<nav class="tabs"><div id="tabs"></div></nav>
+<div class="sheet" id="sheet"><div id="sheetBody"></div></div>
+<script>
+{
+const DATA = {"groups":[{"id":"reg_ar","pl":"Regularne -AR","en":"Regular -AR"},{"id":"reg_er","pl":"Regularne -ER","en":"Regular -ER"},{"id":"reg_ir","pl":"Regularne -IR","en":"Regular -IR"},{"id":"refl","pl":"Zwrotne -SE","en":"Reflexive -SE"},{"id":"yo","pl":"Nieregularne w „yo”","en":"Irregular in “yo”"},{"id":"e_ie","pl":"E → IE","en":"E → IE"},{"id":"e_i","pl":"E → I","en":"E → I"},{"id":"o_ue","pl":"O → UE / U → UE","en":"O → UE / U → UE"},{"id":"uir","pl":"-UIR (+Y)","en":"-UIR (+Y)"},{"id":"acc","pl":"Akcent: í / ú","en":"Accent: í / ú"},{"id":"muy","pl":"Bardzo nieregularne","en":"Very irregular"}],"verbs":[{"id":"hablar","g":"reg_ar","pl":"mówić, rozmawiać","en":"to speak, to talk","f":["hablo","hablas","habla","hablamos","habláis","hablan"],"r":["hablo","hablas","habla","hablamos","habláis","hablan"]},{"id":"trabajar","g":"reg_ar","pl":"pracować","en":"to work","f":["trabajo","trabajas","trabaja","trabajamos","trabajáis","trabajan"],"r":["trabajo","trabajas","trabaja","trabajamos","trabajáis","trabajan"]},{"id":"estudiar","g":"reg_ar","pl":"uczyć się, studiować","en":"to study","f":["estudio","estudias","estudia","estudiamos","estudiáis","estudian"],"r":["estudio","estudias","estudia","estudiamos","estudiáis","estudian"]},{"id":"escuchar","g":"reg_ar","pl":"słuchać","en":"to listen","f":["escucho","escuchas","escucha","escuchamos","escucháis","escuchan"],"r":["escucho","escuchas","escucha","escuchamos","escucháis","escuchan"]},{"id":"llamar","g":"reg_ar","pl":"dzwonić, wołać","en":"to call","f":["llamo","llamas","llama","llamamos","llamáis","llaman"],"r":["llamo","llamas","llama","llamamos","llamáis","llaman"]},{"id":"preguntar","g":"reg_ar","pl":"pytać","en":"to ask (a question)","f":["pregunto","preguntas","pregunta","preguntamos","preguntáis","preguntan"],"r":["pregunto","preguntas","pregunta","preguntamos","preguntáis","preguntan"]},{"id":"necesitar","g":"reg_ar","pl":"potrzebować","en":"to need","f":["necesito","necesitas","necesita","necesitamos","necesitáis","necesitan"],"r":["necesito","necesitas","necesita","necesitamos","necesitáis","necesitan"]},{"id":"tomar","g":"reg_ar","pl":"brać; pić (napój)","en":"to take; to have (a drink)","f":["tomo","tomas","toma","tomamos","tomáis","toman"],"r":["tomo","tomas","toma","tomamos","tomáis","toman"]},{"id":"usar","g":"reg_ar","pl":"używać","en":"to use","f":["uso","usas","usa","usamos","usáis","usan"],"r":["uso","usas","usa","usamos","usáis","usan"]},{"id":"buscar","g":"reg_ar","pl":"szukać","en":"to look for","f":["busco","buscas","busca","buscamos","buscáis","buscan"],"r":["busco","buscas","busca","buscamos","buscáis","buscan"]},{"id":"pagar","g":"reg_ar","pl":"płacić","en":"to pay","f":["pago","pagas","paga","pagamos","pagáis","pagan"],"r":["pago","pagas","paga","pagamos","pagáis","pagan"]},{"id":"llegar","g":"reg_ar","pl":"przybywać, docierać","en":"to arrive, to get to","f":["llego","llegas","llega","llegamos","llegáis","llegan"],"r":["llego","llegas","llega","llegamos","llegáis","llegan"]},{"id":"cocinar","g":"reg_ar","pl":"gotować","en":"to cook","f":["cocino","cocinas","cocina","cocinamos","cocináis","cocinan"],"r":["cocino","cocinas","cocina","cocinamos","cocináis","cocinan"]},{"id":"limpiar","g":"reg_ar","pl":"sprzątać, czyścić","en":"to clean","f":["limpio","limpias","limpia","limpiamos","limpiáis","limpian"],"r":["limpio","limpias","limpia","limpiamos","limpiáis","limpian"]},{"id":"viajar","g":"reg_ar","pl":"podróżować","en":"to travel","f":["viajo","viajas","viaja","viajamos","viajáis","viajan"],"r":["viajo","viajas","viaja","viajamos","viajáis","viajan"]},{"id":"caminar","g":"reg_ar","pl":"chodzić, spacerować","en":"to walk","f":["camino","caminas","camina","caminamos","camináis","caminan"],"r":["camino","caminas","camina","caminamos","camináis","caminan"]},{"id":"entrar","g":"reg_ar","pl":"wchodzić","en":"to go in, to enter","f":["entro","entras","entra","entramos","entráis","entran"],"r":["entro","entras","entra","entramos","entráis","entran"]},{"id":"esperar","g":"reg_ar","pl":"czekać; mieć nadzieję","en":"to wait; to hope","f":["espero","esperas","espera","esperamos","esperáis","esperan"],"r":["espero","esperas","espera","esperamos","esperáis","esperan"]},{"id":"nadar","g":"reg_ar","pl":"pływać","en":"to swim","f":["nado","nadas","nada","nadamos","nadáis","nadan"],"r":["nado","nadas","nada","nadamos","nadáis","nadan"]},{"id":"lavar","g":"reg_ar","pl":"myć; prać","en":"to wash","f":["lavo","lavas","lava","lavamos","laváis","lavan"],"r":["lavo","lavas","lava","lavamos","laváis","lavan"]},{"id":"planchar","g":"reg_ar","pl":"prasować","en":"to iron","f":["plancho","planchas","plancha","planchamos","plancháis","planchan"],"r":["plancho","planchas","plancha","planchamos","plancháis","planchan"]},{"id":"arreglar","g":"reg_ar","pl":"naprawiać; porządkować","en":"to fix; to tidy","f":["arreglo","arreglas","arregla","arreglamos","arregláis","arreglan"],"r":["arreglo","arreglas","arregla","arreglamos","arregláis","arreglan"]},{"id":"terminar","g":"reg_ar","pl":"kończyć","en":"to finish","f":["termino","terminas","termina","terminamos","termináis","terminan"],"r":["termino","terminas","termina","terminamos","termináis","terminan"]},{"id":"enseñar","g":"reg_ar","pl":"uczyć (kogoś); pokazywać","en":"to teach; to show","f":["enseño","enseñas","enseña","enseñamos","enseñáis","enseñan"],"r":["enseño","enseñas","enseña","enseñamos","enseñáis","enseñan"]},{"id":"practicar","g":"reg_ar","pl":"ćwiczyć; uprawiać (sport)","en":"to practise; to do (a sport)","f":["practico","practicas","practica","practicamos","practicáis","practican"],"r":["practico","practicas","practica","practicamos","practicáis","practican"]},{"id":"explicar","g":"reg_ar","pl":"wyjaśniać","en":"to explain","f":["explico","explicas","explica","explicamos","explicáis","explican"],"r":["explico","explicas","explica","explicamos","explicáis","explican"]},{"id":"cenar","g":"reg_ar","pl":"jeść kolację","en":"to have dinner","f":["ceno","cenas","cena","cenamos","cenáis","cenan"],"r":["ceno","cenas","cena","cenamos","cenáis","cenan"]},{"id":"desayunar","g":"reg_ar","pl":"jeść śniadanie","en":"to have breakfast","f":["desayuno","desayunas","desayuna","desayunamos","desayunáis","desayunan"],"r":["desayuno","desayunas","desayuna","desayunamos","desayunáis","desayunan"]},{"id":"intentar","g":"reg_ar","pl":"próbować, starać się","en":"to try","f":["intento","intentas","intenta","intentamos","intentáis","intentan"],"r":["intento","intentas","intenta","intentamos","intentáis","intentan"]},{"id":"dejar","g":"reg_ar","pl":"zostawiać; pozwalać","en":"to leave; to let","f":["dejo","dejas","deja","dejamos","dejáis","dejan"],"r":["dejo","dejas","deja","dejamos","dejáis","dejan"]},{"id":"comprar","g":"reg_ar","pl":"kupować","en":"to buy","f":["compro","compras","compra","compramos","compráis","compran"],"r":["compro","compras","compra","compramos","compráis","compran"]},{"id":"mirar","g":"reg_ar","pl":"patrzeć","en":"to look at","f":["miro","miras","mira","miramos","miráis","miran"],"r":["miro","miras","mira","miramos","miráis","miran"]},{"id":"ayudar","g":"reg_ar","pl":"pomagać","en":"to help","f":["ayudo","ayudas","ayuda","ayudamos","ayudáis","ayudan"],"r":["ayudo","ayudas","ayuda","ayudamos","ayudáis","ayudan"]},{"id":"bailar","g":"reg_ar","pl":"tańczyć","en":"to dance","f":["bailo","bailas","baila","bailamos","bailáis","bailan"],"r":["bailo","bailas","baila","bailamos","bailáis","bailan"]},{"id":"cantar","g":"reg_ar","pl":"śpiewać","en":"to sing","f":["canto","cantas","canta","cantamos","cantáis","cantan"],"r":["canto","cantas","canta","cantamos","cantáis","cantan"]},{"id":"ganar","g":"reg_ar","pl":"wygrywać; zarabiać","en":"to win; to earn","f":["gano","ganas","gana","ganamos","ganáis","ganan"],"r":["gano","ganas","gana","ganamos","ganáis","ganan"]},{"id":"olvidar","g":"reg_ar","pl":"zapominać","en":"to forget","f":["olvido","olvidas","olvida","olvidamos","olvidáis","olvidan"],"r":["olvido","olvidas","olvida","olvidamos","olvidáis","olvidan"]},{"id":"bajar","g":"reg_ar","pl":"schodzić; ściszać","en":"to go down; to turn down","f":["bajo","bajas","baja","bajamos","bajáis","bajan"],"r":["bajo","bajas","baja","bajamos","bajáis","bajan"]},{"id":"amar","g":"reg_ar","pl":"kochać","en":"to love","f":["amo","amas","ama","amamos","amáis","aman"],"r":["amo","amas","ama","amamos","amáis","aman"]},{"id":"odiar","g":"reg_ar","pl":"nienawidzić","en":"to hate","f":["odio","odias","odia","odiamos","odiáis","odian"],"r":["odio","odias","odia","odiamos","odiáis","odian"]},{"id":"comer","g":"reg_er","pl":"jeść","en":"to eat","f":["como","comes","come","comemos","coméis","comen"],"r":["como","comes","come","comemos","coméis","comen"]},{"id":"beber","g":"reg_er","pl":"pić","en":"to drink","f":["bebo","bebes","bebe","bebemos","bebéis","beben"],"r":["bebo","bebes","bebe","bebemos","bebéis","beben"]},{"id":"aprender","g":"reg_er","pl":"uczyć się (czegoś)","en":"to learn","f":["aprendo","aprendes","aprende","aprendemos","aprendéis","aprenden"],"r":["aprendo","aprendes","aprende","aprendemos","aprendéis","aprenden"]},{"id":"leer","g":"reg_er","pl":"czytać","en":"to read","f":["leo","lees","lee","leemos","leéis","leen"],"r":["leo","lees","lee","leemos","leéis","leen"]},{"id":"creer","g":"reg_er","pl":"wierzyć; sądzić","en":"to believe; to think","f":["creo","crees","cree","creemos","creéis","creen"],"r":["creo","crees","cree","creemos","creéis","creen"]},{"id":"comprender","g":"reg_er","pl":"rozumieć","en":"to understand","f":["comprendo","comprendes","comprende","comprendemos","comprendéis","comprenden"],"r":["comprendo","comprendes","comprende","comprendemos","comprendéis","comprenden"]},{"id":"correr","g":"reg_er","pl":"biegać","en":"to run","f":["corro","corres","corre","corremos","corréis","corren"],"r":["corro","corres","corre","corremos","corréis","corren"]},{"id":"responder","g":"reg_er","pl":"odpowiadać","en":"to answer","f":["respondo","respondes","responde","respondemos","respondéis","responden"],"r":["respondo","respondes","responde","respondemos","respondéis","responden"]},{"id":"romper","g":"reg_er","pl":"tłuc, łamać, psuć","en":"to break","f":["rompo","rompes","rompe","rompemos","rompéis","rompen"],"r":["rompo","rompes","rompe","rompemos","rompéis","rompen"]},{"id":"deber","g":"reg_er","pl":"musieć, powinien","en":"must, should","f":["debo","debes","debe","debemos","debéis","deben"],"r":["debo","debes","debe","debemos","debéis","deben"]},{"id":"vender","g":"reg_er","pl":"sprzedawać","en":"to sell","f":["vendo","vendes","vende","vendemos","vendéis","venden"],"r":["vendo","vendes","vende","vendemos","vendéis","venden"]},{"id":"barrer","g":"reg_er","pl":"zamiatać","en":"to sweep","f":["barro","barres","barre","barremos","barréis","barren"],"r":["barro","barres","barre","barremos","barréis","barren"]},{"id":"vivir","g":"reg_ir","pl":"mieszkać, żyć","en":"to live","f":["vivo","vives","vive","vivimos","vivís","viven"],"r":["vivo","vives","vive","vivimos","vivís","viven"]},{"id":"escribir","g":"reg_ir","pl":"pisać","en":"to write","f":["escribo","escribes","escribe","escribimos","escribís","escriben"],"r":["escribo","escribes","escribe","escribimos","escribís","escriben"]},{"id":"abrir","g":"reg_ir","pl":"otwierać","en":"to open","f":["abro","abres","abre","abrimos","abrís","abren"],"r":["abro","abres","abre","abrimos","abrís","abren"]},{"id":"recibir","g":"reg_ir","pl":"dostawać, otrzymywać","en":"to receive, to get","f":["recibo","recibes","recibe","recibimos","recibís","reciben"],"r":["recibo","recibes","recibe","recibimos","recibís","reciben"]},{"id":"subir","g":"reg_ir","pl":"wchodzić (w górę); wrzucać (do sieci)","en":"to go up; to upload","f":["subo","subes","sube","subimos","subís","suben"],"r":["subo","subes","sube","subimos","subís","suben"]},{"id":"decidir","g":"reg_ir","pl":"decydować, postanawiać","en":"to decide","f":["decido","decides","decide","decidimos","decidís","deciden"],"r":["decido","decides","decide","decidimos","decidís","deciden"]},{"id":"compartir","g":"reg_ir","pl":"dzielić (się)","en":"to share","f":["comparto","compartes","comparte","compartimos","compartís","comparten"],"r":["comparto","compartes","comparte","compartimos","compartís","comparten"]},{"id":"llamarse","g":"refl","pl":"nazywać się","en":"to be called","f":["me llamo","te llamas","se llama","nos llamamos","os llamáis","se llaman"],"r":["me llamo","te llamas","se llama","nos llamamos","os llamáis","se llaman"]},{"id":"ducharse","g":"refl","pl":"brać prysznic","en":"to have a shower","f":["me ducho","te duchas","se ducha","nos duchamos","os ducháis","se duchan"],"r":["me ducho","te duchas","se ducha","nos duchamos","os ducháis","se duchan"]},{"id":"despertarse","g":"refl","pl":"budzić się","en":"to wake up","f":["me despierto","te despiertas","se despierta","nos despertamos","os despertáis","se despiertan"],"r":["me desperto","te despertas","se desperta","nos despertamos","os despertáis","se despertan"],"npl":"też e → ie","nen":"also e → ie"},{"id":"acostarse","g":"refl","pl":"kłaść się spać","en":"to go to bed","f":["me acuesto","te acuestas","se acuesta","nos acostamos","os acostáis","se acuestan"],"r":["me acosto","te acostas","se acosta","nos acostamos","os acostáis","se acostan"],"npl":"też o → ue","nen":"also o → ue"},{"id":"vestirse","g":"refl","pl":"ubierać się","en":"to get dressed","f":["me visto","te vistes","se viste","nos vestimos","os vestís","se visten"],"r":["me vesto","te vestes","se veste","nos vestimos","os vestís","se vesten"],"npl":"też e → i","nen":"also e → i"},{"id":"preocuparse","g":"refl","pl":"martwić się","en":"to worry","f":["me preocupo","te preocupas","se preocupa","nos preocupamos","os preocupáis","se preocupan"],"r":["me preocupo","te preocupas","se preocupa","nos preocupamos","os preocupáis","se preocupan"]},{"id":"levantarse","g":"refl","pl":"wstawać","en":"to get up","f":["me levanto","te levantas","se levanta","nos levantamos","os levantáis","se levantan"],"r":["me levanto","te levantas","se levanta","nos levantamos","os levantáis","se levantan"]},{"id":"sentarse","g":"refl","pl":"siadać","en":"to sit down","f":["me siento","te sientas","se sienta","nos sentamos","os sentáis","se sientan"],"r":["me sento","te sentas","se senta","nos sentamos","os sentáis","se sentan"],"npl":"też e → ie; uwaga: me siento = siadam / czuję się","nen":"also e → ie; note: me siento = I sit down / I feel"},{"id":"quedarse","g":"refl","pl":"zostawać","en":"to stay","f":["me quedo","te quedas","se queda","nos quedamos","os quedáis","se quedan"],"r":["me quedo","te quedas","se queda","nos quedamos","os quedáis","se quedan"]},{"id":"enfadarse","g":"refl","pl":"złościć się","en":"to get angry","f":["me enfado","te enfadas","se enfada","nos enfadamos","os enfadáis","se enfadan"],"r":["me enfado","te enfadas","se enfada","nos enfadamos","os enfadáis","se enfadan"],"npl":"Ameryka Łac.: enojarse","nen":"Latin America: enojarse"},{"id":"lavarse","g":"refl","pl":"myć się","en":"to wash (oneself)","f":["me lavo","te lavas","se lava","nos lavamos","os laváis","se lavan"],"r":["me lavo","te lavas","se lava","nos lavamos","os laváis","se lavan"]},{"id":"peinarse","g":"refl","pl":"czesać się","en":"to comb one's hair","f":["me peino","te peinas","se peina","nos peinamos","os peináis","se peinan"],"r":["me peino","te peinas","se peina","nos peinamos","os peináis","se peinan"]},{"id":"estar","g":"yo","pl":"być (stan, miejsce)","en":"to be (state, location)","f":["estoy","estás","está","estamos","estáis","están"],"r":["esto","estas","esta","estamos","estáis","estan"]},{"id":"conocer","g":"yo","pl":"znać, poznawać","en":"to know (people, places)","f":["conozco","conoces","conoce","conocemos","conocéis","conocen"],"r":["conoco","conoces","conoce","conocemos","conocéis","conocen"]},{"id":"conducir","g":"yo","pl":"prowadzić (auto)","en":"to drive","f":["conduzco","conduces","conduce","conducimos","conducís","conducen"],"r":["conduco","conduces","conduce","conducimos","conducís","conducen"]},{"id":"dar","g":"yo","pl":"dawać","en":"to give","f":["doy","das","da","damos","dais","dan"],"r":["do","das","da","damos","dáis","dan"]},{"id":"hacer","g":"yo","pl":"robić","en":"to do, to make","f":["hago","haces","hace","hacemos","hacéis","hacen"],"r":["haco","haces","hace","hacemos","hacéis","hacen"]},{"id":"salir","g":"yo","pl":"wychodzić","en":"to go out, to leave","f":["salgo","sales","sale","salimos","salís","salen"],"r":["salo","sales","sale","salimos","salís","salen"]},{"id":"poner","g":"yo","pl":"kłaść; włączać","en":"to put; to turn on","f":["pongo","pones","pone","ponemos","ponéis","ponen"],"r":["pono","pones","pone","ponemos","ponéis","ponen"]},{"id":"saber","g":"yo","pl":"wiedzieć; umieć","en":"to know (facts); can (skill)","f":["sé","sabes","sabe","sabemos","sabéis","saben"],"r":["sabo","sabes","sabe","sabemos","sabéis","saben"]},{"id":"ver","g":"yo","pl":"widzieć; oglądać","en":"to see; to watch","f":["veo","ves","ve","vemos","veis","ven"],"r":["vo","ves","ve","vemos","véis","ven"]},{"id":"caer","g":"yo","pl":"spadać","en":"to fall","f":["caigo","caes","cae","caemos","caéis","caen"],"r":["cao","caes","cae","caemos","caéis","caen"]},{"id":"traer","g":"yo","pl":"przynosić","en":"to bring","f":["traigo","traes","trae","traemos","traéis","traen"],"r":["trao","traes","trae","traemos","traéis","traen"]},{"id":"caber","g":"yo","pl":"mieścić się","en":"to fit","f":["quepo","cabes","cabe","cabemos","cabéis","caben"],"r":["cabo","cabes","cabe","cabemos","cabéis","caben"]},{"id":"coger","g":"yo","pl":"brać, łapać","en":"to take, to catch","f":["cojo","coges","coge","cogemos","cogéis","cogen"],"r":["cogo","coges","coge","cogemos","cogéis","cogen"],"npl":"w Hiszpanii; w Ameryce Łac. lepiej tomar","nen":"in Spain; in Latin America use tomar"},{"id":"traducir","g":"yo","pl":"tłumaczyć","en":"to translate","f":["traduzco","traduces","traduce","traducimos","traducís","traducen"],"r":["traduco","traduces","traduce","traducimos","traducís","traducen"]},{"id":"obedecer","g":"yo","pl":"słuchać się, być posłusznym","en":"to obey","f":["obedezco","obedeces","obedece","obedecemos","obedecéis","obedecen"],"r":["obedeco","obedeces","obedece","obedecemos","obedecéis","obedecen"]},{"id":"ofrecer","g":"yo","pl":"oferować, proponować","en":"to offer","f":["ofrezco","ofreces","ofrece","ofrecemos","ofrecéis","ofrecen"],"r":["ofreco","ofreces","ofrece","ofrecemos","ofrecéis","ofrecen"]},{"id":"parecer","g":"yo","pl":"wydawać się; wyglądać na","en":"to seem; to look","f":["parezco","pareces","parece","parecemos","parecéis","parecen"],"r":["pareco","pareces","parece","parecemos","parecéis","parecen"]},{"id":"proteger","g":"yo","pl":"chronić","en":"to protect","f":["protejo","proteges","protege","protegemos","protegéis","protegen"],"r":["protego","proteges","protege","protegemos","protegéis","protegen"],"npl":"yo: g → j","nen":"yo: g → j"},{"id":"recoger","g":"yo","pl":"zbierać; odbierać; sprzątać","en":"to pick up; to collect; to tidy","f":["recojo","recoges","recoge","recogemos","recogéis","recogen"],"r":["recogo","recoges","recoge","recogemos","recogéis","recogen"],"npl":"yo: g → j","nen":"yo: g → j"},{"id":"cerrar","g":"e_ie","pl":"zamykać","en":"to close","f":["cierro","cierras","cierra","cerramos","cerráis","cierran"],"r":["cerro","cerras","cerra","cerramos","cerráis","cerran"]},{"id":"empezar","g":"e_ie","pl":"zaczynać","en":"to start, to begin","f":["empiezo","empiezas","empieza","empezamos","empezáis","empiezan"],"r":["empezo","empezas","empeza","empezamos","empezáis","empezan"]},{"id":"entender","g":"e_ie","pl":"rozumieć","en":"to understand","f":["entiendo","entiendes","entiende","entendemos","entendéis","entienden"],"r":["entendo","entendes","entende","entendemos","entendéis","entenden"]},{"id":"preferir","g":"e_ie","pl":"woleć","en":"to prefer","f":["prefiero","prefieres","prefiere","preferimos","preferís","prefieren"],"r":["prefero","preferes","prefere","preferimos","preferís","preferen"]},{"id":"pensar","g":"e_ie","pl":"myśleć; zamierzać","en":"to think; to plan to","f":["pienso","piensas","piensa","pensamos","pensáis","piensan"],"r":["penso","pensas","pensa","pensamos","pensáis","pensan"]},{"id":"querer","g":"e_ie","pl":"chcieć; kochać","en":"to want; to love","f":["quiero","quieres","quiere","queremos","queréis","quieren"],"r":["quero","queres","quere","queremos","queréis","queren"]},{"id":"sentir","g":"e_ie","pl":"czuć; żałować","en":"to feel; to be sorry","f":["siento","sientes","siente","sentimos","sentís","sienten"],"r":["sento","sentes","sente","sentimos","sentís","senten"]},{"id":"comenzar","g":"e_ie","pl":"rozpoczynać","en":"to begin","f":["comienzo","comienzas","comienza","comenzamos","comenzáis","comienzan"],"r":["comenzo","comenzas","comenza","comenzamos","comenzáis","comenzan"]},{"id":"perder","g":"e_ie","pl":"gubić; przegrywać; spóźnić się na","en":"to lose; to miss","f":["pierdo","pierdes","pierde","perdemos","perdéis","pierden"],"r":["perdo","perdes","perde","perdemos","perdéis","perden"]},{"id":"mentir","g":"e_ie","pl":"kłamać","en":"to lie","f":["miento","mientes","miente","mentimos","mentís","mienten"],"r":["mento","mentes","mente","mentimos","mentís","menten"]},{"id":"encender","g":"e_ie","pl":"włączać, zapalać","en":"to turn on, to light","f":["enciendo","enciendes","enciende","encendemos","encendéis","encienden"],"r":["encendo","encendes","encende","encendemos","encendéis","encenden"]},{"id":"recomendar","g":"e_ie","pl":"polecać","en":"to recommend","f":["recomiendo","recomiendas","recomienda","recomendamos","recomendáis","recomiendan"],"r":["recomendo","recomendas","recomenda","recomendamos","recomendáis","recomendan"]},{"id":"pedir","g":"e_i","pl":"prosić; zamawiać","en":"to ask for; to order","f":["pido","pides","pide","pedimos","pedís","piden"],"r":["pedo","pedes","pede","pedimos","pedís","peden"]},{"id":"servir","g":"e_i","pl":"podawać; służyć","en":"to serve; to be for","f":["sirvo","sirves","sirve","servimos","servís","sirven"],"r":["servo","serves","serve","servimos","servís","serven"]},{"id":"elegir","g":"e_i","pl":"wybierać","en":"to choose","f":["elijo","eliges","elige","elegimos","elegís","eligen"],"r":["elego","eleges","elege","elegimos","elegís","elegen"],"npl":"yo: g → j","nen":"yo: g → j"},{"id":"medir","g":"e_i","pl":"mierzyć; mieć (wzrostu)","en":"to measure; to be (tall)","f":["mido","mides","mide","medimos","medís","miden"],"r":["medo","medes","mede","medimos","medís","meden"]},{"id":"seguir","g":"e_i","pl":"iść za; obserwować; nadal coś robić","en":"to follow; to still be/do","f":["sigo","sigues","sigue","seguimos","seguís","siguen"],"r":["seguo","segues","segue","seguimos","seguís","seguen"],"npl":"yo: sigo (bez u)","nen":"yo: sigo (no u)"},{"id":"repetir","g":"e_i","pl":"powtarzać","en":"to repeat","f":["repito","repites","repite","repetimos","repetís","repiten"],"r":["repeto","repetes","repete","repetimos","repetís","repeten"]},{"id":"corregir","g":"e_i","pl":"poprawiać","en":"to correct","f":["corrijo","corriges","corrige","corregimos","corregís","corrigen"],"r":["corrego","correges","correge","corregimos","corregís","corregen"],"npl":"yo: g → j","nen":"yo: g → j"},{"id":"conseguir","g":"e_i","pl":"zdobywać, osiągać","en":"to get, to achieve","f":["consigo","consigues","consigue","conseguimos","conseguís","consiguen"],"r":["conseguo","consegues","consegue","conseguimos","conseguís","conseguen"],"npl":"yo: consigo (bez u)","nen":"yo: consigo (no u)"},{"id":"reír","g":"e_i","pl":"śmiać się","en":"to laugh","f":["río","ríes","ríe","reímos","reís","ríen"],"r":["reo","rees","ree","reimos","reís","reen"],"npl":"uwaga na akcent: río","nen":"watch the accent: río"},{"id":"sonreír","g":"e_i","pl":"uśmiechać się","en":"to smile","f":["sonrío","sonríes","sonríe","sonreímos","sonreís","sonríen"],"r":["sonreo","sonrees","sonree","sonreimos","sonreís","sonreen"],"npl":"jak reír","nen":"like reír"},{"id":"volver","g":"o_ue","pl":"wracać","en":"to come back, to return","f":["vuelvo","vuelves","vuelve","volvemos","volvéis","vuelven"],"r":["volvo","volves","volve","volvemos","volvéis","volven"]},{"id":"costar","g":"o_ue","pl":"kosztować","en":"to cost","f":["cuesto","cuestas","cuesta","costamos","costáis","cuestan"],"r":["costo","costas","costa","costamos","costáis","costan"]},{"id":"recordar","g":"o_ue","pl":"pamiętać","en":"to remember","f":["recuerdo","recuerdas","recuerda","recordamos","recordáis","recuerdan"],"r":["recordo","recordas","recorda","recordamos","recordáis","recordan"]},{"id":"poder","g":"o_ue","pl":"móc","en":"can, to be able to","f":["puedo","puedes","puede","podemos","podéis","pueden"],"r":["podo","podes","pode","podemos","podéis","poden"]},{"id":"contar","g":"o_ue","pl":"liczyć; opowiadać","en":"to count; to tell","f":["cuento","cuentas","cuenta","contamos","contáis","cuentan"],"r":["conto","contas","conta","contamos","contáis","contan"]},{"id":"dormir","g":"o_ue","pl":"spać","en":"to sleep","f":["duermo","duermes","duerme","dormimos","dormís","duermen"],"r":["dormo","dormes","dorme","dormimos","dormís","dormen"]},{"id":"encontrar","g":"o_ue","pl":"znajdować","en":"to find","f":["encuentro","encuentras","encuentra","encontramos","encontráis","encuentran"],"r":["encontro","encontras","encontra","encontramos","encontráis","encontran"]},{"id":"jugar","g":"o_ue","pl":"grać; bawić się","en":"to play","f":["juego","juegas","juega","jugamos","jugáis","juegan"],"r":["jugo","jugas","juga","jugamos","jugáis","jugan"],"npl":"jedyny u → ue","nen":"the only u → ue"},{"id":"volar","g":"o_ue","pl":"latać","en":"to fly","f":["vuelo","vuelas","vuela","volamos","voláis","vuelan"],"r":["volo","volas","vola","volamos","voláis","volan"]},{"id":"soler","g":"o_ue","pl":"mieć zwyczaj, zwykle coś robić","en":"to usually do","f":["suelo","sueles","suele","solemos","soléis","suelen"],"r":["solo","soles","sole","solemos","soléis","solen"],"npl":"soler + bezokolicznik","nen":"soler + infinitive"},{"id":"almorzar","g":"o_ue","pl":"jeść obiad / lunch","en":"to have lunch","f":["almuerzo","almuerzas","almuerza","almorzamos","almorzáis","almuerzan"],"r":["almorzo","almorzas","almorza","almorzamos","almorzáis","almorzan"]},{"id":"probar","g":"o_ue","pl":"próbować (smaku), przymierzać","en":"to taste, to try (on)","f":["pruebo","pruebas","prueba","probamos","probáis","prueban"],"r":["probo","probas","proba","probamos","probáis","proban"]},{"id":"mostrar","g":"o_ue","pl":"pokazywać","en":"to show","f":["muestro","muestras","muestra","mostramos","mostráis","muestran"],"r":["mostro","mostras","mostra","mostramos","mostráis","mostran"]},{"id":"mover","g":"o_ue","pl":"ruszać, przesuwać","en":"to move","f":["muevo","mueves","mueve","movemos","movéis","mueven"],"r":["movo","moves","move","movemos","movéis","moven"]},{"id":"devolver","g":"o_ue","pl":"oddawać, zwracać","en":"to give back, to return","f":["devuelvo","devuelves","devuelve","devolvemos","devolvéis","devuelven"],"r":["devolvo","devolves","devolve","devolvemos","devolvéis","devolven"]},{"id":"construir","g":"uir","pl":"budować","en":"to build","f":["construyo","construyes","construye","construimos","construís","construyen"],"r":["construo","construes","construe","construimos","construís","construen"]},{"id":"destruir","g":"uir","pl":"niszczyć","en":"to destroy","f":["destruyo","destruyes","destruye","destruimos","destruís","destruyen"],"r":["destruo","destrues","destrue","destruimos","destruís","destruen"]},{"id":"huir","g":"uir","pl":"uciekać","en":"to run away, to flee","f":["huyo","huyes","huye","huimos","huis","huyen"],"r":["huo","hues","hue","huimos","huís","huen"]},{"id":"sustituir","g":"uir","pl":"zastępować","en":"to replace","f":["sustituyo","sustituyes","sustituye","sustituimos","sustituís","sustituyen"],"r":["sustituo","sustitues","sustitue","sustituimos","sustituís","sustituen"]},{"id":"incluir","g":"uir","pl":"zawierać, wliczać; dodawać","en":"to include; to add","f":["incluyo","incluyes","incluye","incluimos","incluís","incluyen"],"r":["incluo","inclues","inclue","incluimos","incluís","incluen"]},{"id":"continuar","g":"acc","pl":"kontynuować","en":"to continue","f":["continúo","continúas","continúa","continuamos","continuáis","continúan"],"r":["continuo","continuas","continua","continuamos","continuáis","continuan"]},{"id":"enviar","g":"acc","pl":"wysyłać","en":"to send","f":["envío","envías","envía","enviamos","enviáis","envían"],"r":["envio","envias","envia","enviamos","enviáis","envian"]},{"id":"ser","g":"muy","pl":"być (kim, jaki)","en":"to be (identity, traits)","f":["soy","eres","es","somos","sois","son"],"r":["so","ses","se","semos","séis","sen"]},{"id":"ir","g":"muy","pl":"iść, jechać","en":"to go","f":["voy","vas","va","vamos","vais","van"],"r":["o","es","e","imos","ís","en"]},{"id":"tener","g":"muy","pl":"mieć","en":"to have","f":["tengo","tienes","tiene","tenemos","tenéis","tienen"],"r":["teno","tenes","tene","tenemos","tenéis","tenen"]},{"id":"decir","g":"muy","pl":"mówić, powiedzieć","en":"to say, to tell","f":["digo","dices","dice","decimos","decís","dicen"],"r":["deco","deces","dece","decimos","decís","decen"]},{"id":"venir","g":"muy","pl":"przychodzić, przyjeżdżać","en":"to come","f":["vengo","vienes","viene","venimos","venís","vienen"],"r":["veno","venes","vene","venimos","venís","venen"]},{"id":"oír","g":"muy","pl":"słyszeć","en":"to hear","f":["oigo","oyes","oye","oímos","oís","oyen"],"r":["oo","oes","oe","oimos","oís","oen"]},{"id":"oler","g":"muy","pl":"pachnieć; wąchać","en":"to smell","f":["huelo","hueles","huele","olemos","oléis","huelen"],"r":["olo","oles","ole","olemos","oléis","olen"]},{"id":"haber","g":"muy","pl":"„hay” – jest / są (istnieje)","en":"“hay” – there is / there are","f":["he","has","ha","hemos","habéis","han"],"r":["he","has","ha","hemos","habéis","han"],"npl":"w cz. teraźniejszym używamy formy bezosobowej: hay","nen":"in the present we use the impersonal form: hay","nd":1}],"phrases":[{"v":"hablar","p":0,"es":"Hablo un poco de español.","pl":"Mówię trochę po hiszpańsku.","en":"I speak a little Spanish.","a":0,"b":5},{"v":"hablar","p":1,"es":"¿Hablas inglés?","pl":"Mówisz po angielsku?","en":"Do you speak English?","a":1,"b":7},{"v":"hablar","p":5,"es":"Mis padres hablan por teléfono.","pl":"Moi rodzice rozmawiają przez telefon.","en":"My parents are talking on the phone.","a":11,"b":17},{"v":"trabajar","p":2,"es":"Mi madre trabaja en un hospital.","pl":"Moja mama pracuje w szpitalu.","en":"My mother works in a hospital.","a":9,"b":16},{"v":"trabajar","p":3,"es":"Trabajamos de lunes a viernes.","pl":"Pracujemy od poniedziałku do piątku.","en":"We work from Monday to Friday.","a":0,"b":10},{"v":"trabajar","p":4,"es":"¿Trabajáis los sábados?","pl":"Pracujecie w soboty?","en":"Do you all work on Saturdays?","a":1,"b":10},{"v":"estudiar","p":0,"es":"Estudio español en el instituto.","pl":"Uczę się hiszpańskiego w szkole.","en":"I study Spanish at school.","a":0,"b":7},{"v":"estudiar","p":1,"es":"¿Qué estudias?","pl":"Czego się uczysz?","en":"What are you studying?","a":5,"b":13},{"v":"estudiar","p":5,"es":"Los alumnos estudian para el examen.","pl":"Uczniowie uczą się do egzaminu.","en":"The students are studying for the exam.","a":12,"b":20},{"v":"escuchar","p":0,"es":"Escucho música en el autobús.","pl":"Słucham muzyki w autobusie.","en":"I listen to music on the bus.","a":0,"b":7},{"v":"escuchar","p":1,"es":"¿Por qué no me escuchas?","pl":"Dlaczego mnie nie słuchasz?","en":"Why don't you listen to me?","a":15,"b":23},{"v":"escuchar","p":3,"es":"Escuchamos al profesor.","pl":"Słuchamy nauczyciela.","en":"We listen to the teacher.","a":0,"b":10},{"v":"llamar","p":0,"es":"Llamo a mi abuela todos los domingos.","pl":"Dzwonię do babci w każdą niedzielę.","en":"I call my grandmother every Sunday.","a":0,"b":5},{"v":"llamar","p":2,"es":"¿Quién llama?","pl":"Kto dzwoni?","en":"Who's calling?","a":7,"b":12},{"v":"llamar","p":5,"es":"Ellos llaman a un taxi.","pl":"Oni wzywają taksówkę.","en":"They call a taxi.","a":6,"b":12},{"v":"preguntar","p":0,"es":"Pregunto si hay mesa libre.","pl":"Pytam, czy jest wolny stolik.","en":"I ask if there's a free table.","a":0,"b":8},{"v":"preguntar","p":2,"es":"El turista pregunta por la estación.","pl":"Turysta pyta o dworzec.","en":"The tourist asks for the station.","a":11,"b":19},{"v":"preguntar","p":4,"es":"¿Por qué preguntáis eso?","pl":"Dlaczego o to pytacie?","en":"Why are you all asking that?","a":9,"b":19},{"v":"necesitar","p":0,"es":"Necesito ayuda.","pl":"Potrzebuję pomocy.","en":"I need help.","a":0,"b":8},{"v":"necesitar","p":1,"es":"¿Necesitas algo?","pl":"Potrzebujesz czegoś?","en":"Do you need anything?","a":1,"b":10},{"v":"necesitar","p":3,"es":"Necesitamos pan y leche.","pl":"Potrzebujemy chleba i mleka.","en":"We need bread and milk.","a":0,"b":11},{"v":"tomar","p":0,"es":"Tomo café por la mañana.","pl":"Rano piję kawę.","en":"I have coffee in the morning.","a":0,"b":4},{"v":"tomar","p":1,"es":"¿Qué tomas?","pl":"Co pijesz?","en":"What are you having?","a":5,"b":10},{"v":"tomar","p":3,"es":"Tomamos el autobús número cinco.","pl":"Jedziemy autobusem numer pięć.","en":"We take bus number five.","a":0,"b":7},{"v":"usar","p":0,"es":"Uso el móvil para estudiar.","pl":"Używam telefonu do nauki.","en":"I use my phone to study.","a":0,"b":3},{"v":"usar","p":1,"es":"¿Usas gafas?","pl":"Nosisz okulary?","en":"Do you wear glasses?","a":1,"b":5},{"v":"usar","p":5,"es":"Mis amigos usan mucho Instagram.","pl":"Moi znajomi dużo używają Instagrama.","en":"My friends use Instagram a lot.","a":11,"b":15},{"v":"buscar","p":0,"es":"Busco mis llaves.","pl":"Szukam swoich kluczy.","en":"I'm looking for my keys.","a":0,"b":5},{"v":"buscar","p":2,"es":"Mi hermano busca trabajo.","pl":"Mój brat szuka pracy.","en":"My brother is looking for a job.","a":11,"b":16},{"v":"buscar","p":3,"es":"Buscamos un restaurante barato.","pl":"Szukamy taniej restauracji.","en":"We're looking for a cheap restaurant.","a":0,"b":8},{"v":"pagar","p":0,"es":"Pago con tarjeta.","pl":"Płacę kartą.","en":"I pay by card.","a":0,"b":4},{"v":"pagar","p":1,"es":"¿Pagas tú hoy?","pl":"Ty dziś płacisz?","en":"Are you paying today?","a":1,"b":6},{"v":"pagar","p":5,"es":"Ellos pagan la cuenta.","pl":"Oni płacą rachunek.","en":"They pay the bill.","a":6,"b":11},{"v":"llegar","p":0,"es":"Llego a casa a las cinco.","pl":"Docieram do domu o piątej.","en":"I get home at five.","a":0,"b":5},{"v":"llegar","p":2,"es":"El tren llega a las diez.","pl":"Pociąg przyjeżdża o dziesiątej.","en":"The train arrives at ten.","a":8,"b":13},{"v":"llegar","p":3,"es":"Siempre llegamos tarde a clase.","pl":"Zawsze spóźniamy się na lekcję.","en":"We're always late for class.","a":8,"b":16},{"v":"cocinar","p":0,"es":"Cocino pasta los viernes.","pl":"W piątki gotuję makaron.","en":"I cook pasta on Fridays.","a":0,"b":6},{"v":"cocinar","p":2,"es":"Mi padre cocina muy bien.","pl":"Mój tata bardzo dobrze gotuje.","en":"My dad cooks very well.","a":9,"b":15},{"v":"cocinar","p":4,"es":"¿Cocináis juntos?","pl":"Gotujecie razem?","en":"Do you all cook together?","a":1,"b":9},{"v":"limpiar","p":0,"es":"Limpio mi habitación los sábados.","pl":"W soboty sprzątam swój pokój.","en":"I clean my room on Saturdays.","a":0,"b":6},{"v":"limpiar","p":1,"es":"¿Limpias tú el baño?","pl":"Ty sprzątasz łazienkę?","en":"Do you clean the bathroom?","a":1,"b":8},{"v":"limpiar","p":3,"es":"Limpiamos la cocina después de cenar.","pl":"Sprzątamy kuchnię po kolacji.","en":"We clean the kitchen after dinner.","a":0,"b":9},{"v":"viajar","p":0,"es":"Viajo en tren.","pl":"Podróżuję pociągiem.","en":"I travel by train.","a":0,"b":5},{"v":"viajar","p":3,"es":"Viajamos a España en verano.","pl":"Latem jeździmy do Hiszpanii.","en":"We travel to Spain in summer.","a":0,"b":8},{"v":"viajar","p":5,"es":"Mis tíos viajan mucho.","pl":"Moje wujostwo dużo podróżuje.","en":"My aunt and uncle travel a lot.","a":9,"b":15},{"v":"caminar","p":0,"es":"Camino al instituto.","pl":"Chodzę do szkoły pieszo.","en":"I walk to school.","a":0,"b":6},{"v":"caminar","p":3,"es":"Caminamos por el parque.","pl":"Spacerujemy po parku.","en":"We walk in the park.","a":0,"b":9},{"v":"entrar","p":0,"es":"Entro en la tienda.","pl":"Wchodzę do sklepu.","en":"I go into the shop.","a":0,"b":5},{"v":"entrar","p":1,"es":"¿Entras o no?","pl":"Wchodzisz czy nie?","en":"Are you coming in or not?","a":1,"b":7},{"v":"entrar","p":5,"es":"Los alumnos entran en clase.","pl":"Uczniowie wchodzą do klasy.","en":"The students go into the classroom.","a":12,"b":18},{"v":"esperar","p":0,"es":"Espero el autobús.","pl":"Czekam na autobus.","en":"I'm waiting for the bus.","a":0,"b":6},{"v":"esperar","p":1,"es":"¿Me esperas?","pl":"Poczekasz na mnie?","en":"Will you wait for me?","a":4,"b":11},{"v":"esperar","p":3,"es":"Esperamos a nuestros amigos.","pl":"Czekamy na naszych przyjaciół.","en":"We're waiting for our friends.","a":0,"b":9},{"v":"comer","p":0,"es":"Como fruta todos los días.","pl":"Codziennie jem owoce.","en":"I eat fruit every day.","a":0,"b":4},{"v":"comer","p":1,"es":"¿Comes carne?","pl":"Jesz mięso?","en":"Do you eat meat?","a":1,"b":6},{"v":"comer","p":3,"es":"Comemos juntos.","pl":"Jemy razem.","en":"We eat together.","a":0,"b":7},{"v":"beber","p":0,"es":"Bebo mucha agua.","pl":"Piję dużo wody.","en":"I drink a lot of water.","a":0,"b":4},{"v":"beber","p":2,"es":"Mi hermana no bebe leche.","pl":"Moja siostra nie pije mleka.","en":"My sister doesn't drink milk.","a":14,"b":18},{"v":"beber","p":4,"es":"¿Qué bebéis?","pl":"Co pijecie?","en":"What are you all drinking?","a":5,"b":11},{"v":"aprender","p":0,"es":"Aprendo español con esta aplicación.","pl":"Uczę się hiszpańskiego z tą aplikacją.","en":"I'm learning Spanish with this app.","a":0,"b":7},{"v":"aprender","p":3,"es":"Aprendemos mucho en clase.","pl":"Dużo się uczymy na lekcjach.","en":"We learn a lot in class.","a":0,"b":10},{"v":"aprender","p":5,"es":"Los niños aprenden rápido.","pl":"Dzieci szybko się uczą.","en":"Children learn fast.","a":10,"b":18},{"v":"leer","p":0,"es":"Leo un libro antes de dormir.","pl":"Czytam książkę przed snem.","en":"I read a book before bed.","a":0,"b":3},{"v":"leer","p":1,"es":"¿Lees el periódico?","pl":"Czytasz gazetę?","en":"Do you read the newspaper?","a":1,"b":5},{"v":"leer","p":2,"es":"Mi padre lee las noticias en el móvil.","pl":"Tata czyta wiadomości w telefonie.","en":"My dad reads the news on his phone.","a":9,"b":12},{"v":"creer","p":0,"es":"Creo que tienes razón.","pl":"Myślę, że masz rację.","en":"I think you're right.","a":0,"b":4},{"v":"creer","p":1,"es":"¿Crees en los fantasmas?","pl":"Wierzysz w duchy?","en":"Do you believe in ghosts?","a":1,"b":6},{"v":"comprender","p":0,"es":"Comprendo tus sentimientos.","pl":"Rozumiem twoje uczucia.","en":"I understand your feelings.","a":0,"b":9},{"v":"comprender","p":5,"es":"Ellos no comprenden la pregunta.","pl":"Oni nie rozumieją pytania.","en":"They don't understand the question.","a":9,"b":19},{"v":"correr","p":0,"es":"Corro en el parque por la mañana.","pl":"Rano biegam w parku.","en":"I run in the park in the morning.","a":0,"b":5},{"v":"correr","p":2,"es":"Mi perro corre muy rápido.","pl":"Mój pies biega bardzo szybko.","en":"My dog runs very fast.","a":9,"b":14},{"v":"correr","p":3,"es":"Corremos para coger el autobús.","pl":"Biegniemy, żeby złapać autobus.","en":"We run to catch the bus.","a":0,"b":8},{"v":"vivir","p":0,"es":"Vivo en Varsovia.","pl":"Mieszkam w Warszawie.","en":"I live in Warsaw.","a":0,"b":4},{"v":"vivir","p":1,"es":"¿Dónde vives?","pl":"Gdzie mieszkasz?","en":"Where do you live?","a":7,"b":12},{"v":"vivir","p":5,"es":"Mis abuelos viven en el campo.","pl":"Moi dziadkowie mieszkają na wsi.","en":"My grandparents live in the countryside.","a":12,"b":17},{"v":"escribir","p":0,"es":"Escribo un mensaje a mi amiga.","pl":"Piszę wiadomość do przyjaciółki.","en":"I'm writing a message to my friend.","a":0,"b":7},{"v":"escribir","p":3,"es":"Escribimos los ejercicios en el cuaderno.","pl":"Piszemy ćwiczenia w zeszycie.","en":"We write the exercises in our notebooks.","a":0,"b":10},{"v":"escribir","p":4,"es":"¿Escribís con lápiz o con boli?","pl":"Piszecie ołówkiem czy długopisem?","en":"Do you all write in pencil or pen?","a":1,"b":9},{"v":"abrir","p":0,"es":"Abro la ventana.","pl":"Otwieram okno.","en":"I open the window.","a":0,"b":4},{"v":"abrir","p":1,"es":"¿Abres la puerta, por favor?","pl":"Otworzysz drzwi, proszę?","en":"Can you open the door, please?","a":1,"b":6},{"v":"abrir","p":2,"es":"La tienda abre a las nueve.","pl":"Sklep otwiera się o dziewiątej.","en":"The shop opens at nine.","a":10,"b":14},{"v":"llamarse","p":0,"es":"Me llamo Marta.","pl":"Mam na imię Marta.","en":"My name is Marta.","a":0,"b":8},{"v":"llamarse","p":1,"es":"¿Cómo te llamas?","pl":"Jak masz na imię?","en":"What's your name?","a":6,"b":15},{"v":"llamarse","p":2,"es":"Mi perro se llama Toby.","pl":"Mój pies wabi się Toby.","en":"My dog is called Toby.","a":9,"b":17},{"v":"ducharse","p":0,"es":"Me ducho por la mañana.","pl":"Rano biorę prysznic.","en":"I have a shower in the morning.","a":0,"b":8},{"v":"ducharse","p":1,"es":"¿Te duchas antes de dormir?","pl":"Bierzesz prysznic przed snem?","en":"Do you shower before bed?","a":1,"b":10},{"v":"ducharse","p":5,"es":"Los jugadores se duchan después del partido.","pl":"Zawodnicy biorą prysznic po meczu.","en":"The players shower after the match.","a":14,"b":23},{"v":"despertarse","p":0,"es":"Me despierto a las siete.","pl":"Budzę się o siódmej.","en":"I wake up at seven.","a":0,"b":12},{"v":"despertarse","p":2,"es":"Mi hermano se despierta tarde.","pl":"Mój brat budzi się późno.","en":"My brother wakes up late.","a":11,"b":23},{"v":"despertarse","p":3,"es":"Nos despertamos temprano.","pl":"Budzimy się wcześnie.","en":"We wake up early.","a":0,"b":15},{"v":"acostarse","p":0,"es":"Me acuesto a las once.","pl":"Kładę się spać o jedenastej.","en":"I go to bed at eleven.","a":0,"b":10},{"v":"acostarse","p":1,"es":"¿A qué hora te acuestas?","pl":"O której kładziesz się spać?","en":"What time do you go to bed?","a":12,"b":23},{"v":"acostarse","p":5,"es":"Los niños se acuestan pronto.","pl":"Dzieci wcześnie kładą się spać.","en":"The children go to bed early.","a":10,"b":21},{"v":"vestirse","p":0,"es":"Me visto rápido.","pl":"Szybko się ubieram.","en":"I get dressed quickly.","a":0,"b":8},{"v":"vestirse","p":2,"es":"Ella se viste de negro.","pl":"Ona ubiera się na czarno.","en":"She dresses in black.","a":5,"b":13},{"v":"vestirse","p":4,"es":"¿Os vestís para la fiesta?","pl":"Przebieracie się na imprezę?","en":"Are you all getting dressed up for the party?","a":1,"b":10},{"v":"preocuparse","p":0,"es":"Me preocupo por el examen.","pl":"Martwię się egzaminem.","en":"I'm worried about the exam.","a":0,"b":11},{"v":"preocuparse","p":1,"es":"¿Por qué te preocupas tanto?","pl":"Dlaczego tak bardzo się martwisz?","en":"Why do you worry so much?","a":9,"b":21},{"v":"preocuparse","p":5,"es":"Mis padres se preocupan por mí.","pl":"Rodzice martwią się o mnie.","en":"My parents worry about me.","a":11,"b":23},{"v":"estar","p":0,"es":"Estoy cansada.","pl":"Jestem zmęczona.","en":"I'm tired.","a":0,"b":5},{"v":"estar","p":1,"es":"¿Dónde estás?","pl":"Gdzie jesteś?","en":"Where are you?","a":7,"b":12},{"v":"estar","p":2,"es":"El café está caliente.","pl":"Kawa jest gorąca.","en":"The coffee is hot.","a":8,"b":12},{"v":"estar","p":3,"es":"Estamos en casa.","pl":"Jesteśmy w domu.","en":"We're at home.","a":0,"b":7},{"v":"conocer","p":0,"es":"Conozco a tu hermano.","pl":"Znam twojego brata.","en":"I know your brother.","a":0,"b":7},{"v":"conocer","p":1,"es":"¿Conoces Madrid?","pl":"Znasz Madryt?","en":"Do you know Madrid?","a":1,"b":8},{"v":"conocer","p":3,"es":"No conocemos este barrio.","pl":"Nie znamy tej dzielnicy.","en":"We don't know this neighbourhood.","a":3,"b":12},{"v":"conducir","p":0,"es":"No conduzco, voy en bici.","pl":"Nie jeżdżę samochodem, jeżdżę rowerem.","en":"I don't drive, I go by bike.","a":3,"b":11},{"v":"conducir","p":2,"es":"Mi madre conduce con cuidado.","pl":"Mama ostrożnie prowadzi.","en":"My mum drives carefully.","a":9,"b":16},{"v":"dar","p":0,"es":"Doy un regalo a mi amiga.","pl":"Daję prezent przyjaciółce.","en":"I give a present to my friend.","a":0,"b":3},{"v":"dar","p":1,"es":"¿Me das tu número?","pl":"Dasz mi swój numer?","en":"Will you give me your number?","a":4,"b":7},{"v":"dar","p":3,"es":"Damos un paseo por la playa.","pl":"Spacerujemy po plaży.","en":"We go for a walk on the beach.","a":0,"b":5},{"v":"hacer","p":0,"es":"Hago los deberes por la tarde.","pl":"Po południu odrabiam lekcje.","en":"I do my homework in the afternoon.","a":0,"b":4},{"v":"hacer","p":1,"es":"¿Qué haces?","pl":"Co robisz?","en":"What are you doing?","a":5,"b":10},{"v":"hacer","p":2,"es":"Hoy hace frío.","pl":"Dziś jest zimno.","en":"It's cold today.","a":4,"b":8},{"v":"hacer","p":4,"es":"¿Hacéis deporte?","pl":"Uprawiacie sport?","en":"Do you all do sport?","a":1,"b":7},{"v":"salir","p":0,"es":"Salgo de casa a las ocho.","pl":"Wychodzę z domu o ósmej.","en":"I leave home at eight.","a":0,"b":5},{"v":"salir","p":3,"es":"Los viernes salimos con amigos.","pl":"W piątki wychodzimy ze znajomymi.","en":"On Fridays we go out with friends.","a":12,"b":19},{"v":"salir","p":5,"es":"Los trenes salen cada hora.","pl":"Pociągi odjeżdżają co godzinę.","en":"The trains leave every hour.","a":11,"b":16},{"v":"poner","p":0,"es":"Pongo la lavadora.","pl":"Włączam pralkę.","en":"I put the washing machine on.","a":0,"b":5},{"v":"poner","p":1,"es":"¿Pones la mesa, por favor?","pl":"Nakryjesz do stołu, proszę?","en":"Will you set the table, please?","a":1,"b":6},{"v":"poner","p":2,"es":"Ella pone las llaves en la mesa.","pl":"Ona kładzie klucze na stole.","en":"She puts the keys on the table.","a":5,"b":9},{"v":"saber","p":0,"es":"No sé la respuesta.","pl":"Nie znam odpowiedzi.","en":"I don't know the answer.","a":3,"b":5},{"v":"saber","p":1,"es":"¿Sabes nadar?","pl":"Umiesz pływać?","en":"Can you swim?","a":1,"b":6},{"v":"saber","p":3,"es":"Sabemos dónde está el museo.","pl":"Wiemy, gdzie jest muzeum.","en":"We know where the museum is.","a":0,"b":7},{"v":"ver","p":0,"es":"Veo la tele por la noche.","pl":"Wieczorem oglądam telewizję.","en":"I watch TV in the evening.","a":0,"b":3},{"v":"ver","p":1,"es":"¿Ves el mar desde tu ventana?","pl":"Widzisz morze ze swojego okna?","en":"Can you see the sea from your window?","a":1,"b":4},{"v":"ver","p":4,"es":"¿Veis la película conmigo?","pl":"Obejrzycie ze mną film?","en":"Will you all watch the film with me?","a":1,"b":5},{"v":"caer","p":0,"es":"Cuando patino, me caigo mucho.","pl":"Kiedy jeżdżę na łyżwach, często się przewracam.","en":"When I skate, I fall a lot.","a":18,"b":23},{"v":"caer","p":2,"es":"El vaso cae al suelo.","pl":"Szklanka spada na podłogę.","en":"The glass falls to the floor.","a":8,"b":11},{"v":"caer","p":5,"es":"Las hojas caen en otoño.","pl":"Liście spadają jesienią.","en":"Leaves fall in autumn.","a":10,"b":14},{"v":"traer","p":0,"es":"Traigo la comida.","pl":"Przynoszę jedzenie.","en":"I'm bringing the food.","a":0,"b":6},{"v":"traer","p":1,"es":"¿Qué traes a la fiesta?","pl":"Co przynosisz na imprezę?","en":"What are you bringing to the party?","a":5,"b":10},{"v":"traer","p":2,"es":"El camarero trae la cuenta.","pl":"Kelner przynosi rachunek.","en":"The waiter brings the bill.","a":12,"b":16},{"v":"caber","p":0,"es":"No quepo en estos pantalones.","pl":"Nie mieszczę się w te spodnie.","en":"I don't fit into these trousers.","a":3,"b":8},{"v":"caber","p":5,"es":"Los libros no caben en la mochila.","pl":"Książki nie mieszczą się w plecaku.","en":"The books don't fit in the backpack.","a":14,"b":19},{"v":"coger","p":0,"es":"Cojo el autobús a las ocho.","pl":"Łapię autobus o ósmej.","en":"I catch the bus at eight.","a":0,"b":4},{"v":"coger","p":1,"es":"¿Coges tú el teléfono?","pl":"Odbierzesz telefon?","en":"Will you pick up the phone?","a":1,"b":6},{"v":"coger","p":2,"es":"Mi hermana coge mi ropa sin preguntar.","pl":"Siostra bierze moje ubrania bez pytania.","en":"My sister takes my clothes without asking.","a":11,"b":15},{"v":"cerrar","p":0,"es":"Cierro la puerta.","pl":"Zamykam drzwi.","en":"I close the door.","a":0,"b":6},{"v":"cerrar","p":2,"es":"El banco cierra a las dos.","pl":"Bank zamyka się o drugiej.","en":"The bank closes at two.","a":9,"b":15},{"v":"cerrar","p":3,"es":"Cerramos las ventanas porque hace frío.","pl":"Zamykamy okna, bo jest zimno.","en":"We close the windows because it's cold.","a":0,"b":8},{"v":"empezar","p":0,"es":"Empiezo a trabajar a las ocho.","pl":"Zaczynam pracę o ósmej.","en":"I start work at eight.","a":0,"b":7},{"v":"empezar","p":2,"es":"La clase empieza a las nueve.","pl":"Lekcja zaczyna się o dziewiątej.","en":"The class starts at nine.","a":9,"b":16},{"v":"empezar","p":3,"es":"Empezamos el curso en septiembre.","pl":"Zaczynamy kurs we wrześniu.","en":"We start the course in September.","a":0,"b":9},{"v":"entender","p":0,"es":"No entiendo nada.","pl":"Nic nie rozumiem.","en":"I don't understand anything.","a":3,"b":11},{"v":"entender","p":1,"es":"¿Entiendes la pregunta?","pl":"Rozumiesz pytanie?","en":"Do you understand the question?","a":1,"b":10},{"v":"entender","p":5,"es":"Mis padres no entienden mi música.","pl":"Rodzice nie rozumieją mojej muzyki.","en":"My parents don't understand my music.","a":14,"b":23},{"v":"preferir","p":0,"es":"Prefiero el té.","pl":"Wolę herbatę.","en":"I prefer tea.","a":0,"b":8},{"v":"preferir","p":1,"es":"¿Prefieres la playa o la montaña?","pl":"Wolisz plażę czy góry?","en":"Do you prefer the beach or the mountains?","a":1,"b":10},{"v":"preferir","p":3,"es":"Preferimos quedarnos en casa.","pl":"Wolimy zostać w domu.","en":"We prefer to stay at home.","a":0,"b":10},{"v":"pensar","p":0,"es":"Pienso en ti.","pl":"Myślę o tobie.","en":"I'm thinking of you.","a":0,"b":6},{"v":"pensar","p":1,"es":"¿Qué piensas de esta película?","pl":"Co myślisz o tym filmie?","en":"What do you think of this film?","a":5,"b":12},{"v":"pensar","p":4,"es":"¿Pensáis ir a la fiesta?","pl":"Zamierzacie iść na imprezę?","en":"Are you all planning to go to the party?","a":1,"b":8},{"v":"querer","p":0,"es":"Quiero aprender español.","pl":"Chcę nauczyć się hiszpańskiego.","en":"I want to learn Spanish.","a":0,"b":6},{"v":"querer","p":1,"es":"¿Quieres un café?","pl":"Chcesz kawę?","en":"Do you want a coffee?","a":1,"b":8},{"v":"querer","p":5,"es":"Todos me quieren.","pl":"Wszyscy mnie kochają.","en":"Everyone loves me.","a":9,"b":16},{"v":"sentir","p":0,"es":"Lo siento mucho.","pl":"Bardzo mi przykro.","en":"I'm very sorry.","a":3,"b":9},{"v":"sentir","p":1,"es":"¿Qué sientes?","pl":"Co czujesz?","en":"What do you feel?","a":5,"b":12},{"v":"sentir","p":3,"es":"Sentimos el retraso.","pl":"Przepraszamy za opóźnienie.","en":"We apologise for the delay.","a":0,"b":8},{"v":"pedir","p":0,"es":"Pido un café.","pl":"Zamawiam kawę.","en":"I order a coffee.","a":0,"b":4},{"v":"pedir","p":1,"es":"¿Por qué no pides ayuda?","pl":"Dlaczego nie poprosisz o pomoc?","en":"Why don't you ask for help?","a":12,"b":17},{"v":"pedir","p":3,"es":"Pedimos una pizza.","pl":"Zamawiamy pizzę.","en":"We order a pizza.","a":0,"b":7},{"v":"servir","p":0,"es":"Sirvo la sopa.","pl":"Nalewam zupę.","en":"I serve the soup.","a":0,"b":5},{"v":"servir","p":2,"es":"El camarero sirve la comida.","pl":"Kelner podaje jedzenie.","en":"The waiter serves the food.","a":12,"b":17},{"v":"servir","p":5,"es":"¿Para qué sirven estos botones?","pl":"Do czego służą te przyciski?","en":"What are these buttons for?","a":10,"b":16},{"v":"elegir","p":0,"es":"Elijo el vestido azul.","pl":"Wybieram niebieską sukienkę.","en":"I choose the blue dress.","a":0,"b":5},{"v":"elegir","p":1,"es":"¿Qué eliges, pizza o pasta?","pl":"Co wybierasz, pizzę czy makaron?","en":"What do you choose, pizza or pasta?","a":5,"b":11},{"v":"elegir","p":3,"es":"Elegimos el hotel juntos.","pl":"Wybieramy hotel razem.","en":"We choose the hotel together.","a":0,"b":8},{"v":"medir","p":0,"es":"Mido un metro setenta.","pl":"Mam metr siedemdziesiąt wzrostu.","en":"I'm one metre seventy tall.","a":0,"b":4},{"v":"medir","p":1,"es":"¿Cuánto mides?","pl":"Ile masz wzrostu?","en":"How tall are you?","a":8,"b":13},{"v":"seguir","p":0,"es":"Sigo a muchos cantantes en Instagram.","pl":"Obserwuję wielu piosenkarzy na Instagramie.","en":"I follow lots of singers on Instagram.","a":0,"b":4},{"v":"seguir","p":1,"es":"¿Sigues en el instituto?","pl":"Nadal chodzisz do szkoły?","en":"Are you still at school?","a":1,"b":7},{"v":"seguir","p":5,"es":"Los turistas siguen al guía.","pl":"Turyści idą za przewodnikiem.","en":"The tourists follow the guide.","a":13,"b":19},{"v":"repetir","p":0,"es":"Repito las palabras nuevas.","pl":"Powtarzam nowe słowa.","en":"I repeat the new words.","a":0,"b":6},{"v":"repetir","p":1,"es":"¿Repites, por favor?","pl":"Powtórzysz, proszę?","en":"Can you repeat that, please?","a":1,"b":8},{"v":"repetir","p":2,"es":"El profesor repite la pregunta.","pl":"Nauczyciel powtarza pytanie.","en":"The teacher repeats the question.","a":12,"b":18},{"v":"volver","p":0,"es":"Vuelvo a casa en autobús.","pl":"Wracam do domu autobusem.","en":"I go back home by bus.","a":0,"b":6},{"v":"volver","p":1,"es":"¿Cuándo vuelves?","pl":"Kiedy wracasz?","en":"When are you coming back?","a":8,"b":15},{"v":"volver","p":3,"es":"Volvemos el domingo.","pl":"Wracamy w niedzielę.","en":"We're coming back on Sunday.","a":0,"b":8},{"v":"costar","p":2,"es":"¿Cuánto cuesta?","pl":"Ile to kosztuje?","en":"How much is it?","a":8,"b":14},{"v":"costar","p":5,"es":"Los zapatos cuestan cincuenta euros.","pl":"Buty kosztują pięćdziesiąt euro.","en":"The shoes cost fifty euros.","a":12,"b":19},{"v":"recordar","p":0,"es":"No recuerdo su nombre.","pl":"Nie pamiętam jego imienia.","en":"I don't remember his name.","a":3,"b":11},{"v":"recordar","p":1,"es":"¿Recuerdas el número?","pl":"Pamiętasz numer?","en":"Do you remember the number?","a":1,"b":10},{"v":"recordar","p":3,"es":"Recordamos aquel verano.","pl":"Pamiętamy tamto lato.","en":"We remember that summer.","a":0,"b":10},{"v":"poder","p":0,"es":"No puedo encontrar mi maleta.","pl":"Nie mogę znaleźć swojej walizki.","en":"I can't find my suitcase.","a":3,"b":8},{"v":"poder","p":1,"es":"¿Puedes ayudarme?","pl":"Możesz mi pomóc?","en":"Can you help me?","a":1,"b":7},{"v":"poder","p":3,"es":"Podemos ir al cine mañana.","pl":"Możemy jutro iść do kina.","en":"We can go to the cinema tomorrow.","a":0,"b":7},{"v":"poder","p":4,"es":"¿Podéis hablar más despacio?","pl":"Możecie mówić wolniej?","en":"Can you all speak more slowly?","a":1,"b":7},{"v":"contar","p":0,"es":"Cuento hasta diez.","pl":"Liczę do dziesięciu.","en":"I count to ten.","a":0,"b":6},{"v":"contar","p":1,"es":"¿Me cuentas un secreto?","pl":"Zdradzisz mi sekret?","en":"Will you tell me a secret?","a":4,"b":11},{"v":"contar","p":2,"es":"Mi abuelo cuenta historias divertidas.","pl":"Dziadek opowiada zabawne historie.","en":"My grandpa tells funny stories.","a":10,"b":16},{"v":"dormir","p":0,"es":"Duermo ocho horas.","pl":"Śpię osiem godzin.","en":"I sleep eight hours.","a":0,"b":6},{"v":"dormir","p":2,"es":"El bebé duerme.","pl":"Dziecko śpi.","en":"The baby is sleeping.","a":8,"b":14},{"v":"dormir","p":3,"es":"Dormimos en un hotel.","pl":"Śpimy w hotelu.","en":"We're sleeping in a hotel.","a":0,"b":8},{"v":"encontrar","p":0,"es":"¿Dónde encuentro un buen restaurante?","pl":"Gdzie znajdę dobrą restaurację?","en":"Where can I find a good restaurant?","a":7,"b":16},{"v":"encontrar","p":2,"es":"Mi madre siempre encuentra las llaves.","pl":"Mama zawsze znajduje klucze.","en":"My mum always finds the keys.","a":17,"b":26},{"v":"encontrar","p":3,"es":"No encontramos la calle.","pl":"Nie możemy znaleźć tej ulicy.","en":"We can't find the street.","a":3,"b":14},{"v":"jugar","p":0,"es":"Juego al fútbol los martes.","pl":"We wtorki gram w piłkę nożną.","en":"I play football on Tuesdays.","a":0,"b":5},{"v":"jugar","p":1,"es":"¿Juegas a los videojuegos?","pl":"Grasz w gry wideo?","en":"Do you play video games?","a":1,"b":7},{"v":"jugar","p":3,"es":"Jugamos a las cartas.","pl":"Gramy w karty.","en":"We play cards.","a":0,"b":7},{"v":"jugar","p":5,"es":"Los niños juegan en el parque.","pl":"Dzieci bawią się w parku.","en":"The children play in the park.","a":10,"b":16},{"v":"construir","p":0,"es":"Construyo una casa en Minecraft.","pl":"Buduję dom w Minecrafcie.","en":"I'm building a house in Minecraft.","a":0,"b":9},{"v":"construir","p":3,"es":"Construimos un castillo de arena.","pl":"Budujemy zamek z piasku.","en":"We build a sandcastle.","a":0,"b":11},{"v":"construir","p":5,"es":"Construyen un edificio nuevo.","pl":"Budują nowy budynek.","en":"They're putting up a new building.","a":0,"b":10},{"v":"destruir","p":1,"es":"¿Por qué destruyes mi dibujo?","pl":"Dlaczego niszczysz mój rysunek?","en":"Why are you ruining my drawing?","a":9,"b":18},{"v":"destruir","p":2,"es":"El fuego destruye el bosque.","pl":"Ogień niszczy las.","en":"The fire destroys the forest.","a":9,"b":17},{"v":"huir","p":2,"es":"El gato huye del perro.","pl":"Kot ucieka przed psem.","en":"The cat runs away from the dog.","a":8,"b":12},{"v":"huir","p":5,"es":"Los ladrones huyen de la policía.","pl":"Złodzieje uciekają przed policją.","en":"The thieves run away from the police.","a":13,"b":18},{"v":"sustituir","p":0,"es":"Sustituyo el azúcar por miel.","pl":"Zastępuję cukier miodem.","en":"I replace sugar with honey.","a":0,"b":9},{"v":"sustituir","p":2,"es":"La profesora nueva sustituye a nuestro profesor.","pl":"Nowa nauczycielka zastępuje naszego nauczyciela.","en":"The new teacher is replacing our teacher.","a":19,"b":28},{"v":"ser","p":0,"es":"Soy de Polonia.","pl":"Jestem z Polski.","en":"I'm from Poland.","a":0,"b":3},{"v":"ser","p":1,"es":"Eres muy simpática.","pl":"Jesteś bardzo sympatyczna.","en":"You're very nice.","a":0,"b":4},{"v":"ser","p":2,"es":"¿Qué hora es?","pl":"Która godzina?","en":"What time is it?","a":10,"b":12},{"v":"ser","p":3,"es":"Somos hermanos.","pl":"Jesteśmy rodzeństwem.","en":"We're brother and sister.","a":0,"b":5},{"v":"ser","p":5,"es":"Mis padres son profesores.","pl":"Moi rodzice są nauczycielami.","en":"My parents are teachers.","a":11,"b":14},{"v":"ir","p":0,"es":"Voy al instituto en autobús.","pl":"Jeżdżę do szkoły autobusem.","en":"I go to school by bus.","a":0,"b":3},{"v":"ir","p":1,"es":"¿Adónde vas?","pl":"Dokąd idziesz?","en":"Where are you going?","a":8,"b":11},{"v":"ir","p":3,"es":"Los sábados vamos a la discoteca.","pl":"W soboty chodzimy na dyskotekę.","en":"On Saturdays we go to the disco.","a":12,"b":17},{"v":"ir","p":4,"es":"¿Vais a la playa?","pl":"Idziecie na plażę?","en":"Are you all going to the beach?","a":1,"b":5},{"v":"tener","p":0,"es":"Tengo dos hermanos.","pl":"Mam dwoje rodzeństwa.","en":"I have two siblings.","a":0,"b":5},{"v":"tener","p":1,"es":"¿Tienes un boli?","pl":"Masz długopis?","en":"Have you got a pen?","a":1,"b":7},{"v":"tener","p":2,"es":"Natalia tiene veinte años.","pl":"Natalia ma dwadzieścia lat.","en":"Natalia is twenty years old.","a":8,"b":13},{"v":"tener","p":3,"es":"Tenemos hambre.","pl":"Jesteśmy głodni.","en":"We're hungry.","a":0,"b":7},{"v":"decir","p":0,"es":"Siempre digo la verdad.","pl":"Zawsze mówię prawdę.","en":"I always tell the truth.","a":8,"b":12},{"v":"decir","p":1,"es":"¿Qué dices?","pl":"Co mówisz?","en":"What are you saying?","a":5,"b":10},{"v":"decir","p":5,"es":"Dicen que mañana llueve.","pl":"Mówią, że jutro będzie padać.","en":"They say it's raining tomorrow.","a":0,"b":5},{"v":"venir","p":0,"es":"Vengo ahora.","pl":"Już idę.","en":"I'm coming now.","a":0,"b":5},{"v":"venir","p":1,"es":"¿Vienes a mi fiesta?","pl":"Przyjdziesz na moją imprezę?","en":"Are you coming to my party?","a":1,"b":7},{"v":"venir","p":5,"es":"Mis primos vienen de Madrid.","pl":"Moi kuzyni przyjeżdżają z Madrytu.","en":"My cousins are coming from Madrid.","a":11,"b":17},{"v":"oír","p":0,"es":"No te oigo bien.","pl":"Nie słyszę cię dobrze.","en":"I can't hear you well.","a":6,"b":10},{"v":"oír","p":1,"es":"¿Oyes la música?","pl":"Słyszysz muzykę?","en":"Can you hear the music?","a":1,"b":5},{"v":"oír","p":3,"es":"Oímos a los vecinos.","pl":"Słyszymy sąsiadów.","en":"We can hear the neighbours.","a":0,"b":5},{"v":"oler","p":0,"es":"Huelo las flores.","pl":"Wącham kwiaty.","en":"I smell the flowers.","a":0,"b":5},{"v":"oler","p":2,"es":"La comida huele muy bien.","pl":"Jedzenie pięknie pachnie.","en":"The food smells really good.","a":10,"b":15},{"v":"haber","p":2,"es":"Hay una farmacia cerca.","pl":"W pobliżu jest apteka.","en":"There's a pharmacy nearby.","a":0,"b":3,"h":1},{"v":"haber","p":2,"es":"En Varsovia hay un Palacio de Cultura.","pl":"W Warszawie jest Pałac Kultury.","en":"In Warsaw there's a Palace of Culture.","a":12,"b":15,"h":1},{"v":"haber","p":2,"es":"Hay mucha gente en el bar.","pl":"W barze jest dużo ludzi.","en":"There are lots of people in the bar.","a":0,"b":3,"h":1},{"v":"nadar","p":0,"es":"Nado en la piscina los martes.","pl":"We wtorki pływam na basenie.","en":"I swim in the pool on Tuesdays.","a":0,"b":4},{"v":"nadar","p":1,"es":"¿Nadas bien?","pl":"Dobrze pływasz?","en":"Do you swim well?","a":1,"b":6},{"v":"lavar","p":0,"es":"Lavo los platos después de comer.","pl":"Po obiedzie zmywam naczynia.","en":"I wash the dishes after lunch.","a":0,"b":4},{"v":"lavar","p":2,"es":"Mi padre lava el coche los domingos.","pl":"Tata myje samochód w niedziele.","en":"My dad washes the car on Sundays.","a":9,"b":13},{"v":"planchar","p":0,"es":"No plancho mi ropa.","pl":"Nie prasuję swoich ubrań.","en":"I don't iron my clothes.","a":3,"b":10},{"v":"planchar","p":2,"es":"Mi abuela plancha las camisas.","pl":"Babcia prasuje koszule.","en":"My grandma irons the shirts.","a":10,"b":17},{"v":"arreglar","p":0,"es":"Arreglo mi habitación.","pl":"Porządkuję swój pokój.","en":"I tidy my room.","a":0,"b":7},{"v":"arreglar","p":2,"es":"El mecánico arregla el coche.","pl":"Mechanik naprawia samochód.","en":"The mechanic fixes the car.","a":12,"b":19},{"v":"terminar","p":2,"es":"La película termina a las diez.","pl":"Film kończy się o dziesiątej.","en":"The film finishes at ten.","a":12,"b":19},{"v":"terminar","p":3,"es":"Terminamos los deberes juntos.","pl":"Razem kończymy odrabiać lekcje.","en":"We finish our homework together.","a":0,"b":10},{"v":"enseñar","p":2,"es":"La profesora enseña matemáticas.","pl":"Nauczycielka uczy matematyki.","en":"The teacher teaches maths.","a":13,"b":19},{"v":"enseñar","p":0,"es":"Te enseño mi casa.","pl":"Pokażę ci mój dom.","en":"I'll show you my house.","a":3,"b":9},{"v":"practicar","p":0,"es":"Practico español todos los días.","pl":"Codziennie ćwiczę hiszpański.","en":"I practise Spanish every day.","a":0,"b":8},{"v":"practicar","p":1,"es":"¿Practicas algún deporte?","pl":"Uprawiasz jakiś sport?","en":"Do you do any sport?","a":1,"b":10},{"v":"explicar","p":2,"es":"El profesor explica la gramática.","pl":"Nauczyciel wyjaśnia gramatykę.","en":"The teacher explains the grammar.","a":12,"b":19},{"v":"explicar","p":1,"es":"¿Me explicas el ejercicio?","pl":"Wyjaśnisz mi to ćwiczenie?","en":"Can you explain the exercise to me?","a":4,"b":12},{"v":"cenar","p":3,"es":"Cenamos a las nueve.","pl":"Jemy kolację o dziewiątej.","en":"We have dinner at nine.","a":0,"b":7},{"v":"cenar","p":1,"es":"¿Qué cenas hoy?","pl":"Co jesz dziś na kolację?","en":"What are you having for dinner today?","a":5,"b":10},{"v":"desayunar","p":0,"es":"Desayuno cereales con leche.","pl":"Na śniadanie jem płatki z mlekiem.","en":"I have cereal with milk for breakfast.","a":0,"b":8},{"v":"desayunar","p":5,"es":"Los niños desayunan en el colegio.","pl":"Dzieci jedzą śniadanie w szkole.","en":"The children have breakfast at school.","a":10,"b":19},{"v":"intentar","p":0,"es":"Intento hablar solo en español.","pl":"Staram się mówić tylko po hiszpańsku.","en":"I try to speak only Spanish.","a":0,"b":7},{"v":"intentar","p":3,"es":"Intentamos llegar a tiempo.","pl":"Staramy się dotrzeć na czas.","en":"We try to arrive on time.","a":0,"b":10},{"v":"dejar","p":0,"es":"Dejo la mochila en la silla.","pl":"Zostawiam plecak na krześle.","en":"I leave my backpack on the chair.","a":0,"b":4},{"v":"dejar","p":5,"es":"Mis padres no me dejan salir.","pl":"Rodzice nie pozwalają mi wyjść.","en":"My parents don't let me go out.","a":17,"b":22},{"v":"comprar","p":0,"es":"Compro pan en la panadería.","pl":"Kupuję chleb w piekarni.","en":"I buy bread at the bakery.","a":0,"b":6},{"v":"comprar","p":1,"es":"¿Qué compras?","pl":"Co kupujesz?","en":"What are you buying?","a":5,"b":12},{"v":"comprar","p":3,"es":"Compramos regalos para Navidad.","pl":"Kupujemy prezenty na święta.","en":"We buy presents for Christmas.","a":0,"b":9},{"v":"mirar","p":0,"es":"Miro por la ventana.","pl":"Patrzę przez okno.","en":"I look out of the window.","a":0,"b":4},{"v":"mirar","p":1,"es":"¿Por qué me miras así?","pl":"Dlaczego tak na mnie patrzysz?","en":"Why are you looking at me like that?","a":12,"b":17},{"v":"ayudar","p":0,"es":"Ayudo a mi madre en la cocina.","pl":"Pomagam mamie w kuchni.","en":"I help my mum in the kitchen.","a":0,"b":5},{"v":"ayudar","p":1,"es":"¿Me ayudas con los deberes?","pl":"Pomożesz mi w lekcjach?","en":"Will you help me with my homework?","a":4,"b":10},{"v":"bailar","p":2,"es":"Mi hermana baila muy bien.","pl":"Moja siostra bardzo dobrze tańczy.","en":"My sister dances very well.","a":11,"b":16},{"v":"bailar","p":3,"es":"Bailamos en la fiesta.","pl":"Tańczymy na imprezie.","en":"We dance at the party.","a":0,"b":8},{"v":"cantar","p":0,"es":"Canto en la ducha.","pl":"Śpiewam pod prysznicem.","en":"I sing in the shower.","a":0,"b":5},{"v":"cantar","p":5,"es":"Ellos cantan en un grupo.","pl":"Oni śpiewają w zespole.","en":"They sing in a band.","a":6,"b":12},{"v":"ganar","p":1,"es":"¿Cuánto ganas?","pl":"Ile zarabiasz?","en":"How much do you earn?","a":8,"b":13},{"v":"ganar","p":2,"es":"Nuestro equipo gana el partido.","pl":"Nasza drużyna wygrywa mecz.","en":"Our team wins the match.","a":15,"b":19},{"v":"olvidar","p":0,"es":"Siempre olvido las llaves.","pl":"Zawsze zapominam kluczy.","en":"I always forget my keys.","a":8,"b":14},{"v":"olvidar","p":1,"es":"¿Olvidas algo?","pl":"Zapominasz o czymś?","en":"Are you forgetting something?","a":1,"b":8},{"v":"bajar","p":0,"es":"Bajo la escalera.","pl":"Schodzę po schodach.","en":"I go down the stairs.","a":0,"b":4},{"v":"bajar","p":1,"es":"¿Bajas la música, por favor?","pl":"Ściszysz muzykę, proszę?","en":"Will you turn the music down, please?","a":1,"b":6},{"v":"amar","p":0,"es":"Amo a mi familia.","pl":"Kocham moją rodzinę.","en":"I love my family.","a":0,"b":3},{"v":"amar","p":5,"es":"Ellos aman la música.","pl":"Oni kochają muzykę.","en":"They love music.","a":6,"b":10},{"v":"odiar","p":0,"es":"Odio los lunes.","pl":"Nienawidzę poniedziałków.","en":"I hate Mondays.","a":0,"b":4},{"v":"odiar","p":2,"es":"Mi gato odia el agua.","pl":"Mój kot nienawidzi wody.","en":"My cat hates water.","a":8,"b":12},{"v":"responder","p":0,"es":"Respondo a tu mensaje mañana.","pl":"Odpowiem na twoją wiadomość jutro.","en":"I'll answer your message tomorrow.","a":0,"b":8},{"v":"responder","p":5,"es":"Los alumnos responden a las preguntas.","pl":"Uczniowie odpowiadają na pytania.","en":"The students answer the questions.","a":12,"b":21},{"v":"romper","p":1,"es":"Siempre rompes algo.","pl":"Zawsze coś psujesz.","en":"You always break something.","a":8,"b":14},{"v":"romper","p":2,"es":"El niño rompe el vaso.","pl":"Chłopiec tłucze szklankę.","en":"The boy breaks the glass.","a":8,"b":13},{"v":"deber","p":0,"es":"Debo estudiar más.","pl":"Muszę się więcej uczyć.","en":"I must study more.","a":0,"b":4},{"v":"deber","p":1,"es":"Debes descansar.","pl":"Powinieneś odpocząć.","en":"You should rest.","a":0,"b":5},{"v":"vender","p":2,"es":"Mi vecino vende su coche.","pl":"Mój sąsiad sprzedaje samochód.","en":"My neighbour is selling his car.","a":10,"b":15},{"v":"vender","p":5,"es":"En esta tienda venden fruta.","pl":"W tym sklepie sprzedają owoce.","en":"They sell fruit in this shop.","a":15,"b":21},{"v":"barrer","p":0,"es":"Barro la cocina.","pl":"Zamiatam kuchnię.","en":"I sweep the kitchen.","a":0,"b":5},{"v":"barrer","p":2,"es":"Él barre el patio.","pl":"On zamiata podwórko.","en":"He sweeps the yard.","a":3,"b":8},{"v":"recibir","p":0,"es":"Recibo muchos mensajes.","pl":"Dostaję dużo wiadomości.","en":"I get a lot of messages.","a":0,"b":6},{"v":"recibir","p":3,"es":"Recibimos un paquete.","pl":"Dostajemy paczkę.","en":"We get a parcel.","a":0,"b":9},{"v":"subir","p":0,"es":"Subo al quinto piso.","pl":"Wchodzę na piąte piętro.","en":"I go up to the fifth floor.","a":0,"b":4},{"v":"subir","p":1,"es":"¿Subes las fotos a Instagram?","pl":"Wrzucasz zdjęcia na Instagram?","en":"Do you post the photos on Instagram?","a":1,"b":6},{"v":"decidir","p":0,"es":"Decido ir a la playa.","pl":"Postanawiam iść na plażę.","en":"I decide to go to the beach.","a":0,"b":6},{"v":"decidir","p":5,"es":"Mis padres deciden dónde vamos de vacaciones.","pl":"Rodzice decydują, dokąd jedziemy na wakacje.","en":"My parents decide where we go on holiday.","a":11,"b":18},{"v":"compartir","p":0,"es":"Comparto la habitación con mi hermano.","pl":"Dzielę pokój z bratem.","en":"I share a room with my brother.","a":0,"b":8},{"v":"compartir","p":3,"es":"Compartimos la pizza.","pl":"Dzielimy się pizzą.","en":"We share the pizza.","a":0,"b":11},{"v":"levantarse","p":0,"es":"Me levanto a las siete.","pl":"Wstaję o siódmej.","en":"I get up at seven.","a":0,"b":10},{"v":"levantarse","p":1,"es":"¿A qué hora te levantas?","pl":"O której wstajesz?","en":"What time do you get up?","a":12,"b":23},{"v":"levantarse","p":3,"es":"Los domingos nos levantamos tarde.","pl":"W niedziele wstajemy późno.","en":"On Sundays we get up late.","a":13,"b":27},{"v":"sentarse","p":0,"es":"Me siento aquí.","pl":"Siadam tutaj.","en":"I'll sit here.","a":0,"b":9},{"v":"sentarse","p":5,"es":"Los alumnos se sientan en clase.","pl":"Uczniowie siadają w klasie.","en":"The students sit down in class.","a":12,"b":22},{"v":"quedarse","p":0,"es":"Hoy me quedo en casa.","pl":"Dziś zostaję w domu.","en":"Today I'm staying at home.","a":4,"b":12},{"v":"quedarse","p":3,"es":"Nos quedamos en un hotel.","pl":"Zatrzymujemy się w hotelu.","en":"We're staying in a hotel.","a":0,"b":12},{"v":"enfadarse","p":1,"es":"¿Por qué te enfadas?","pl":"Dlaczego się złościsz?","en":"Why are you getting angry?","a":9,"b":19},{"v":"enfadarse","p":2,"es":"Mi madre se enfada si llego tarde.","pl":"Mama się złości, jeśli wracam późno.","en":"My mum gets angry if I'm late.","a":9,"b":18},{"v":"lavarse","p":0,"es":"Me lavo los dientes.","pl":"Myję zęby.","en":"I brush my teeth.","a":0,"b":7},{"v":"lavarse","p":5,"es":"Los niños se lavan las manos.","pl":"Dzieci myją ręce.","en":"The children wash their hands.","a":10,"b":18},{"v":"peinarse","p":0,"es":"Me peino por la mañana.","pl":"Rano się czeszę.","en":"I comb my hair in the morning.","a":0,"b":8},{"v":"peinarse","p":2,"es":"Ella se peina delante del espejo.","pl":"Ona czesze się przed lustrem.","en":"She combs her hair in front of the mirror.","a":5,"b":13},{"v":"traducir","p":0,"es":"Traduzco el texto al polaco.","pl":"Tłumaczę tekst na polski.","en":"I translate the text into Polish.","a":0,"b":8},{"v":"traducir","p":1,"es":"¿Me traduces esta palabra?","pl":"Przetłumaczysz mi to słowo?","en":"Can you translate this word for me?","a":4,"b":12},{"v":"obedecer","p":0,"es":"Obedezco a mis padres.","pl":"Słucham się rodziców.","en":"I obey my parents.","a":0,"b":8},{"v":"obedecer","p":2,"es":"El perro no obedece.","pl":"Pies nie słucha.","en":"The dog doesn't obey.","a":12,"b":19},{"v":"ofrecer","p":0,"es":"Te ofrezco un café.","pl":"Proponuję ci kawę.","en":"Can I offer you a coffee?","a":3,"b":10},{"v":"ofrecer","p":2,"es":"El hotel ofrece desayuno gratis.","pl":"Hotel oferuje darmowe śniadanie.","en":"The hotel offers free breakfast.","a":9,"b":15},{"v":"parecer","p":0,"es":"¿Parezco cansado?","pl":"Wyglądam na zmęczonego?","en":"Do I look tired?","a":1,"b":8},{"v":"parecer","p":2,"es":"Parece fácil.","pl":"Wydaje się łatwe.","en":"It seems easy.","a":0,"b":6},{"v":"proteger","p":0,"es":"Protejo mi móvil con una funda.","pl":"Chronię telefon etui.","en":"I protect my phone with a case.","a":0,"b":7},{"v":"proteger","p":2,"es":"La crema protege la piel del sol.","pl":"Krem chroni skórę przed słońcem.","en":"The cream protects your skin from the sun.","a":9,"b":16},{"v":"recoger","p":0,"es":"Recojo a mi hermana del colegio.","pl":"Odbieram siostrę ze szkoły.","en":"I pick my sister up from school.","a":0,"b":6},{"v":"recoger","p":1,"es":"¿Recoges tu habitación?","pl":"Posprzątasz swój pokój?","en":"Will you tidy your room?","a":1,"b":8},{"v":"comenzar","p":0,"es":"Comienzo un libro nuevo.","pl":"Zaczynam nową książkę.","en":"I'm starting a new book.","a":0,"b":8},{"v":"comenzar","p":2,"es":"El concierto comienza a las ocho.","pl":"Koncert zaczyna się o ósmej.","en":"The concert starts at eight.","a":13,"b":21},{"v":"perder","p":0,"es":"Siempre pierdo el paraguas.","pl":"Zawsze gubię parasol.","en":"I always lose my umbrella.","a":8,"b":14},{"v":"perder","p":2,"es":"Nuestro equipo pierde el partido.","pl":"Nasza drużyna przegrywa mecz.","en":"Our team loses the match.","a":15,"b":21},{"v":"perder","p":5,"es":"Ellos pierden el tren.","pl":"Oni spóźniają się na pociąg.","en":"They miss the train.","a":6,"b":13},{"v":"mentir","p":0,"es":"Nunca miento.","pl":"Nigdy nie kłamię.","en":"I never lie.","a":6,"b":12},{"v":"mentir","p":1,"es":"¡Mientes!","pl":"Kłamiesz!","en":"You're lying!","a":1,"b":8},{"v":"encender","p":0,"es":"Enciendo la luz.","pl":"Włączam światło.","en":"I turn on the light.","a":0,"b":8},{"v":"encender","p":1,"es":"¿Enciendes la tele?","pl":"Włączysz telewizor?","en":"Will you turn on the TV?","a":1,"b":10},{"v":"recomendar","p":0,"es":"Te recomiendo este libro.","pl":"Polecam ci tę książkę.","en":"I recommend this book to you.","a":3,"b":13},{"v":"recomendar","p":1,"es":"¿Qué me recomiendas?","pl":"Co mi polecasz?","en":"What do you recommend?","a":8,"b":19},{"v":"corregir","p":0,"es":"Corrijo mis errores.","pl":"Poprawiam swoje błędy.","en":"I correct my mistakes.","a":0,"b":7},{"v":"corregir","p":2,"es":"La profesora corrige los exámenes.","pl":"Nauczycielka poprawia sprawdziany.","en":"The teacher marks the exams.","a":13,"b":20},{"v":"conseguir","p":0,"es":"Siempre consigo lo que quiero.","pl":"Zawsze dostaję to, czego chcę.","en":"I always get what I want.","a":8,"b":15},{"v":"conseguir","p":3,"es":"Conseguimos entradas para el concierto.","pl":"Zdobywamy bilety na koncert.","en":"We get tickets for the concert.","a":0,"b":11},{"v":"reír","p":0,"es":"Río mucho con esta serie.","pl":"Dużo się śmieję przy tym serialu.","en":"I laugh a lot at this series.","a":0,"b":3},{"v":"reír","p":5,"es":"Los niños ríen en el parque.","pl":"Dzieci śmieją się w parku.","en":"The children are laughing in the park.","a":10,"b":14},{"v":"sonreír","p":1,"es":"¿Por qué sonríes?","pl":"Dlaczego się uśmiechasz?","en":"Why are you smiling?","a":9,"b":16},{"v":"sonreír","p":2,"es":"Ella siempre sonríe.","pl":"Ona zawsze się uśmiecha.","en":"She always smiles.","a":13,"b":19},{"v":"volar","p":0,"es":"Vuelo a Madrid mañana.","pl":"Jutro lecę do Madrytu.","en":"I'm flying to Madrid tomorrow.","a":0,"b":5},{"v":"volar","p":5,"es":"Los pájaros vuelan alto.","pl":"Ptaki latają wysoko.","en":"Birds fly high.","a":12,"b":18},{"v":"soler","p":0,"es":"Suelo desayunar en casa.","pl":"Zwykle jem śniadanie w domu.","en":"I usually have breakfast at home.","a":0,"b":5},{"v":"soler","p":3,"es":"Solemos ir al cine los viernes.","pl":"W piątki zwykle chodzimy do kina.","en":"We usually go to the cinema on Fridays.","a":0,"b":7},{"v":"almorzar","p":0,"es":"Almuerzo a las dos.","pl":"Jem obiad o drugiej.","en":"I have lunch at two.","a":0,"b":8},{"v":"almorzar","p":1,"es":"¿Dónde almuerzas?","pl":"Gdzie jesz obiad?","en":"Where do you have lunch?","a":7,"b":16},{"v":"probar","p":0,"es":"Pruebo la sopa.","pl":"Próbuję zupy.","en":"I taste the soup.","a":0,"b":6},{"v":"probar","p":1,"es":"¿Por qué no pruebas la paella?","pl":"Dlaczego nie spróbujesz paelli?","en":"Why don't you try the paella?","a":12,"b":19},{"v":"mostrar","p":0,"es":"Te muestro las fotos.","pl":"Pokazuję ci zdjęcia.","en":"I'm showing you the photos.","a":3,"b":10},{"v":"mostrar","p":2,"es":"El guía muestra la ciudad.","pl":"Przewodnik pokazuje miasto.","en":"The guide shows us the city.","a":8,"b":15},{"v":"mover","p":0,"es":"No muevo el coche.","pl":"Nie przestawiam samochodu.","en":"I'm not moving the car.","a":3,"b":8},{"v":"mover","p":3,"es":"Movemos la mesa.","pl":"Przesuwamy stół.","en":"We move the table.","a":0,"b":7},{"v":"devolver","p":0,"es":"Devuelvo el libro a la biblioteca.","pl":"Oddaję książkę do biblioteki.","en":"I return the book to the library.","a":0,"b":8},{"v":"devolver","p":1,"es":"¿Me devuelves mi boli?","pl":"Oddasz mi długopis?","en":"Will you give me back my pen?","a":4,"b":13},{"v":"incluir","p":0,"es":"Te incluyo en el grupo.","pl":"Dodaję cię do grupy.","en":"I'm adding you to the group.","a":3,"b":10},{"v":"incluir","p":2,"es":"El precio incluye el desayuno.","pl":"Cena obejmuje śniadanie.","en":"The price includes breakfast.","a":10,"b":17},{"v":"continuar","p":0,"es":"Continúo con el ejercicio.","pl":"Kontynuuję ćwiczenie.","en":"I carry on with the exercise.","a":0,"b":8},{"v":"continuar","p":2,"es":"La película continúa después de la pausa.","pl":"Film trwa dalej po przerwie.","en":"The film continues after the break.","a":12,"b":20},{"v":"continuar","p":3,"es":"Continuamos mañana.","pl":"Kontynuujemy jutro.","en":"We'll continue tomorrow.","a":0,"b":11},{"v":"enviar","p":0,"es":"Te envío un mensaje.","pl":"Wysyłam ci wiadomość.","en":"I'm sending you a message.","a":3,"b":8},{"v":"enviar","p":1,"es":"¿Me envías la dirección?","pl":"Wyślesz mi adres?","en":"Will you send me the address?","a":4,"b":10},{"v":"comer","p":4,"es":"¿Coméis en casa o en el instituto?","pl":"Jecie w domu czy w szkole?","en":"Do you all eat at home or at school?","a":1,"b":7},{"v":"vivir","p":4,"es":"¿Vivís cerca de aquí?","pl":"Mieszkacie niedaleko?","en":"Do you all live near here?","a":1,"b":6},{"v":"tener","p":4,"es":"¿Tenéis hermanos?","pl":"Macie rodzeństwo?","en":"Do you have any brothers or sisters?","a":1,"b":7},{"v":"querer","p":4,"es":"¿Queréis venir con nosotros?","pl":"Chcecie pójść z nami?","en":"Do you want to come with us?","a":1,"b":8},{"v":"ser","p":4,"es":"¿Sois de aquí?","pl":"Jesteście stąd?","en":"Are you from here?","a":1,"b":5},{"v":"estar","p":4,"es":"¿Estáis listos?","pl":"Jesteście gotowi?","en":"Are you ready?","a":1,"b":7},{"v":"salir","p":4,"es":"¿Salís esta noche?","pl":"Wychodzicie dziś wieczorem?","en":"Are you going out tonight?","a":1,"b":6},{"v":"venir","p":4,"es":"¿Venís a la fiesta?","pl":"Przychodzicie na imprezę?","en":"Are you coming to the party?","a":1,"b":6},{"v":"jugar","p":4,"es":"¿Jugáis al baloncesto?","pl":"Gracie w koszykówkę?","en":"Do you play basketball?","a":1,"b":7},{"v":"dormir","p":4,"es":"¿Dormís bien en el hotel?","pl":"Dobrze śpicie w hotelu?","en":"Are you sleeping well at the hotel?","a":1,"b":7}]};
+const GROUP_C = {reg_ar:'#E16733',reg_er:'#98AFF5',reg_ir:'#DC8EB6',refl:'#6f8ae6',yo:'#8E0945',e_ie:'#b94a1d',e_i:'#b84f86',o_ue:'#4d66c2',uir:'#c23a74',acc:'#f2a77f',muy:'#5a0630'};
+const PERS = ['yo','tú','él / ella / usted','nosotros/as','vosotros/as','ellos / ellas / ustedes'];
+const PERS_SHORT = ['yo','tú','él/ella','nosotros','vosotros','ellos/ellas'];
+const END = {ar:['o','as','a','amos','áis','an'],er:['o','es','e','emos','éis','en'],ir:['o','es','e','imos','ís','en']};
+const T = {
+ pl:{cards:'Fiszki',drill:'Odmiana',phr:'Frazy',more:'Więcej',all:'Wszystkie',verbs:'czas.',tap:'Dotknij, by odwrócić',tapBack:'Dotknij, by odwrócić z powrotem',know:'Umiem',notyet:'Jeszcze nie',
+  dirEs:'ES → PL',dirTr:'PL → ES',box:'Poziom',mVerbs:'Czasowniki',mVerbsS:'odmiana w czasie teraźniejszym',mVocab:'Słownictwo',mVocabS:'Arriba Joven 1 + kurs ¡Hola! ¿Cómo estás?',mSet:'Ustawienia i postęp',homeQ:'Co dziś ćwiczymy?',vcards:'Fiszki',vquiz:'Quiz',vtype:'Wpisz',vlist:'Lista',pickTopics:'Wybierz tematy',pickS:'Zaznacz jeden lub kilka tematów i zacznij naukę.',learn:'Ucz się',selAll:'Zaznacz wszystkie',clear:'Odznacz',noTopics:'Wybierz przynajmniej jeden temat',chooseTr:'Wybierz tłumaczenie',typeES:'Napisz po hiszpańsku',search:'Szukaj w wybranych tematach…',loading:'Ładuję słownictwo…',loadErr:'Nie udało się wczytać słownictwa. Sprawdź połączenie i odśwież stronę.',noType:'W wybranych tematach są tylko dłuższe zwroty — ćwicz je w Fiszkach lub Quizie.',art:'Prawie! Pamiętaj o rodzajniku:',vprog:'Słownictwo',vprogS:'Hasła na poziomie „Znam” lub „Opanowane”',seen:'Ćwiczone',knownL:'Znam',today:'Dziś',cardsW:'kart',again:'od początku — wróci częściej',lvInfo:'Jak działają poziomy',type:'Wpisz',choose:'Wybierz',table:'Tabela',check:'Sprawdź',next:'Dalej',
+  ok:'Dobrze!',almost:'Prawie! Uważaj na akcent:',accentWrong:'Brakuje akcentu:',wrong:'Poprawnie:',pron:'Pamiętaj o zaimku:',
+  streak:'seria',right:'dobrze',gapMode:'Luka',sentMode:'Całe zdanie',hintP:'osoba',chooseSent:'Wybierz poprawne zdanie po hiszpańsku',
+  settings:'Ustawienia',lang:'Język tłumaczeń',vos:'Forma „vosotros”',vosS:'Hiszpania: tak. Ameryka Łac.: zwykle nie',strict:'Ścisłe akcenty',strictS:'Wyłączone: brak akcentu liczy się jako „prawie”',
+  voice:'Głos',rate:'Tempo mowy',test:'Posłuchaj',auto:'Czytaj odpowiedź po sprawdzeniu',groups:'Grupy czasowników',progress:'Postęp',
+  progS:'Czasowniki na poziomie „Znam” lub „Opanowane”',reset:'Wyzeruj postęp',resetQ:'Na pewno? Dotknij ponownie, by wyzerować.',install:'Instalacja na iPhonie',
+  inst:['Otwórz ten adres w Safari.','Dotknij „Udostępnij” (kwadrat ze strzałką).','Wybierz „Do ekranu początkowego”.','Gotowe — Conjugo działa jak aplikacja, także offline.'],
+  voiceTip:'Lepszy głos: Ustawienia iPhone’a → Dostępność → Treść mówiona → Głosy → Hiszpański → pobierz głos „Ulepszony”.',
+  noVoice:'Brak hiszpańskiego głosu w tym urządzeniu',done:'Zamknij',noItems:'Wybierz przynajmniej jedną grupę czasowników.',legend:'końcówka · nieregularność',hay:'forma bezosobowa',
+  about:'Dane: Arriba Joven 1 (podsumowanie gramatyczne, słowniczek, lekcje 2–5), słowniczek kursu ¡Hola! ¿Cómo estás? (lekcje 01–05), agatauczy.pl, preply.com, berlitz.com. Czas teraźniejszy · v0.2'},
+ en:{cards:'Cards',drill:'Conjugate',phr:'Phrases',more:'More',all:'All',verbs:'verbs',tap:'Tap to flip',tapBack:'Tap to flip back',know:'Got it',notyet:'Not yet',
+  dirEs:'ES → EN',dirTr:'EN → ES',box:'Level',mVerbs:'Verbs',mVerbsS:'present tense conjugation',mVocab:'Vocabulary',mVocabS:'Arriba Joven 1 + ¡Hola! ¿Cómo estás? course',mSet:'Settings & progress',homeQ:'What shall we practise today?',vcards:'Cards',vquiz:'Quiz',vtype:'Type',vlist:'List',pickTopics:'Choose topics',pickS:'Pick one or more topics and start learning.',learn:'Start',selAll:'Select all',clear:'Clear',noTopics:'Pick at least one topic',chooseTr:'Choose the translation',typeES:'Write it in Spanish',search:'Search the selected topics…',loading:'Loading vocabulary…',loadErr:'Could not load the vocabulary. Check your connection and refresh.',noType:'The selected topics only have longer phrases — practise them in Cards or Quiz.',art:'Almost! Remember the article:',vprog:'Vocabulary',vprogS:'Entries at “Known” or “Mastered”',seen:'Practised',knownL:'Known',today:'Today',cardsW:'cards',again:'back to start — it will come back more often',lvInfo:'How levels work',type:'Type',choose:'Choose',table:'Table',check:'Check',next:'Next',
+  ok:'Correct!',almost:'Almost! Watch the accent:',accentWrong:'Missing accent:',wrong:'Correct answer:',pron:'Remember the pronoun:',
+  streak:'streak',right:'right',gapMode:'Gap',sentMode:'Whole sentence',hintP:'person',chooseSent:'Choose the correct Spanish sentence',
+  settings:'Settings',lang:'Translation language',vos:'“vosotros” form',vosS:'Spain: yes. Latin America: usually not',strict:'Strict accents',strictS:'Off: a missing accent counts as “almost”',
+  voice:'Voice',rate:'Speech rate',test:'Listen',auto:'Read the answer after checking',groups:'Verb groups',progress:'Progress',
+  progS:'Verbs at level “Known” or “Mastered”',reset:'Reset progress',resetQ:'Sure? Tap again to reset.',install:'Install on iPhone',
+  inst:['Open this address in Safari.','Tap “Share” (square with an arrow).','Choose “Add to Home Screen”.','Done — Conjugo runs like an app, offline too.'],
+  voiceTip:'Better voice: iPhone Settings → Accessibility → Spoken Content → Voices → Spanish → download an “Enhanced” voice.',
+  noVoice:'No Spanish voice on this device',done:'Close',noItems:'Pick at least one verb group.',legend:'ending · irregular part',hay:'impersonal form',
+  about:'Sources: Arriba Joven 1 (grammar summary, glossary, units 2–5), ¡Hola! ¿Cómo estás? course glossary (lessons 01–05), agatauczy.pl, preply.com, berlitz.com. Present tense · v0.2'}
+};
+// ---------- storage
+const KEY='conjugo.v1';
+let S;
+try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+S=Object.assign({lang:'pl',groups:DATA.groups.map(g=>g.id),vos:true,strict:false,voice:'',rate:.9,auto:true,dir:'es',tab:'cards',mod:'home',wtab:'topics',wprev:'vcards',vt:[],vbox:{},dMode:'type',pMode:'gap',box:{},sk:{},streak:0,best:0,n:0,ok:0},S||{});
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const t=k=>T[S.lang][k];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const V=Object.fromEntries(DATA.verbs.map(v=>[v.id,v]));
+const tr=v=>v[S.lang];
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const wpick=(items,w)=>{let s=0;const ws=items.map(x=>{const v=w(x);s+=v;return v});let r=Math.random()*s;for(let i=0;i<items.length;i++){r-=ws[i];if(r<=0)return items[i]}return items[items.length-1]};
+const verbs=()=>DATA.verbs.filter(v=>S.groups.includes(v.g));
+const persons=()=>[0,1,2,3,4,5].filter(p=>S.vos||p!==4);
+// ---------- speech
+const synth=window.speechSynthesis;
+let voices=[];
+const loadVoices=()=>{try{voices=(synth?synth.getVoices():[]).filter(v=>/^es/i.test(v.lang))}catch(e){voices=[]}};
+if(synth){loadVoices();try{synth.onvoiceschanged=()=>{loadVoices();if(S.tab==='more')renderMore()}}catch(e){}}
+const bestVoice=()=>{if(!voices.length)return null;const f=voices.find(v=>v.voiceURI===S.voice);if(f)return f;
+ const sc=v=>(/es[-_]ES/i.test(v.lang)?4:0)+(/enhanced|premium|ulepsz|mejorad/i.test(v.name)?3:0)+(/m[oó]nica|jorge|marisol|google/i.test(v.name)?1:0);
+ return voices.slice().sort((a,b)=>sc(b)-sc(a))[0]};
+const say=txt=>{if(!synth)return;try{synth.cancel();const u=new SpeechSynthesisUtterance(txt);const v=bestVoice();if(v){u.voice=v;u.lang=v.lang}else u.lang='es-ES';u.rate=S.rate;synth.speak(u)}catch(e){}};
+const SAY_ICO='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+const sayBtn=(txt,sm)=>`<button class="say${sm?' sm':''}" data-say="${esc(txt)}" aria-label="Posłuchaj">${SAY_ICO}</button>`;
+// ---------- answer checking
+const norm=s=>s.toLowerCase().replace(/[¿?¡!.,;:]/g,'').replace(/\s+/g,' ').trim();
+const bare=s=>norm(s).normalize('NFD').replace(/[̀-ͯ]/g,'');
+function grade(input,ans){
+ const a=norm(input),b=norm(ans);
+ if(!a)return null;
+ if(a===b)return'ok';
+ if(bare(a)===bare(b))return S.strict?'accent':'almost';
+ const sp=b.split(' ');
+ if(sp.length===2&&(a===sp[1]||bare(a)===bare(sp[1])))return'pron';
+ return'bad';
+}
+const msg=(g,html)=>`<span class="sym">${g==='ok'?'✓':g==='almost'||g==='art'?'!':'✕'}</span><div style="flex:1">`+({ok:t('ok'),almost:t('almost'),art:t('art'),accent:t('accentWrong'),pron:t('pron'),bad:t('wrong')})[g]+` <strong>${html}</strong></div>`;
+const cls=g=>g==='ok'?'ok':g==='almost'||g==='art'?'warn':'bad';
+const counts=g=>g==='ok'||g==='almost'||g==='art';
+function record(key,good){
+ const s=S.sk[key]||[0,0];s[1]++;if(good)s[0]++;S.sk[key]=s;
+ S.n++;if(good){S.ok++;S.streak++;S.best=Math.max(S.best,S.streak)}else S.streak=0;save();
+}
+// ---------- rendering helpers
+function formHtml(v,p){
+ const f=v.f[p],r=v.r[p];
+ if(v.id==='haber')return esc(f);
+ const sp=f.indexOf(' ');const pre=sp>0?f.slice(0,sp+1):'',core=sp>0?f.slice(sp+1):f;
+ const rc=sp>0?r.slice(r.indexOf(' ')+1):r;
+ const base=v.id.replace(/se$/,'');const typ=base.slice(-2).replace('í','i');const e=END[typ][p];
+ if(core===rc&&core.endsWith(e))return esc(pre+core.slice(0,core.length-e.length))+`<span class="end">${esc(e)}</span>`;
+ return esc(pre)+`<mark>${esc(core)}</mark>`;
+}
+const conjTable=v=>v.nd?`<table class="conj"><tr><td>${t('hay')}</td><td><mark>hay</mark></td><td>${sayBtn('hay',1)}</td></tr></table>`
+ :`<table class="conj">${persons().map(p=>`<tr><td>${PERS[p]}</td><td>${formHtml(v,p)}</td><td>${sayBtn(v.f[p],1)}</td></tr>`).join('')}</table><div class="legend"><span class="end">■</span> ${t('legend').split(' · ')[0]} · <mark>■</mark> ${t('legend').split(' · ')[1]}</div>`;
+const gChip=v=>{const g=DATA.groups.find(x=>x.id===v.g);return`<span class="chip" style="--c:${GROUP_C[v.g]}"><i></i>${esc(g[S.lang])}</span>`};
+// ---------- views
+const view=document.getElementById('view');
+let st={};
+function empty(){view.innerHTML=`<div class="empty">${t('noItems')}</div>`}
+// FLASHCARDS
+const BW=[0,16,8,4,2,1];
+const LV={pl:['Nowe','Uczę się','Prawie','Znam','Opanowane'],en:['New','Learning','Almost','Known','Mastered']};
+const lvName=b=>LV[S.lang][b-1];
+const cardsW=n=>S.lang==='en'?(n===1?'card':'cards'):(n===1?'karta':(n%10>=2&&n%10<=4&&(n%100<12||n%100>14))?'karty':'kart');
+const dots=b=>`<span class="boxes">${[1,2,3,4,5].map(i=>`<b class="${i<=b?'f':''}"></b>`).join('')}</span>`;
+const dkey=()=>{const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()};
+const today=()=>{if(!S.day||S.day.d!==dkey())S.day={d:dkey(),n:0,ok:0};return S.day};
+let toastT;
+function toast(html){let el=document.getElementById('toast');if(!el){el=document.createElement('div');el.id='toast';el.className='toast';el.setAttribute('role','status');document.body.appendChild(el)}
+ el.innerHTML=html;el.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),1800)}
+const INFO={pl:`<p>Każda karta przechodzi przez 5 poziomów:</p><p><b>Nowe → Uczę się → Prawie → Znam → Opanowane</b></p>
+<ul><li><b>Umiem</b> — karta idzie poziom wyżej.</li><li><b>Jeszcze nie</b> — wraca na start.</li>
+<li>Im niższy poziom, tym częściej karta się pojawia. Opanowane wracają rzadko, tylko na powtórkę.</li></ul>
+<p><b>Ćwiczone</b> — ile różnych kart już przerobiłeś/aś.<br><b>Znam</b> — ile jest na poziomie „Znam” lub „Opanowane”.<br><b>Dziś</b> — karty z dzisiaj i ile z nich umiałeś/aś.</p>`,
+en:`<p>Every card goes through 5 levels:</p><p><b>New → Learning → Almost → Known → Mastered</b></p>
+<ul><li><b>Got it</b> — the card moves up a level.</li><li><b>Not yet</b> — it goes back to the start.</li>
+<li>The lower the level, the more often the card shows up. Mastered cards come back rarely, just for review.</li></ul>
+<p><b>Practised</b> — how many different cards you've done.<br><b>Known</b> — how many are at “Known” or “Mastered”.<br><b>Today</b> — cards done today and how many you knew.</p>`};
+function nextCard(){
+ const vs=verbs();if(!vs.length)return empty();
+ const recent=st.recent||[];
+ const pool=vs.length>4?vs.filter(v=>!recent.includes(v.id)):vs;
+ const v=wpick(pool,v=>BW[S.box[v.id]||1]);
+ st={v,flip:false,recent:[v.id,...recent].slice(0,3)};renderCards();
+}
+function renderCards(){
+ const v=st.v;if(!v)return nextCard();
+ const vs=verbs();const known=vs.filter(x=>(S.box[x.id]||1)>=4).length;const seen=vs.filter(x=>S.box[x.id]).length;const b=S.box[v.id]||1;const td=today();
+ const lvl=`<span class="lvl">${esc(lvName(b))} ${dots(b)}<button class="qbtn" data-info="1" aria-label="${t('lvInfo')}">?</button></span>`;
+ const front=S.dir==='es'
+  ?`<div class="row">${lvl}<span class="spacer"></span>${sayBtn(v.id==='haber'?'haber, hay':v.id)}</div><div class="mid"><div class="big">${esc(v.id)}</div></div><div class="tapnote">${t('tap')}</div>`
+  :`<div class="row" style="min-height:44px">${lvl}</div><div class="mid"><div class="big" style="font-size:clamp(30px,9vw,42px)">${esc(tr(v))}</div></div><div class="tapnote">${t('tap')}</div>`;
+ const back=`<div class="row">${gChip(v)}<span class="spacer"></span>${sayBtn(v.id)}</div>
+  <div style="text-align:center;margin-top:6px"><div style="font-size:28px;font-weight:900;line-height:1.1">${esc(v.id)}</div><div class="tr" style="font-size:19px">${esc(tr(v))}</div>${v['n'+S.lang]?`<div class="note">${esc(v['n'+S.lang])}</div>`:''}</div>${conjTable(v)}<div class="tapnote" style="margin-top:10px">${t('tapBack')}</div>`;
+ view.innerHTML=`<div class="seg">${['es','tr'].map(d=>`<button aria-pressed="${S.dir===d}" data-dir="${d}">${t(d==='es'?'dirEs':'dirTr')}</button>`).join('')}</div>
+ <div class="deckinfo"><span>${t('today')}: <b>${td.n}</b> ${cardsW(td.n)} · <b>${td.ok}</b> ✓</span><span>${t('seen')}: <b>${seen}</b></span><span>${t('knownL')}: <b>${known}</b>/${vs.length}</span></div>
+ <div class="flip"><div class="card ${st.flip?'on':''}" id="card" style="--c:${GROUP_C[v.g]}"><div class="face front">${front}</div><div class="face back">${back}</div></div></div>
+ <div class="btns"><button class="btn ghost" data-k="0">${t('notyet')}</button><button class="btn primary" data-k="1">${t('know')}</button></div>`;
+}
+function cardsClick(e){
+ const d=e.target.closest('[data-dir]');if(d){S.dir=d.dataset.dir;save();st.flip=false;return renderCards()}
+ const k=e.target.closest('[data-k]');
+ if(k){const v=st.v;const b=S.box[v.id]||1;const good=k.dataset.k==='1';const nb=good?Math.min(5,b+1):1;S.box[v.id]=nb;
+  const td=today();td.n++;if(good)td.ok++;save();
+  toast(good?`${esc(v.id)} → ${esc(lvName(nb))} ${dots(nb)}`:`${esc(v.id)} → ${esc(t('again'))}`);return nextCard()}
+ if(e.target.closest('[data-info]'))return openInfo();
+ if(e.target.closest('#card')){st.flip=!st.flip;document.getElementById('card').classList.toggle('on',st.flip);
+  if(st.flip&&S.dir==='tr'&&S.auto)say(st.v.id)}
+}
+// DRILL
+function nextDrill(){
+ const vs=verbs().filter(v=>!v.nd);if(!vs.length)return empty();
+ const items=[];vs.forEach(v=>persons().forEach(p=>items.push([v,p])));
+ const last=st.key;
+ const it=wpick(items,([v,p])=>{const k=v.id+':'+p;if(k===last)return 0;const s=S.sk[k];return s?1+4*(1-s[0]/s[1]):3});
+ const [v,p]=it;
+ st={v,p,key:v.id+':'+p,done:false};
+ if(S.dMode==='choose'){
+  const ans=v.f[p];const c=new Set();if(v.r[p]!==ans)c.add(v.r[p]);
+  shuffle(persons().map(q=>v.f[q]).filter(f=>f!==ans)).forEach(f=>{if(c.size<3)c.add(f)});
+  st.opts=shuffle([ans,...[...c].slice(0,3)]);
+ }
+ renderDrill();
+}
+function renderDrill(){
+ const {v,p}=st;if(!v)return nextDrill();
+ const head=`<div class="seg">${['type','choose','table'].map(m=>`<button aria-pressed="${S.dMode===m}" data-mode="${m}">${t(m)}</button>`).join('')}</div>
+ <div class="score"><span>${t('streak')}: ${S.streak}</span><span>${S.ok}/${S.n} ${t('right')}</span></div>`;
+ const pr=`<div class="row" style="min-height:44px"><span id="chip">${st.done?gChip(v):''}</span><span class="spacer"></span>${sayBtn(v.id)}</div>
+ <div class="prompt"><div class="inf">${esc(v.id)}</div><div class="muted" style="font-weight:700">${esc(tr(v))}</div>${S.dMode!=='table'?`<div class="person">${PERS[p]}</div>`:''}</div>`;
+ let body='';
+ if(S.dMode==='type'){
+  body=`<input class="ans" id="ans" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="go" placeholder="…">
+  <div class="accents">${['á','é','í','ó','ú','ñ'].map(c=>`<button data-acc="${c}">${c}</button>`).join('')}</div>
+  <div id="fb"></div><button class="btn primary" id="go" style="margin-top:14px">${t('check')}</button>`;
+ }else if(S.dMode==='choose'){
+  body=`<div class="opts">${st.opts.map(o=>`<button class="opt" data-opt="${esc(o)}">${esc(o)}</button>`).join('')}</div><div id="fb"></div>
+  <button class="btn primary" id="go" style="margin-top:14px;${st.done?'':'visibility:hidden'}">${t('next')}</button>`;
+ }else{
+  body=`<div class="tbl">${persons().map(q=>`<label>${PERS[q]}<input data-q="${q}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></label>`).join('')}</div>
+  <div class="accents">${['á','é','í','ó','ú','ñ'].map(c=>`<button data-acc="${c}">${c}</button>`).join('')}</div>
+  <div id="fb"></div><button class="btn primary" id="go" style="margin-top:14px">${t('check')}</button>`;
+ }
+ view.innerHTML=head+`<div class="panel">${pr}${body}</div>`;
+}
+let lastInput=null;
+document.addEventListener('focusin',e=>{if(e.target.matches('.ans,.tbl input'))lastInput=e.target});
+function insertAcc(c){
+ const el=lastInput&&document.body.contains(lastInput)?lastInput:document.querySelector('.ans,.tbl input');if(!el)return;
+ const a=el.selectionStart??el.value.length,b=el.selectionEnd??el.value.length;
+ el.value=el.value.slice(0,a)+c+el.value.slice(b);el.focus();el.setSelectionRange(a+1,a+1);
+}
+function checkDrill(){
+ const {v,p}=st;const fb=document.getElementById('fb');const go=document.getElementById('go');
+ if(st.done)return nextDrill();
+ if(S.dMode==='type'){
+  const el=document.getElementById('ans');const g=grade(el.value,v.f[p]);if(!g)return el.focus();
+  el.classList.add(cls(g));el.readOnly=true;record(st.key,counts(g));
+  fb.innerHTML=`<div class="fb ${cls(g)}">${msg(g,formHtml(v,p))}${sayBtn(v.f[p])}</div>`;
+  if(S.auto)say(v.f[p]);
+ }else if(S.dMode==='table'){
+  const ins=[...document.querySelectorAll('.tbl input')];const em=ins.find(i=>!i.value.trim());if(em&&!st.warned){st.warned=true;return em.focus()}
+  let all=true;
+  ins.forEach(i=>{const q=+i.dataset.q;const g=grade(i.value,v.f[q])||'bad';i.classList.add(cls(g));i.readOnly=true;record(v.id+':'+q,counts(g));
+   if(g!=='ok'){if(!counts(g))all=false;const s=document.createElement('small');s.innerHTML=formHtml(v,q);i.parentNode.appendChild(s)}});
+  fb.innerHTML=`<div class="fb ${all?'ok':'bad'}"><span class="sym">${all?'✓':'✕'}</span><div style="flex:1">${all?t('ok'):t('wrong').replace(':','')}</div>${sayBtn(persons().map(q=>v.f[q]).join(', '))}</div>`;
+  if(S.auto)say(persons().map(q=>v.f[q]).join(', '));
+ }
+ st.done=true;document.getElementById('chip').innerHTML=gChip(v);go.textContent=t('next');go.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+function chooseOpt(btn){
+ if(st.done)return;const {v,p}=st;const ok=btn.dataset.opt===v.f[p];
+ document.querySelectorAll('.opt').forEach(o=>{if(o.dataset.opt===v.f[p])o.classList.add('ok')});if(!ok)btn.classList.add('bad');
+ record(st.key,ok);st.done=true;document.getElementById('chip').innerHTML=gChip(v);
+ document.getElementById('fb').innerHTML=`<div class="fb ${ok?'ok':'bad'}">${msg(ok?'ok':'bad',formHtml(v,p))}${sayBtn(v.f[p])}</div>`;
+ const go=document.getElementById('go');go.style.visibility='visible';go.scrollIntoView({block:'nearest',behavior:'smooth'});if(S.auto)say(v.f[p]);
+}
+// PHRASES
+function nextPhrase(){
+ const g=new Set(S.groups);
+ const ps=DATA.phrases.filter(x=>g.has(V[x.v].g)&&(S.vos||x.p!==4));if(!ps.length)return empty();
+ const last=st.ph;
+ const ph=wpick(ps,x=>{if(x===last)return 0;const s=S.sk['f:'+x.es];return s?1+4*(1-s[0]/s[1]):3});
+ st={ph,done:false};
+ if(S.pMode==='sent'){
+  const v=V[ph.v];const ans=ph.es.slice(ph.a,ph.b);const cap=s=>ans[0]===ans[0].toUpperCase()?s[0].toUpperCase()+s.slice(1):s;
+  let alts=ph.h?['es','está','tiene']:persons().filter(q=>q!==ph.p).map(q=>v.f[q]);
+  alts=[...new Set(alts.map(cap))].filter(a=>a.toLowerCase()!==ans.toLowerCase());
+  st.opts=shuffle([ph.es,...shuffle(alts).slice(0,3).map(a=>ph.es.slice(0,ph.a)+a+ph.es.slice(ph.b))]);
+ }
+ renderPhrase();
+}
+function renderPhrase(){
+ const {ph}=st;if(!ph)return nextPhrase();const v=V[ph.v];
+ const head=`<div class="seg">${['gap','sent'].map(m=>`<button aria-pressed="${S.pMode===m}" data-pmode="${m}">${t(m+'Mode')}</button>`).join('')}</div>
+ <div class="score"><span>${t('streak')}: ${S.streak}</span><span>${S.ok}/${S.n} ${t('right')}</span></div>`;
+ let body;
+ if(S.pMode==='gap'){
+  const gapW=Math.max(4,ph.b-ph.a);
+  body=`<div class="pl">${esc(ph[S.lang])}</div>
+  <div class="es" id="esline">${esc(ph.es.slice(0,ph.a))}<span class="gap">${'&nbsp;'.repeat(gapW)}</span>${esc(ph.es.slice(ph.b))}</div>
+  <div class="hint">(${esc(ph.h?'haber':v.id)}) · ${t('hintP')}: ${ph.h?t('hay'):PERS[ph.p]}</div>
+  <input class="ans" id="ans" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="go" placeholder="…">
+  <div class="accents">${['á','é','í','ó','ú','ñ'].map(c=>`<button data-acc="${c}">${c}</button>`).join('')}</div>
+  <div id="fb"></div><button class="btn primary" id="go" style="margin-top:14px">${t('check')}</button>`;
+ }else{
+  body=`<div class="pl">${esc(ph[S.lang])}</div><div class="hint">${t('chooseSent')}</div>
+  <div class="opts sent">${st.opts.map(o=>`<button class="opt" data-sent="${esc(o)}">${esc(o)}</button>`).join('')}</div><div id="fb"></div>
+  <button class="btn primary" id="go" style="margin-top:14px;visibility:hidden">${t('next')}</button>`;
+ }
+ view.innerHTML=head+`<div class="panel"><div class="row" style="margin-bottom:10px;min-height:44px"><span id="chip"></span><span class="spacer"></span>${sayBtn(ph.es)}</div>${body}</div>`;
+}
+function checkPhrase(){
+ if(st.done)return nextPhrase();
+ const {ph}=st;const ans=ph.es.slice(ph.a,ph.b);const el=document.getElementById('ans');
+ const g=grade(el.value,ans);if(!g)return el.focus();
+ el.classList.add(cls(g));el.readOnly=true;record('f:'+ph.es,counts(g));
+ document.getElementById('esline').innerHTML=esc(ph.es.slice(0,ph.a))+`<span class="gap" style="border-color:var(--ok);color:var(--ink)">${esc(ans)}</span>`+esc(ph.es.slice(ph.b));
+ document.getElementById('fb').innerHTML=`<div class="fb ${cls(g)}">${msg(g,esc(ans))}${sayBtn(ph.es)}</div>`;document.getElementById('chip').innerHTML=gChip(V[ph.v]);
+ if(S.auto)say(ph.es);st.done=true;const go=document.getElementById('go');go.textContent=t('next');go.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+function chooseSent(btn){
+ if(st.done)return;const {ph}=st;const ok=btn.dataset.sent===ph.es;
+ document.querySelectorAll('[data-sent]').forEach(o=>{if(o.dataset.sent===ph.es)o.classList.add('ok')});if(!ok)btn.classList.add('bad');
+ record('f:'+ph.es,ok);st.done=true;document.getElementById('chip').innerHTML=gChip(V[ph.v]);
+ document.getElementById('fb').innerHTML=`<div class="fb ${ok?'ok':'bad'}">${msg(ok?'ok':'bad',esc(ph.es))}${sayBtn(ph.es)}</div>`;
+ const go=document.getElementById('go');go.style.visibility='visible';go.scrollIntoView({block:'nearest',behavior:'smooth'});if(S.auto)say(ph.es);
+}
+// MORE
+let resetArm=false;
+function groupsHtml(){return`<div class="groups">${DATA.groups.map(g=>`<button data-g="${g.id}" aria-pressed="${S.groups.includes(g.id)}" style="--c:${GROUP_C[g.id]}"><i></i>${esc(g[S.lang])} <span class="muted">${DATA.verbs.filter(v=>v.g===g.id).length}</span></button>`).join('')}</div>`}
+function renderMore(){
+ loadVoices();
+ const prog=DATA.groups.map(g=>{const vs=DATA.verbs.filter(v=>v.g===g.id);const k=vs.filter(v=>(S.box[v.id]||1)>=4).length;
+  return`<div><span>${esc(g[S.lang])}</span><span class="bar" style="--c:${GROUP_C[g.id]}"><i style="width:${Math.round(100*k/vs.length)}%"></i></span><em>${k}/${vs.length}</em></div>`}).join('');
+ const vSel=voices.length?`<select id="voice">${voices.map(v=>`<option value="${esc(v.voiceURI)}" ${bestVoice()===v?'selected':''}>${esc(v.name)} (${esc(v.lang)})</option>`).join('')}</select>`:`<small>${t('noVoice')}</small>`;
+ view.innerHTML=`<h2>${t('settings')}</h2><div class="panel">
+ <div class="set"><div><b>${t('lang')}</b></div><div class="seg" style="margin:0;width:150px">${['pl','en'].map(l=>`<button aria-pressed="${S.lang===l}" data-lang="${l}">${l.toUpperCase()}</button>`).join('')}</div></div>
+ <div class="set"><div><b>${t('vos')}</b><small>${t('vosS')}</small></div><input type="checkbox" class="sw" id="vos" ${S.vos?'checked':''}></div>
+ <div class="set"><div><b>${t('strict')}</b><small>${t('strictS')}</small></div><input type="checkbox" class="sw" id="strict" ${S.strict?'checked':''}></div>
+ <div class="set"><div><b>${t('auto')}</b></div><input type="checkbox" class="sw" id="auto" ${S.auto?'checked':''}></div>
+ </div>
+ <h2>${t('voice')}</h2><div class="panel">
+ <div class="set"><div>${vSel}</div>${sayBtn('Hola, ¿qué tal? Abro la ventana.')}</div>
+ <div class="set"><div><b>${t('rate')}</b><input type="range" id="rate" min=".6" max="1.2" step=".05" value="${S.rate}"></div></div>
+ <div class="set"><small>${t('voiceTip')}</small></div></div>
+ ${S.mod==='verbs'?`<h2>${t('groups')}</h2><div class="panel">${groupsHtml()}</div>`:''}
+ <h2>${t('progress')}</h2><div class="panel"><b>${t('mVerbs')}</b><br><small class="muted">${t('progS')}</small><div class="prog" style="margin-top:10px">${prog}</div>
+ ${VOC?`<div style="margin-top:18px"><b>${t('vprog')}</b><br><small class="muted">${t('vprogS')}</small><div class="prog" style="margin-top:10px">${VOC.sections.map(sc=>sc.groups.map(g=>{const its=g.topics.flatMap(x=>x.items);const k=its.filter(it=>vbx(it)>=4).length;return`<div><span>${esc(sc.id==='arriba'?g[S.lang].split(':')[0]:sc[S.lang].split('·')[0])}</span><span class="bar" style="--c:var(--blue)"><i style="width:${Math.round(100*k/its.length)}%"></i></span><em>${k}/${its.length}</em></div>`}).join('')).join('')}</div></div>`:''}
+ <button class="btn ghost" id="reset" style="margin-top:16px">${t('reset')}</button></div>
+ <h2>${t('install')}</h2><div class="panel"><ol class="howto">${t('inst').map(s=>`<li>${esc(s)}</li>`).join('')}</ol></div>
+ <p class="muted" style="font-size:13px;text-align:center;margin-top:20px">${t('about')}</p>`;
+}
+// ---------- shell (modules: home / verbs / vocab / set)
+const IC={cards:'<rect x="4" y="6" width="12" height="15" rx="2.5"/><path d="M8 3h9.5A2.5 2.5 0 0 1 20 5.5V17"/>',drill:'<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>',phr:'<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12.5h5"/>',more:'<path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/>',
+ vquiz:'<circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.6 2.5L16 9.5"/>',vtype:'<rect x="3" y="6" width="18" height="12" rx="2.5"/><path d="M7 10h.01M11 10h.01M15 10h.01M8 14h8"/>',vlist:'<path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/>'};
+IC.vcards=IC.cards;
+const TABS_V=['cards','drill','phr','more'],TABS_W=['vcards','vquiz','vtype','vlist','more'];
+const curTab=()=>S.mod==='verbs'?S.tab:S.mod==='vocab'?S.wtab:S.mod==='set'?'more':'home';
+function renderTabs(){
+ const nav=document.querySelector('nav.tabs');const list=S.mod==='verbs'?TABS_V:S.mod==='vocab'?TABS_W:[];
+ nav.style.display=list.length?'':'none';document.body.classList.toggle('notabs',!list.length);
+ const el=document.getElementById('tabs');el.style.gridTemplateColumns=`repeat(${list.length||1},1fr)`;
+ el.innerHTML=list.map(id=>`<button data-tab="${id}" ${curTab()===id?'aria-current="page"':''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${IC[id]}</svg>${t(id)}</button>`).join('');
+}
+const FIL='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M3 5h18l-7 8v6l-4 2v-8z"/></svg>';
+function renderHeader(){
+ const fb=document.getElementById('filterBtn'),hb=document.getElementById('homeBtn'),h1=document.getElementById('title');
+ hb.style.display=S.mod==='home'?'none':'';
+ h1.innerHTML=S.mod==='home'?'Conjug<span>o</span>':esc(S.mod==='verbs'?t('mVerbs'):S.mod==='vocab'?t('mVocab'):t('settings'));
+ if(S.mod==='verbs'){fb.style.display='';const n=verbs().length;fb.innerHTML=`${FIL}${S.groups.length===DATA.groups.length?t('all'):S.groups.length+'/'+DATA.groups.length} · ${n} ${t('verbs')}`}
+ else if(S.mod==='vocab'&&VOC){fb.style.display='';fb.innerHTML=`${FIL}${S.vt.length} ${plural(S.vt.length,'topic')} · ${vPool().length}`}
+ else fb.style.display='none';
+}
+const renderFilter=renderHeader;
+function render(reset){
+ document.documentElement.lang=S.lang;if(reset)st={};
+ renderHeader();renderTabs();
+ if(S.mod==='home')renderHome();
+ else if(S.mod==='set')renderMore();
+ else if(S.mod==='verbs')({cards:renderCards,drill:renderDrill,phr:renderPhrase,more:renderMore})[S.tab]();
+ else{
+  if(!VOC){view.innerHTML=`<div class="empty">${t(vocErr?'loadErr':'loading')}</div>`;if(!vocErr)loadVocab(()=>render(true));return}
+  if(S.wtab==='topics'||!S.vt.length)renderTopics();
+  else({vcards:renderVCards,vquiz:renderVQuiz,vtype:renderVType,vlist:renderVList,more:renderMore})[S.wtab]();
+ }
+ window.scrollTo(0,0);
+}
+// ---------- plural helpers
+const PLW={pl:{verb:['czasownik','czasowniki','czasowników'],item:['hasło','hasła','haseł'],topic:['temat','tematy','tematów']},en:{verb:['verb','verbs'],item:['entry','entries'],topic:['topic','topics']}};
+function plural(n,w){const f=PLW[S.lang][w];if(S.lang==='en')return n===1?f[0]:f[1];if(n===1)return f[0];const d=n%10,h=n%100;return d>=2&&d<=4&&(h<12||h>14)?f[1]:f[2]}
+// ---------- vocabulary data
+let VOC=null,vocErr=false,VT={},VTLIST=[],VALL=[],poolCache=null;
+function loadVocab(cb){
+ if(VOC){cb&&cb();return}
+ fetch('vocab.json').then(r=>{if(!r.ok)throw 0;return r.json()}).then(d=>{VOC=d;
+  VOC.sections.forEach(s=>s.groups.forEach(g=>g.topics.forEach(tp=>{tp.sec=s.id;VT[tp.id]=tp;VTLIST.push(tp);tp.items.forEach((it,i)=>{it.id=tp.id+':'+i;it.t=tp.id;VALL.push(it)})})));
+  cb&&cb()}).catch(()=>{vocErr=true;cb&&cb()});
+}
+function vPool(){
+ const key=S.vt.join(',');if(poolCache&&poolCache.k===key)return poolCache.p;
+ const seen=new Set(),p=[];
+ VTLIST.forEach(tp=>{if(!S.vt.includes(tp.id))return;tp.items.forEach(it=>{const k=it.es+'|'+it.pl;if(seen.has(k))return;seen.add(k);p.push(it)})});
+ poolCache={k:key,p};return p;
+}
+const vsay=it=>it.s||it.es;
+const vtr=it=>it[S.lang];
+const vbx=it=>S.vbox[it.id]||1;
+const typeable=it=>!/\.\.\.|…/.test(it.es)&&it.es.split(/\s+/).length<=5;
+const bigSize=s=>s.length>26?'clamp(22px,6.4vw,28px)':s.length>14?'clamp(28px,8.5vw,38px)':'';
+// ---------- home
+function renderHome(){
+ const vk=DATA.verbs.filter(v=>(S.box[v.id]||1)>=4).length;
+ const wn=VOC?VALL.length:0,wk=VOC?VALL.filter(it=>vbx(it)>=4).length:0,nt=VOC?VTLIST.length:0;
+ const td=today();
+ view.innerHTML=`<div class="hello"><div class="hi">¡Hola!</div><div class="muted">${t('homeQ')}</div></div>
+ <div class="tiles">
+  <button class="tile" data-mod="verbs" style="--c:var(--pri)"><svg class="art" viewBox="0 0 120 90" aria-hidden="true"><rect x="18" y="14" width="62" height="70" rx="10" fill="#DC8EB6" transform="rotate(-8 49 49)"/><rect x="34" y="8" width="62" height="70" rx="10" fill="#fff"/><text x="65" y="40" text-anchor="middle" font-size="17" font-weight="900" fill="#8E0945" font-family="Nunito,sans-serif">hablo</text><text x="65" y="60" text-anchor="middle" font-size="13" font-weight="800" fill="#E16733" font-family="Nunito,sans-serif">-as -a</text></svg>
+   <b>${t('mVerbs')}</b><small>${DATA.verbs.length} ${plural(DATA.verbs.length,'verb')} · ${t('mVerbsS')}</small><span class="tbar"><i style="width:${Math.round(100*vk/DATA.verbs.length)}%"></i></span><em>${t('knownL')}: ${vk}/${DATA.verbs.length}</em></button>
+  <button class="tile" data-mod="vocab" style="--c:#4d66c2"><svg class="art" viewBox="0 0 120 90" aria-hidden="true"><circle cx="40" cy="46" r="30" fill="#98AFF5"/><circle cx="82" cy="40" r="24" fill="#DC8EB6"/><circle cx="70" cy="66" r="16" fill="#E16733"/><text x="40" y="52" text-anchor="middle" font-size="16" font-weight="900" fill="#14245e" font-family="Nunito,sans-serif">la casa</text></svg>
+   <b>${t('mVocab')}</b><small>${VOC?`${wn} ${plural(wn,'item')} · ${nt} ${plural(nt,'topic')}`:t('loading')} · ${t('mVocabS')}</small><span class="tbar"><i style="width:${wn?Math.round(100*wk/wn):0}%"></i></span><em>${t('knownL')}: ${wk}/${wn||'…'}</em></button>
+ </div>
+ <div class="homefoot"><span class="pill">${t('today')}: <b>${td.n}</b> ${cardsW(td.n)} · <b>${td.ok}</b> ✓</span><button class="pill linkbtn" data-mod="set">${t('mSet')}</button></div>`;
+ if(!VOC&&!vocErr)loadVocab(()=>{if(S.mod==='home')renderHome()});
+}
+// ---------- topic picker
+function renderTopics(){
+ const sel=new Set(S.vt);const n=vPool().length;
+ const prog=tp=>{const k=tp.items.filter(it=>vbx(it)>=4).length;return Math.round(100*k/tp.items.length)};
+ view.innerHTML=`<div class="pickhead"><div><b>${t('pickTopics')}</b><small class="muted">${t('pickS')}</small></div></div>`+
+ VOC.sections.map(s=>`<h2>${esc(s[S.lang])}</h2>`+s.groups.map((g,gi)=>{const ids=g.topics.map(x=>x.id);const all=ids.every(id=>sel.has(id));
+  return`<div class="grp"><div class="grphead"><b>${esc(g[S.lang])}</b><button class="mini-btn" data-gall="${esc(ids.join(','))}" data-on="${all?0:1}">${all?t('clear'):t('selAll')}</button></div>
+  ${g.topics.map(tp=>`<button class="topic" data-topic="${esc(tp.id)}" aria-pressed="${sel.has(tp.id)}"><span class="ck"></span><span class="tt"><b>${esc(tp[S.lang])}</b><small>${tp.es?esc(tp.es)+' · ':''}${tp.items.length} ${plural(tp.items.length,'item')}</small></span><span class="mini"><i style="width:${prog(tp)}%"></i></span></button>`).join('')}</div>`}).join('')).join('')+
+ `<div class="stick"><button class="btn primary" id="startV" ${n?'':'disabled'}>${n?`${t('learn')} · ${n} ${plural(n,'item')}`:t('noTopics')}</button></div>`;
+}
+// ---------- vocab flashcards
+function nextVCard(){
+ const p=vPool();if(!p.length)return renderTopics();
+ const recent=st.recent||[];const pool=p.length>4?p.filter(x=>!recent.includes(x.id)):p;
+ const it=wpick(pool,x=>BW[vbx(x)]);st={it,flip:false,recent:[it.id,...recent].slice(0,4)};renderVCards();
+}
+function renderVCards(){
+ const it=st.it;if(!it)return nextVCard();
+ const p=vPool();const known=p.filter(x=>vbx(x)>=4).length,seen=p.filter(x=>S.vbox[x.id]).length,b=vbx(it),td=today(),tp=VT[it.t];
+ const lvl=`<span class="lvl">${esc(lvName(b))} ${dots(b)}<button class="qbtn" data-info="1" aria-label="${t('lvInfo')}">?</button></span>`;
+ const fr=S.dir==='es'?it.es:vtr(it),bk=S.dir==='es'?vtr(it):it.es;
+ const note=S.lang==='pl'&&it.n?`<div class="note">${esc(it.n)}</div>`:'';
+ view.innerHTML=`<div class="seg">${['es','tr'].map(d=>`<button aria-pressed="${S.dir===d}" data-dir="${d}">${t(d==='es'?'dirEs':'dirTr')}</button>`).join('')}</div>
+ <div class="deckinfo"><span>${t('today')}: <b>${td.n}</b> ${cardsW(td.n)} · <b>${td.ok}</b> ✓</span><span>${t('seen')}: <b>${seen}</b></span><span>${t('knownL')}: <b>${known}</b>/${p.length}</span></div>
+ <div class="flip"><div class="card ${st.flip?'on':''}" id="card" style="--c:var(--blue)">
+  <div class="face front"><div class="row">${lvl}<span class="spacer"></span>${S.dir==='es'?sayBtn(vsay(it)):''}</div><div class="mid"><div class="big" style="font-size:${bigSize(fr)}">${esc(fr)}</div></div><div class="tapnote">${t('tap')}</div></div>
+  <div class="face back"><div class="row"><span class="chip" style="--c:var(--blue)"><i></i>${esc(tp[S.lang])}</span><span class="spacer"></span>${sayBtn(vsay(it))}</div>
+   <div class="mid"><div class="muted" style="font-weight:800;font-size:18px">${esc(fr)}</div><div class="big" style="font-size:${bigSize(bk)||'clamp(30px,9vw,44px)'}">${esc(bk)}</div>${note}</div><div class="tapnote">${t('tapBack')}</div></div>
+ </div></div>
+ <div class="btns"><button class="btn ghost" data-vk="0">${t('notyet')}</button><button class="btn primary" data-vk="1">${t('know')}</button></div>`;
+}
+function vcardsClick(e){
+ const d=e.target.closest('[data-dir]');if(d){S.dir=d.dataset.dir;save();st.flip=false;return renderVCards()}
+ const k=e.target.closest('[data-vk]');
+ if(k){const it=st.it;const b=vbx(it);const good=k.dataset.vk==='1';const nb=good?Math.min(5,b+1):1;S.vbox[it.id]=nb;
+  const td=today();td.n++;if(good)td.ok++;save();
+  toast(good?`${esc(it.es)} → ${esc(lvName(nb))} ${dots(nb)}`:`${esc(it.es)} → ${esc(t('again'))}`);return nextVCard()}
+ if(e.target.closest('[data-info]'))return openInfo();
+ if(e.target.closest('#card')){st.flip=!st.flip;document.getElementById('card').classList.toggle('on',st.flip);if(st.flip&&S.dir==='tr'&&S.auto)say(vsay(st.it))}
+}
+// ---------- vocab quiz
+const vweight=(it,last)=>{if(it.id===last)return 0;const s=S.sk['w:'+it.id];return s?1+4*(1-s[0]/s[1]):3};
+function nextVQuiz(){
+ const p=vPool();if(!p.length)return renderTopics();
+ const it=wpick(p,x=>vweight(x,st.last));
+ const ans=S.dir==='es'?vtr(it):it.es;const key=x=>S.dir==='es'?vtr(x):x.es;
+ const same=shuffle(p.filter(x=>x.t===it.t&&key(x)!==ans));const rest=shuffle(p.filter(x=>x.t!==it.t&&key(x)!==ans));const extra=shuffle(VALL.filter(x=>key(x)!==ans));
+ const opts=[];for(const x of [...same,...rest,...extra]){const k=key(x);if(!opts.includes(k)&&k!==ans)opts.push(k);if(opts.length===3)break}
+ st={it,last:it.id,done:false,opts:shuffle([ans,...opts]),ans};renderVQuiz();
+}
+function renderVQuiz(){
+ const {it}=st;if(!it)return nextVQuiz();const tp=VT[it.t];
+ const q=S.dir==='es'?it.es:vtr(it);
+ view.innerHTML=`<div class="seg">${['es','tr'].map(d=>`<button aria-pressed="${S.dir===d}" data-dir="${d}">${t(d==='es'?'dirEs':'dirTr')}</button>`).join('')}</div>
+ <div class="score"><span>${t('streak')}: ${S.streak}</span><span>${S.ok}/${S.n} ${t('right')}</span></div>
+ <div class="panel"><div class="row" style="min-height:44px"><span class="chip" style="--c:var(--blue)"><i></i>${esc(tp[S.lang])}</span><span class="spacer"></span>${sayBtn(vsay(it))}</div>
+ <div class="prompt"><div class="inf" style="font-size:${bigSize(q)||''}">${esc(q)}</div><div class="hint">${t('chooseTr')}</div></div>
+ <div class="opts sent">${st.opts.map(o=>`<button class="opt" data-vopt="${esc(o)}">${esc(o)}</button>`).join('')}</div><div id="fb"></div>
+ <button class="btn primary" id="go" style="margin-top:14px;visibility:hidden">${t('next')}</button></div>`;
+ if(S.dir==='es'&&S.auto)say(vsay(it));
+}
+function chooseVOpt(btn){
+ if(st.done)return;const {it,ans}=st;const ok=btn.dataset.vopt===ans;
+ document.querySelectorAll('[data-vopt]').forEach(o=>{if(o.dataset.vopt===ans)o.classList.add('ok')});if(!ok)btn.classList.add('bad');
+ record('w:'+it.id,ok);st.done=true;
+ document.getElementById('fb').innerHTML=`<div class="fb ${ok?'ok':'bad'}">${msg(ok?'ok':'bad',esc(it.es)+' — '+esc(vtr(it)))}${sayBtn(vsay(it))}</div>`;
+ const go=document.getElementById('go');go.style.visibility='visible';go.scrollIntoView({block:'nearest',behavior:'smooth'});if(S.auto)say(vsay(it));
+}
+// ---------- vocab typing
+const vnorm=s=>s.toLowerCase().replace(/…/g,'...').replace(/\.\.\./g,' ').replace(/[¿?¡!.,;:]/g,' ').replace(/\s+/g,' ').trim();
+const vbare=s=>vnorm(s).normalize('NFD').replace(/[̀-ͯ]/g,'');
+function vgrade(input,it){
+ const a=vnorm(input);if(!a)return null;
+ if(it.a.includes(a))return'ok';
+ if(it.b&&it.b.includes(a))return'art';
+ const ba=vbare(a);
+ if(it.a.some(x=>vbare(x)===ba))return S.strict?'accent':'almost';
+ if(it.b&&it.b.some(x=>vbare(x)===ba))return'art';
+ return'bad';
+}
+function nextVType(){
+ const p=vPool().filter(typeable);if(!p.length){view.innerHTML=`<div class="empty">${t('noType')}</div>`;return}
+ const it=wpick(p,x=>vweight(x,st.last));st={it,last:it.id,done:false};renderVType();
+}
+function renderVType(){
+ const {it}=st;if(!it)return nextVType();const tp=VT[it.t];
+ view.innerHTML=`<div class="score"><span>${t('streak')}: ${S.streak}</span><span>${S.ok}/${S.n} ${t('right')}</span></div>
+ <div class="panel"><div class="row" style="min-height:44px"><span class="chip" style="--c:var(--blue)"><i></i>${esc(tp[S.lang])}</span></div>
+ <div class="prompt"><div class="inf" style="font-size:${bigSize(vtr(it))||'clamp(26px,8vw,36px)'}">${esc(vtr(it))}</div><div class="hint">${t('typeES')}</div></div>
+ <input class="ans" id="ans" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="go" placeholder="…">
+ <div class="accents">${['á','é','í','ó','ú','ñ'].map(c=>`<button data-acc="${c}">${c}</button>`).join('')}</div>
+ <div id="fb"></div><button class="btn primary" id="go" style="margin-top:14px">${t('check')}</button></div>`;
+}
+function checkVType(){
+ if(st.done)return nextVType();
+ const {it}=st;const el=document.getElementById('ans');const g=vgrade(el.value,it);if(!g)return el.focus();
+ el.classList.add(cls(g));el.readOnly=true;record('w:'+it.id,counts(g));
+ document.getElementById('fb').innerHTML=`<div class="fb ${cls(g)}">${msg(g,esc(it.es))}${sayBtn(vsay(it))}</div>`;
+ if(S.auto)say(vsay(it));st.done=true;const go=document.getElementById('go');go.textContent=t('next');go.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+// ---------- vocab list
+function renderVList(){
+ const q=(st.q||'').trim();const qb=q?vbare(q):'';
+ const parts=VTLIST.filter(tp=>S.vt.includes(tp.id)).map(tp=>{
+  const its=tp.items.filter(it=>!qb||vbare(it.es).includes(qb)||vbare(vtr(it)).includes(qb));
+  if(!its.length)return'';
+  return`<h2 style="font-size:17px">${esc(tp[S.lang])}</h2><div class="panel vlist">${its.map(it=>`<div class="vrow"><div><b>${esc(it.es)}</b><span>${esc(vtr(it))}</span></div>${dots(vbx(it))}${sayBtn(vsay(it),1)}</div>`).join('')}</div>`}).join('');
+ if(!st.listInit){view.innerHTML=`<input class="search" id="vsearch" type="search" placeholder="${t('search')}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"><div id="vlistBody"></div>`;st.listInit=true}
+ document.getElementById('vlistBody').innerHTML=parts||`<div class="empty">—</div>`;
+}
+// ---------- common
+function toggleGroup(id){const i=S.groups.indexOf(id);if(i>=0)S.groups.splice(i,1);else S.groups.push(id);S.groups.sort((a,b)=>DATA.groups.findIndex(g=>g.id===a)-DATA.groups.findIndex(g=>g.id===b));save()}
+const sheet=document.getElementById('sheet');
+let sheetMode='groups';
+function openInfo(){sheetMode='info';document.getElementById('sheetBody').innerHTML=`<h2 style="margin-top:0">${t('lvInfo')}</h2><div class="info">${INFO[S.lang]}</div><button class="btn primary" id="closeSheet" style="margin-top:12px">${t('done')}</button>`;sheet.classList.add('open')}
+function openSheet(){sheetMode='groups';document.getElementById('sheetBody').innerHTML=`<h2 style="margin-top:0">${t('groups')}</h2>${groupsHtml()}<button class="btn primary" id="closeSheet" style="margin-top:16px">${t('done')}</button>`;sheet.classList.add('open')}
+document.getElementById('filterBtn').addEventListener('click',()=>{if(S.mod==='verbs')openSheet();else if(S.mod==='vocab'){if(S.wtab!=='topics')S.wprev=S.wtab;S.wtab='topics';save();render(true)}});
+document.getElementById('homeBtn').addEventListener('click',()=>{S.mod='home';save();render(true)});
+sheet.addEventListener('click',e=>{
+ const g=e.target.closest('[data-g]');if(g){toggleGroup(g.dataset.g);g.setAttribute('aria-pressed',S.groups.includes(g.dataset.g));renderHeader();return}
+ if(e.target===sheet||e.target.id==='closeSheet'){sheet.classList.remove('open');if(sheetMode==='groups')render(true)}
+});
+document.getElementById('tabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(!b)return;if(S.mod==='verbs')S.tab=b.dataset.tab;else S.wtab=b.dataset.tab;save();render(true)});
+view.addEventListener('click',e=>{
+ const s=e.target.closest('[data-say]');if(s){say(s.dataset.say);return}
+ const acc=e.target.closest('[data-acc]');if(acc){e.preventDefault();insertAcc(acc.dataset.acc);return}
+ const m=e.target.closest('[data-mod]');if(m){S.mod=m.dataset.mod;if(S.mod==='vocab'&&!S.vt.length)S.wtab='topics';save();return render(true)}
+ const tab=curTab();
+ if(tab==='cards')return cardsClick(e);
+ if(tab==='drill'){
+  const md=e.target.closest('[data-mode]');if(md){S.dMode=md.dataset.mode;save();return nextDrill()}
+  const o=e.target.closest('[data-opt]');if(o)return chooseOpt(o);
+  if(e.target.id==='go')return S.dMode==='choose'?nextDrill():checkDrill();
+ }
+ if(tab==='phr'){
+  const md=e.target.closest('[data-pmode]');if(md){S.pMode=md.dataset.pmode;save();return nextPhrase()}
+  const o=e.target.closest('[data-sent]');if(o)return chooseSent(o);
+  if(e.target.id==='go')return S.pMode==='sent'?nextPhrase():checkPhrase();
+ }
+ if(S.mod==='vocab'&&(S.wtab==='topics'||!S.vt.length)){
+  const tp=e.target.closest('[data-topic]');if(tp){const id=tp.dataset.topic;const i=S.vt.indexOf(id);if(i>=0)S.vt.splice(i,1);else S.vt.push(id);save();const y=window.scrollY;renderTopics();renderHeader();window.scrollTo(0,y);return}
+  const ga=e.target.closest('[data-gall]');if(ga){const ids=ga.dataset.gall.split(',');const on=ga.dataset.on==='1';S.vt=S.vt.filter(x=>!ids.includes(x));if(on)S.vt.push(...ids);save();const y=window.scrollY;renderTopics();renderHeader();window.scrollTo(0,y);return}
+  if(e.target.id==='startV'){S.wtab=S.wprev&&S.wprev!=='topics'?S.wprev:'vcards';save();return render(true)}
+  return;
+ }
+ if(tab==='vcards')return vcardsClick(e);
+ if(tab==='vquiz'){
+  const d=e.target.closest('[data-dir]');if(d){S.dir=d.dataset.dir;save();return nextVQuiz()}
+  const o=e.target.closest('[data-vopt]');if(o)return chooseVOpt(o);
+  if(e.target.id==='go')return nextVQuiz();
+ }
+ if(tab==='vtype'&&e.target.id==='go')return checkVType();
+ if(tab==='more'){
+  const l=e.target.closest('[data-lang]');if(l){S.lang=l.dataset.lang;save();return render(true)}
+  const g=e.target.closest('[data-g]');if(g){toggleGroup(g.dataset.g);return render(true)}
+  if(e.target.id==='reset'){if(!resetArm){resetArm=true;e.target.textContent=t('resetQ');return}
+   S.box={};S.vbox={};S.sk={};S.n=S.ok=S.streak=S.best=0;S.day=null;save();resetArm=false;return render(true)}
+ }
+});
+view.addEventListener('input',e=>{if(e.target.id==='vsearch'){st.q=e.target.value;renderVList()}});
+view.addEventListener('mousedown',e=>{if(e.target.closest('[data-acc]'))e.preventDefault()});
+view.addEventListener('pointerdown',e=>{if(e.target.closest('[data-acc]'))e.preventDefault()});
+view.addEventListener('change',e=>{
+ const id=e.target.id;
+ if(['vos','strict','auto'].includes(id)){S[id]=e.target.checked;save();if(id==='vos')st={}}
+ if(id==='voice'){S.voice=e.target.value;save();say('Hola')}
+ if(id==='rate'){S.rate=+e.target.value;save();say('Abro la ventana')}
+});
+view.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches('.ans,.tbl input')){e.preventDefault();
+ if(e.target.matches('.tbl input')){const n=e.target.closest('label').nextElementSibling;if(n&&n.querySelector('input')&&!st.done)return n.querySelector('input').focus()}
+ document.getElementById('go')?.click()}});
+S.mod='home';
+render(true);
+if('serviceWorker' in navigator&&location.protocol==='https:'){try{navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}}
+}
+</script>
+</body>
+</html>
