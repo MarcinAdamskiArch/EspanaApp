@@ -211,7 +211,7 @@ const T = {
   inst:['Otwórz ten adres w Safari.','Dotknij „Udostępnij” (kwadrat ze strzałką).','Wybierz „Do ekranu początkowego”.','Gotowe — Conjugo działa jak aplikacja, także offline.'],
   voiceTip:'Lepszy głos: Ustawienia iPhone’a → Dostępność → Treść mówiona → Głosy → Hiszpański → pobierz głos „Ulepszony”.',
   noVoice:'Brak hiszpańskiego głosu w tym urządzeniu',done:'Zamknij',noItems:'Wybierz przynajmniej jedną grupę czasowników.',legend:'końcówka · nieregularność',hay:'forma bezosobowa',
-  about:'Dane: Arriba Joven 1 (podsumowanie gramatyczne, słowniczek, lekcje 2–5), słowniczek kursu ¡Hola! ¿Cómo estás? (lekcje 01–05), agatauczy.pl, preply.com, berlitz.com. Czas teraźniejszy · v0.2.1'},
+  about:'Dane: Arriba Joven 1 (podsumowanie gramatyczne, słowniczek, lekcje 2–5), słowniczek kursu ¡Hola! ¿Cómo estás? (lekcje 01–05), agatauczy.pl, preply.com, berlitz.com. Czas teraźniejszy · v0.2.2'},
  en:{cards:'Cards',drill:'Conjugate',phr:'Phrases',more:'More',all:'All',verbs:'verbs',tap:'Tap to flip',tapBack:'Tap to flip back',know:'Got it',notyet:'Not yet',
   dirEs:'ES → EN',dirTr:'EN → ES',box:'Level',mVerbs:'Verbs',mVerbsS:'present tense conjugation',mVocab:'Vocabulary',mVocabS:'Arriba Joven 1 + ¡Hola! ¿Cómo estás? course',mSet:'Settings & progress',homeQ:'What shall we practise today?',vcards:'Cards',vquiz:'Quiz',vtype:'Type',vlist:'List',pickTopics:'Choose topics',pickS:'Pick one or more topics and start learning.',learn:'Start',selAll:'Select all',clear:'Clear',noTopics:'Pick at least one topic',chooseTr:'Choose the translation',typeES:'Write it in Spanish',search:'Search the selected topics…',loading:'Loading vocabulary…',loadErr:'Could not load the vocabulary. Check your connection and refresh.',noType:'The selected topics only have longer phrases — practise them in Cards or Quiz.',art:'Almost! Remember the article:',vprog:'Vocabulary',vprogS:'Entries at “Known” or “Mastered”',seen:'Practised',knownL:'Known',today:'Today',cardsW:'cards',again:'back to start — it will come back more often',lvInfo:'How levels work',type:'Type',choose:'Choose',table:'Table',check:'Check',next:'Next',
   ok:'Correct!',almost:'Almost! Watch the accent:',accentWrong:'Missing accent:',wrong:'Correct answer:',pron:'Remember the pronoun:',
@@ -222,7 +222,7 @@ const T = {
   inst:['Open this address in Safari.','Tap “Share” (square with an arrow).','Choose “Add to Home Screen”.','Done — Conjugo runs like an app, offline too.'],
   voiceTip:'Better voice: iPhone Settings → Accessibility → Spoken Content → Voices → Spanish → download an “Enhanced” voice.',
   noVoice:'No Spanish voice on this device',done:'Close',noItems:'Pick at least one verb group.',legend:'ending · irregular part',hay:'impersonal form',
-  about:'Sources: Arriba Joven 1 (grammar summary, glossary, units 2–5), ¡Hola! ¿Cómo estás? course glossary (lessons 01–05), agatauczy.pl, preply.com, berlitz.com. Present tense · v0.2.1'}
+  about:'Sources: Arriba Joven 1 (grammar summary, glossary, units 2–5), ¡Hola! ¿Cómo estás? course glossary (lessons 01–05), agatauczy.pl, preply.com, berlitz.com. Present tense · v0.2.2'}
 };
 // ---------- storage
 const KEY='conjugo.v1';
@@ -528,7 +528,7 @@ function plural(n,w){const f=PLW[S.lang][w];if(S.lang==='en')return n===1?f[0]:f
 let VOC=null,vocErr=false,VT={},VTLIST=[],VALL=[],poolCache=null;
 function loadVocab(cb){
  if(VOC){cb&&cb();return}
- fetch('vocab.json').then(r=>{if(!r.ok)throw 0;return r.json()}).then(d=>{VOC=d;
+ fetch('vocab.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw 0;return r.json()}).then(d=>{VOC=d;
   VOC.sections.forEach(s=>s.groups.forEach(g=>g.topics.forEach(tp=>{tp.sec=s.id;VT[tp.id]=tp;VTLIST.push(tp);tp.items.forEach((it,i)=>{it.id=tp.id+':'+i;it.t=tp.id;VALL.push(it)})})));
   S.vt=S.vt.filter(id=>VT[id]);
   cb&&cb()}).catch(()=>{vocErr=true;cb&&cb()});
@@ -730,7 +730,7 @@ view.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches('.ans,.
  document.getElementById('go')?.click()}});
 S.mod='home';
 render(true);
-if('serviceWorker' in navigator&&location.protocol==='https:'){try{navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}}
+if('serviceWorker' in navigator&&location.protocol==='https:'){try{navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{})}catch(e){}}
 }
 </script>
 </body>
