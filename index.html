@@ -211,7 +211,7 @@ const T = {
   inst:['Otwórz ten adres w Safari.','Dotknij „Udostępnij” (kwadrat ze strzałką).','Wybierz „Do ekranu początkowego”.','Gotowe — Conjugo działa jak aplikacja, także offline.'],
   voiceTip:'Lepszy głos: Ustawienia iPhone’a → Dostępność → Treść mówiona → Głosy → Hiszpański → pobierz głos „Ulepszony”.',
   noVoice:'Brak hiszpańskiego głosu w tym urządzeniu',done:'Zamknij',noItems:'Wybierz przynajmniej jedną grupę czasowników.',legend:'końcówka · nieregularność',hay:'forma bezosobowa',
-  about:'Dane: Arriba Joven 1 (podsumowanie gramatyczne, słowniczek, lekcje 2–5), słowniczek kursu ¡Hola! ¿Cómo estás? (lekcje 01–05), agatauczy.pl, preply.com, berlitz.com. Czas teraźniejszy · v0.2.3'},
+  about:'Dane: Arriba Joven 1 (podsumowanie gramatyczne, słowniczek, lekcje 2–5), słowniczek kursu ¡Hola! ¿Cómo estás? (lekcje 01–05), agatauczy.pl, preply.com, berlitz.com. Czas teraźniejszy · v0.2.4'},
  en:{cards:'Cards',drill:'Conjugate',phr:'Phrases',more:'More',all:'All',verbs:'verbs',tap:'Tap to flip',tapBack:'Tap to flip back',know:'Got it',notyet:'Not yet',
   dirEs:'ES → EN',dirTr:'EN → ES',box:'Level',mVerbs:'Verbs',mVerbsS:'present tense conjugation',mVocab:'Vocabulary',mVocabS:'Arriba Joven 1 + ¡Hola! ¿Cómo estás? course',mSet:'Settings & progress',homeQ:'What shall we practise today?',vcards:'Cards',vquiz:'Quiz',vtype:'Type',vlist:'List',pickTopics:'Choose topics',pickS:'Pick one or more topics and start learning.',learn:'Start',selAll:'Select all',clear:'Clear',noTopics:'Pick at least one topic',chooseTr:'Choose the translation',typeES:'Write it in Spanish',search:'Search the selected topics…',loading:'Loading vocabulary…',loadErr:'Could not load the vocabulary. Check your connection and refresh.',noType:'The selected topics only have longer phrases — practise them in Cards or Quiz.',art:'Almost! Remember the article:',vprog:'Vocabulary',vprogS:'Entries at “Known” or “Mastered”',seen:'Practised',knownL:'Known',today:'Today',cardsW:'cards',again:'back to start — it will come back more often',lvInfo:'How levels work',type:'Type',choose:'Choose',table:'Table',check:'Check',next:'Next',
   ok:'Correct!',almost:'Almost! Watch the accent:',accentWrong:'Missing accent:',wrong:'Correct answer:',pron:'Remember the pronoun:',
@@ -222,7 +222,7 @@ const T = {
   inst:['Open this address in Safari.','Tap “Share” (square with an arrow).','Choose “Add to Home Screen”.','Done — Conjugo runs like an app, offline too.'],
   voiceTip:'Better voice: iPhone Settings → Accessibility → Spoken Content → Voices → Spanish → download an “Enhanced” voice.',
   noVoice:'No Spanish voice on this device',done:'Close',noItems:'Pick at least one verb group.',legend:'ending · irregular part',hay:'impersonal form',
-  about:'Sources: Arriba Joven 1 (grammar summary, glossary, units 2–5), ¡Hola! ¿Cómo estás? course glossary (lessons 01–05), agatauczy.pl, preply.com, berlitz.com. Present tense · v0.2.3'}
+  about:'Sources: Arriba Joven 1 (grammar summary, glossary, units 2–5), ¡Hola! ¿Cómo estás? course glossary (lessons 01–05), agatauczy.pl, preply.com, berlitz.com. Present tense · v0.2.4'}
 };
 // ---------- storage
 const KEY='conjugo.v1';
@@ -276,7 +276,8 @@ function formHtml(v,p){
  const sp=f.indexOf(' ');const pre=sp>0?f.slice(0,sp+1):'',core=sp>0?f.slice(sp+1):f;
  const rc=sp>0?r.slice(r.indexOf(' ')+1):r;
  const base=v.id.replace(/se$/,'');const typ=base.slice(-2).replace('í','i');const e=END[typ][p];
- if(core===rc&&core.endsWith(e))return esc(pre+core.slice(0,core.length-e.length))+`<span class="end">${esc(e)}</span>`;
+ const nb=x=>v.g==='acc'?x:x.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+ if(nb(core)===nb(rc)&&nb(core).endsWith(nb(e))){const k=core.length-e.length;return esc(pre+core.slice(0,k))+`<span class="end">${esc(core.slice(k))}</span>`}
  return esc(pre)+`<mark>${esc(core)}</mark>`;
 }
 const conjTable=v=>v.nd?`<table class="conj"><tr><td>${t('hay')}</td><td><mark>hay</mark></td><td>${sayBtn('hay',1)}</td></tr></table>`
@@ -341,7 +342,7 @@ function cardsClick(e){
  const k=e.target.closest('[data-k]');
  if(k){const v=st.v;const b=S.box[v.id]||1;const good=k.dataset.k==='1';const nb=good?Math.min(5,b+1):1;S.box[v.id]=nb;
   const td=today();td.n++;if(good)td.ok++;save();
-  toast(good?`${esc(v.id)} → ${esc(lvName(nb))} ${dots(nb)}`:`${esc(v.id)} → ${esc(t('again'))}`);return nextCard()}
+  if(good)toast(`${esc(v.id)} → ${esc(lvName(nb))} ${dots(nb)}`);return nextCard()}
  if(e.target.closest('[data-info]'))return openInfo();
  if(e.target.closest('#card')){st.flip=!st.flip;document.getElementById('card').classList.toggle('on',st.flip);
   if(st.flip&&S.dir==='tr'&&S.auto)say(st.v.id)}
@@ -595,7 +596,7 @@ function vcardsClick(e){
  const k=e.target.closest('[data-vk]');
  if(k){const it=st.it;const b=vbx(it);const good=k.dataset.vk==='1';const nb=good?Math.min(5,b+1):1;S.vbox[it.id]=nb;
   const td=today();td.n++;if(good)td.ok++;save();
-  toast(good?`${esc(it.es)} → ${esc(lvName(nb))} ${dots(nb)}`:`${esc(it.es)} → ${esc(t('again'))}`);return nextVCard()}
+  if(good)toast(`${esc(it.es)} → ${esc(lvName(nb))} ${dots(nb)}`);return nextVCard()}
  if(e.target.closest('[data-info]'))return openInfo();
  if(e.target.closest('#card')){st.flip=!st.flip;document.getElementById('card').classList.toggle('on',st.flip);if(st.flip&&S.dir==='tr'&&S.auto)say(vsay(st.it))}
 }
